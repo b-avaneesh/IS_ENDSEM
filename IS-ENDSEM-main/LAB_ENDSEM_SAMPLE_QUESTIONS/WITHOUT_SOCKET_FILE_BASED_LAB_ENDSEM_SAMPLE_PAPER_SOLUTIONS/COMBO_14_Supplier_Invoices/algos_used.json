@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_14_Supplier_Invoices",
+  "classical": "Playfair",
+  "symmetric": "DES",
+  "asymmetric": "ElGamal",
+  "hash": "SHA1",
+  "signature": "RSA",
+  "homomorphic": "RSA",
+  "search": "SSE"
+}

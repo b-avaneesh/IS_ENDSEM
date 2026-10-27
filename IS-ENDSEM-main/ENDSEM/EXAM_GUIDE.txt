@@ -1,0 +1,249 @@
+HOW TO SOLVE A NEW INFORMATION SECURITY LAB QUESTION
+===================================================
+
+1. CHOOSE THE SHAPE BEFORE CHOOSING THE ALGORITHM
+-----------------------------------------------
+Single encrypt/decrypt numerical -> labs/lab1.py or labs/lab2_6.py
+Encrypted sum/product -> labs/lab7.py
+Ten-document encrypted search -> labs/lab8.py
+Roles + upload + verify + audit -> workbench.py or scenarios/ preset
+Election + encrypted tally + trustees -> voting.py
+Classical followed by modern encryption -> chain.py
+Hash + multipart client/server -> labs/hash_socket.py
+Renew/revoke keys -> labs/key_management.py
+GnuPG/Snort -> labs/GNUPG_SNORT.txt
+Existing manual-specific variants/graphs -> legacy_reference/ folders
+
+Do not start by browsing 4,608 files. Start with the strongest requirement.
+
+2. QUICK RUN COMMANDS
+---------------------
+The following assume a terminal opened inside ENDSEM.
+On this computer replace 'python' with '.\RUN.ps1' if using bundled Python.
+
+  python voting.py --demo
+  python voting.py --socket-demo
+  python voting.py
+  python scenarios/01_EDUSECURE.py --demo
+  python workbench.py --encryption AES_CBC --hash-name SHA512 --signature ELGAMAL --he PAILLIER --search SSE --demo
+  python find_answer.py
+  python labs/lab1.py --demo
+  python labs/lab7.py --demo
+  python labs/lab8.py --demo
+  python chain.py --chain VIGENERE AES_CBC RSA_HYBRID --text "exam record"
+
+Omit --demo to use menus where supported. chain.py is a command-line example.
+
+3. FIND OR EXPORT A COMBINATION
+-------------------------------
+Run find_answer.py. Choose the exact names shown for encryption, hash,
+signature, homomorphic operation and search. It shows matching numeric IDs.
+Choose the ID and export. Your answer appears in standalone/ANSWER_NNNN.py.
+
+Alternatively search COMBINATION_INDEX.txt, then:
+  python build_combinations.py --export ID
+Replace ID with the numeric ID shown, not the word ID.
+
+The 4,608 files under combinations/ are self-contained Python programs.
+You can copy a selected file directly elsewhere, or export a numbered copy.
+Each contains both the cryptographic functions and complete menu.
+They require the external cryptography package, but no ENDSEM modules.
+Ready standalone examples are already provided in standalone/.
+
+The five independent choices are:
+  24 record encryption methods
+  MD5 / SHA1 / SHA256 / SHA512
+  RSA / ELGAMAL / SCHNORR / ECDSA signatures
+  NONE / PAILLIER sum / RSA product / ELGAMAL product
+  NONE / SSE / PAILLIER_PRIVATE_SCAN
+
+These are algorithm configurations of one reusable record workflow. They are
+not a claim that every possible ordering, key size, scenario or protocol has
+been predicted. chain.py supports arbitrary ordered encryption layers.
+Short labs let you omit roles, signatures, search or other unnecessary pieces.
+
+4. TURN QUESTION WORDS INTO CODE
+--------------------------------
+"confidential" -> encrypt bytes, keep decrypt key with intended recipient.
+"integrity" -> hash exact original bytes; recompute and compare after decrypt.
+"authenticity/non-repudiation" -> signer private key; verifier public key.
+"encrypt AES key with RSA" -> RSA_HYBRID; AES for data, OAEP for session key.
+"ECC" -> ECC_HYBRID (ECDH + derived AES key), not RSA renamed to ECC.
+"Diffie-Hellman" -> shared secret/key agreement, NOT a signature algorithm.
+"add salaries/marks/votes" -> PAILLIER, multiply ciphertexts mod n^2.
+"multiply values" -> textbook RSA or ElGamal HE, multiply ciphertexts.
+"average" -> encrypted sum and count; decrypt sum then divide normally.
+"weighted sum" -> multiply E(x_i)^weight_i mod n^2.
+"keyword/constituency search" -> HMAC tokens + encrypted posting lists.
+"Paillier search" -> private-side equality scan, with its stated limitation.
+"different roles" -> check role inside action methods, not only hide menus.
+"only assigned doctor/supplier" -> recipient field + assignment check.
+"approve/reject" -> decide(), persistent status within the session.
+"revoke" -> revoked set; every protected operation checks it.
+"expiry" -> expires timestamp; read() enforces it.
+"timestamp authority" -> signed timestamp bound to package digest (voting.py).
+"threshold decrypt" -> aggregate first, then trustee partials (voting.py).
+"actual sockets" -> voting.py --socket-demo or hash_socket.py server/client.
+"save files" -> upload @file_path, export evidence, save decrypted bytes.
+"survive restart" -> ADD durable protected keys + records + identity registry;
+  default programs are session-based and do not claim restart persistence.
+
+5. THE REUSABLE RECORD FLOW
+---------------------------
+Owner: input bytes -> encrypt -> plaintext hash + ciphertext hash -> sign
+       ciphertext -> sign metadata package -> store -> index keywords.
+Reviewer: enforce assigned recipient/expiry -> verify signatures -> decrypt
+          -> recompute plaintext hash -> record verification timestamp.
+Auditor: inspect hashes/time/signature status -> no plaintext read permission.
+Homomorphic path: numeric field -> HE encryption -> aggregate ciphertexts
+                  -> authorized final decryption. This is a separate field
+                  from the encrypted document; AES ciphertext cannot be added.
+
+Core edit points in workbench.py:
+  RecordSystem.__init__: config, users, passwords, roles and key setup.
+  upload: record fields, recipient policy, signed payload and search keywords.
+  read: who can decrypt; hash/signature checks; expiry.
+  metadata: fields each role may see.
+  decide/revoke: optional workflow actions.
+  aggregate: chosen HE operation and which records enter the aggregate.
+  menu: displayed role/domain language and input prompts.
+
+Change field/role names consistently. Renaming "alice" to "patient1" in only
+one place breaks the signer registry. Keep the internal roles owner/reviewer/
+auditor unless you also update every authorize call.
+
+6. MIDSEM PAPER WALKTHROUGH
+---------------------------
+Open scenarios/01_EDUSECURE.py or standalone/EDUSECURE.py.
+Defaults: DES-CBC, SHA256, RSA signature, no HE, no search.
+Mapping: alice=Student, bob=Faculty, carol=HoD, eve=another Student.
+The common UI uses owner/reviewer/auditor labels; rename for the final answer.
+
+1. Login alice / 123 -> upload academic text or @file path -> recipient bob.
+2. Record ciphertext, cipher_hash, plain_hash, signatures and upload time.
+3. Login bob / 123 -> decrypt record ID 1 -> observe original bytes returned.
+4. Login carol / 123 -> metadata -> observe hashes and valid=True.
+5. Try carol decrypt -> Access denied.
+6. Use --demo for deliberate tamper rejection and revocation evidence.
+
+The paper signs the hash of encrypted data but later asks to compare a hash
+of decrypted data. Keep BOTH hashes. Never compare these two different inputs.
+The new Signer hashes its data exactly once. Do not pre-hash and then silently
+hash again unless you explicitly intend a different signing convention.
+
+7. ENDSEM IMAGE WALKTHROUGH
+---------------------------
+Open voting.py or standalone/VOTING_ENDSEM.py.
+Its named algorithms are fixed to match the paper:
+  AES-256-CBC, RSA-4096 OAEP key wrapping, SHA-512, ElGamal signatures,
+  Paillier addition, SSE, signed local TSA token, 3-of-3 final decryption.
+
+Manual demonstration:
+1. voter1 / 123 -> cast candidate 2, constituency A2 -> inspect receipt.
+2. voter2 / 123 -> cast candidate 1, constituency A2.
+3. voter3 / 123 -> cast candidate 2, constituency B1.
+4. auditor / 123 -> search constituency:A2 -> voter1 and voter2 IDs.
+5. commission / 123 -> close/tally -> encrypted aggregates only.
+6. commission -> results before trustees -> denied.
+7. trustee1 / t1pass -> partial, then trustee2 / t2pass, trustee3 / t3pass.
+8. commission or auditor -> results -> counts {1:1,2:2,3:0}; ID sum 5.
+9. Try duplicate voter or late vote -> rejected.
+
+--socket-demo uses a real loopback TCP connection with separate client/server
+execution threads. The wire carries the encrypted/signed packet, not plaintext.
+It is not a two-machine deployment. prepare() is client logic; accept() is
+server logic. recv_exact handles short TCP reads and messages use length frames.
+For the separate-terminal socket exercise, use labs/hash_socket.py.
+
+The image's privacy wording conflicts with giving the server the AES key.
+Explain this limitation rather than claiming the server cannot decrypt ballots.
+Also explain one-hot vote counts and honest-client assumptions; see corrections.
+
+8. LAB 7 QUICK MATH / EXPECTED OUTPUT
+------------------------------------
+Paillier(15,25): decrypted encrypted sum = 40.
+RSA(7,3): decrypted encrypted product = 21.
+ElGamal(7,3): decrypted encrypted product = 21.
+Paillier E(15)^3: decrypted result = 45.
+Paillier E(25)/E(15): decrypted result = 10 modulo n.
+Three trustee partials for E(15)*E(25): 40; missing trustee -> rejected.
+Ciphertexts are random and will differ on every run. Compare decrypted results.
+
+The same Paillier key must encrypt all values in one aggregation. Never combine
+ciphertexts from unrelated moduli. Ordinary ElGamal is multiplicative; exponent
+encoding to get addition is a different scheme with a bounded discrete log.
+
+9. LAB 8 EXPECTED OUTPUT / ADAPTATIONS
+-------------------------------------
+Ten built-in documents. Query SECURITY -> IDs 1,4,7. PATIENT -> 2,6.
+Missing keyword -> empty result. Upper/lower case queries match.
+Change DOCUMENTS in labs/lab8.py to your own ten texts.
+Tokenization is lowercase alphanumeric words in the lab demo.
+Record workbench keywords are explicit whitespace-separated labels.
+
+AND search: intersect the ID sets returned for each token.
+OR search: union their ID sets.
+Phrase search: retrieve candidates then verify phrase on authorized plaintext;
+  do not label this server-side hidden phrase search.
+Range search: explicit metadata filter or a separate range-index design.
+Keep document IDs as numeric strings for Paillier index mode.
+
+10. KEY SIZES, FILES, AND FREQUENT FAILURES
+-----------------------------------------
+AES key bytes: 16/24/32 for 128/192/256 bits. AES IV: 16 bytes.
+DES key: 8 bytes. New code uses equivalent TripleDES(K,K,K) to obtain DES.
+Triple DES preset: 24-byte key. Block/IV size: 8 bytes.
+RSA encryption: OAEP small blocks or hybrid AES for large files.
+CBC/ECB require PKCS7 padding; CFB/OFB/CTR do not.
+Store IV/nonce with ciphertext; never reuse CTR nonce or force fixed CBC IV.
+Hash bytes, not a printed Python dictionary. canonical() stabilizes JSON bytes.
+Use .encode() once on text; file input uses read_bytes() for exact content.
+Preserve leading zeros when converting numbers back to bytes.
+Save original length if a classical cipher inserts fillers/padding.
+Hill determinant must have gcd(det,26)=1. Multiplicative a must be invertible.
+Playfair maps J to I and inserts fillers: a direct-letter cipher cannot restore
+all original punctuation/filler ambiguities without separate metadata.
+
+ModuleNotFoundError Crypto -> old code needs pycryptodome.
+ModuleNotFoundError cryptography -> install requirements or use RUN.ps1 here.
+Invalid padding -> wrong key/IV/ciphertext or corruption; do not ignore it.
+Signature fails after restart -> keys were regenerated; persist trusted keys.
+Signature fails after formatting -> you signed different bytes/serialization.
+Search always empty -> randomized-encryption equality or inconsistent case.
+RSA message too long -> hybrid encryption, not increasing plaintext arbitrarily.
+Address already in use -> change --port consistently or close the old server.
+
+11. 75-MINUTE IMPLEMENTATION PLAN + WRITEUP
+------------------------------------------
+Minutes 0-8: mark algorithms, roles, input, stored fields and expected output.
+8-20: get one encryption/decryption roundtrip running with exact key sizes.
+20-32: add hashing and signatures; show one tampered message failing.
+32-45: add roles, file input/storage, recipient checks and timestamps.
+45-60: add Lab 7 aggregation and Lab 8 search as required.
+60-70: add special constraints: deadline, revocation, approval, trustees.
+70-75: run happy path and denial cases; save outputs.
+Use the separate writeup time for algorithm steps and the data flow.
+
+Writeup skeleton:
+Aim: implement the specified secure <domain> record system.
+Algorithms: list EXACT names, key sizes, modes, hash and signature scheme.
+Roles: list allowed actions and forbidden actions for every role.
+Flow: input -> encryption -> hash/sign -> transfer/store -> verify -> decrypt.
+New labs: state HE equation and search index/query mechanism separately.
+Evidence: ciphertext, matching original/decrypted hash, valid signature,
+          tamper rejection, denied role, search hit/miss, aggregate plaintext.
+Limitations: state relevant simulation assumptions without inventing guarantees.
+
+12. SUBMISSION CHECKLIST
+------------------------
+[ ] Exact requested algorithms and sizes, not just the closest filename.
+[ ] Original data recovered exactly (or classical normalization explained).
+[ ] Separate plaintext/ciphertext hashes when both are required.
+[ ] Valid signature accepted; altered message and wrong signer rejected.
+[ ] Role restriction enforced inside actions; unrelated user denied.
+[ ] Numeric HE result mathematically correct; no unintended modular wraparound.
+[ ] Search hit, miss, and multiple matching documents demonstrated.
+[ ] Deadline, duplicate vote, expiry or revocation handled if asked.
+[ ] Required ciphertext/hash/signature/timestamp outputs visible.
+[ ] Use a combinations/ or standalone/ file when copying one complete answer.
+[ ] Restart behavior and deployment assumptions described honestly.

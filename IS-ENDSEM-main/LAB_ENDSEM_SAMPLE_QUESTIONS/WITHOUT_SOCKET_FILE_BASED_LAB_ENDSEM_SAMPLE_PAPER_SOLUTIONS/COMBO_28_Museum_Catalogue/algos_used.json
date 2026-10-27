@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_28_Museum_Catalogue",
+  "classical": "Affine",
+  "symmetric": "AES-256",
+  "asymmetric": "DH",
+  "hash": "CUSTOM32",
+  "signature": "RSA",
+  "homomorphic": "Paillier",
+  "search": "SSE"
+}

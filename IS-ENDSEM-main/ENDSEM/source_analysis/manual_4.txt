@@ -1,0 +1,100 @@
+PAGE 1
+Subject: Information Security Lab (ICT 3141)              Date: 25-09-2025 
+Semester & Branch: 5th Sem, CCE A2 – Lab Mid-Term Exam              Duration: (60+10) min 
+Name:              Reg. No:               Roll No: 
+ 
+Question:  
+ 
+ 
+You are tasked with developing a secure education data management system called EduSecure. 
+This system ensures that students’ academic records are stored confidentially, accessed only by 
+authorized users, and verified for authenticity. The system supports three types of users: 
+Students, Faculties, and HoDs, each with specific roles and permissions. 
+The platform uses DES symmetric encryption for storing sensitive academic records, RSA 
+digital signatures for authenticating users, and SHA-256 hashing to verify record integrity. 
+User Roles & Permissions 
+Student: 
+• Encrypts a student’s academic records (for example: - ISL-5CCE-A2.txt) using 
+DES before uploading. 
+• Signs the SHA-256 hash of the encrypted record using his/her RSA private key. 
+• Can view past uploaded records and his/her encrypted/hashed forms with 
+timestamps. 
+Faculty: 
+• Decrypts the student’s records using the shared DES key. 
+• Verifies RSA signatures of the students to ensure authenticity. 
+• Computes SHA-256 hash of decrypted records and compares with the stored hash. 
+• Stores verification results with timestamps. 
+HoD: 
+• Can view only the hashed academic records with timestamps. 
+• Verifies RSA signatures on stored records for accreditation purposes. 
+Access Roles: 
+• Allow Students to encrypt records with DES, sign using RSA, and upload securely. 
+• Enable Faculties to decrypt with DES, verify RSA signatures, and hash the records. 
+• Allow HoDs to view only hashes and verify signatures. 
+Task: 
+Develop a menu-driven Python program that implements these functionalities using: 
+• DES symmetric encryption, 
+• RSA digital signatures, and 
+• SHA-256 hashing. 
+Ensure secure handling of academic records and proper role -based access. Use any file or 
+database structure to store and retrieve the records securely. 
+ 
+ 
+
+PAGE 2
+ 
+ 
+Writeup Execution 
+E
+n
+c
+r
+y
+p
+t
+i
+o
+n
+ 
+D
+e
+c
+r
+y
+p
+t
+i
+o
+n
+ 
+(
+2
+ 
+M
+a
+r
+k
+s
+) 
+Digital Signatures (1 
+Mark) 
+Access 
+Control 
+(1 Mark) 
+Hashing (1 
+Mark) 
+Encryption 
+Decryption 
+(6 Marks)  
+Digital 
+Signatures 
+(3 Marks) 
+Access 
+Control 
+(3 
+Marks) 
+Hashing 
+(3 Marks) 
+        
+Remarks: 
+ 

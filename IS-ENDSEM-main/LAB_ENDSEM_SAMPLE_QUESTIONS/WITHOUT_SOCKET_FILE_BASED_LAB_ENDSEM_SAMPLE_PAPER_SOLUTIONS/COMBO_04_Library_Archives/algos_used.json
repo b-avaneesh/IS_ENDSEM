@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_04_Library_Archives",
+  "classical": "Affine",
+  "symmetric": "DES",
+  "asymmetric": "DH",
+  "hash": "CUSTOM32",
+  "signature": "RSA",
+  "homomorphic": "Paillier",
+  "search": "SSE"
+}

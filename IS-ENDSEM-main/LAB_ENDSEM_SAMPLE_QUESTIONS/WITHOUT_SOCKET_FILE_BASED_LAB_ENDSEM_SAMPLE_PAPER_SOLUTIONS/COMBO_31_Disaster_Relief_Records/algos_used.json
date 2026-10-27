@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_31_Disaster_Relief_Records",
+  "classical": "Hill",
+  "symmetric": "AES-128",
+  "asymmetric": "ECDH",
+  "hash": "MD5",
+  "signature": "ElGamal",
+  "homomorphic": "Paillier",
+  "search": "SSE"
+}

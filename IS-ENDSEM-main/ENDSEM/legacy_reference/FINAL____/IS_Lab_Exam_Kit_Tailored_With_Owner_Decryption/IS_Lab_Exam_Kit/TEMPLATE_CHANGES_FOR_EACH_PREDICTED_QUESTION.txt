@@ -1,0 +1,506 @@
+WHAT TO CHANGE IN EASY_EXAM_TEMPLATE.PY FOR EVERY PREDICTED QUESTION
+===================================================================
+
+BASE TEMPLATE RIGHT NOW
+-----------------------
+Use the same standard names in every final exam answer:
+
+encrypt_data(data, key, algorithm, **options)
+decrypt_data(encrypted_data, key, algorithm, **options)
+generate_keys(algorithm, **options)
+hash_data(data, algorithm)
+sign_data(data, private_key, algorithm, **options)
+verify_signature(data, signature, public_key, algorithm, **options)
+
+Algorithm-specific names mentioned later in this guide are the small helper
+implementations inside each lab file. Call them from the standard functions;
+do not rename the standard functions used by menus.
+
+The current EASY_EXAM_TEMPLATE.py contains:
+
+- USERS: student1, student2, faculty1 and hod1
+- ROLE_PERMISSIONS: student, faculty and hod permissions
+- DES-CBC: encrypt_data(), decrypt_data(), des_encrypt(), des_decrypt()
+- SHA-256: hash_data()
+- RSA signatures: sign_data(), verify_signature()
+- JSON storage: load_records(), save_records()
+- Keyboard/file input: get_record_from_user()
+- Student actions: student_upload(), student_view(), student_menu()
+- Faculty actions: faculty_verify_record(), faculty_menu()
+- HoD actions: hod_menu()
+- Authentication: login(), main()
+
+In most role-based questions, keep login(), load_records(), save_records(),
+choose_record() and the overall while-loop structure. Change only the settings,
+crypto functions, record dictionary fields and role-menu actions.
+
+
+QUESTION 1 - SECURE HOSPITAL RECORD SYSTEM
+==========================================
+Best starting file: EASY_EXAM_TEMPLATE.py
+Amount of change: SMALL
+
+1. Change USERS:
+   student1 -> patient1, faculty1 -> doctor1, hod1 -> admin1.
+   Change role strings to patient, doctor and hospital_admin.
+
+2. Change ROLE_PERMISSIONS:
+   patient: upload, view_own
+   doctor: decrypt, verify, view_assigned
+   hospital_admin: view_hash, verify
+
+3. Replace DES with AES-128:
+   - Import AES instead of DES.
+   - Change DES_KEY to a 16-byte AES_KEY.
+   - In encrypt_data(), use AES.new(AES_KEY, AES.MODE_CBC).
+   - Use AES.block_size in pad().
+   - In decrypt_data(), split the first 16 bytes as IV and use AES.block_size.
+   The present Base64 IV+ciphertext storage design can remain unchanged.
+
+4. Rename record fields for readability:
+   student -> patient
+   encrypted_record -> encrypted_report
+   uploaded_at -> report_uploaded_at
+
+5. Rename the role functions:
+   student_upload/view/menu -> patient_upload/view/menu
+   faculty_verify_record/menu -> doctor_verify_report/menu
+   hod_menu -> hospital_admin_menu
+
+6. Add assigned_doctor to every record. In choose_record(), a Doctor must see
+   only reports where record["assigned_doctor"] equals the logged-in username.
+
+7. Keep unchanged:
+   hash_data(), RSA key generation, sign_data(), verify_signature(), JSON
+   storage, timestamps, keyboard/file input and verification history.
+
+
+QUESTION 2 - SECURE BANKING TRANSACTION SYSTEM
+==============================================
+Best starting file: EASY_EXAM_TEMPLATE.py
+Amount of change: SMALL TO MEDIUM
+
+1. Change roles:
+   student -> customer
+   faculty -> bank_manager
+   hod -> auditor
+
+2. Replace DES with Triple DES:
+   - Import DES3.
+   - Copy make_3des_key() from LAB_2_ADVANCED_SYMMETRIC.py.
+   - In encrypt_data()/decrypt_data(), use DES3.new(key, DES3.MODE_CBC).
+   - DES3 block size is 8, so the existing IV+ciphertext Base64 design works.
+
+3. Rename data fields:
+   student -> customer
+   encrypted_record -> encrypted_transaction
+   plaintext_hash -> transaction_hash
+   Add transaction_id and status="PENDING".
+
+4. In the Manager menu, add:
+   1. Decrypt and verify
+   2. Approve transaction
+   3. Reject transaction
+   Store status, manager username and decision timestamp.
+
+5. Auditor menu must print transaction_id, hashes, signatures, status and
+   timestamp only. Do not call decrypt_data() from the Auditor menu.
+
+6. Keep RSA sign/verify, SHA-256, login, JSON storage and verification history.
+
+
+QUESTION 3 - EMPLOYEE DOCUMENT MANAGEMENT
+==========================================
+Best starting file: EASY_EXAM_TEMPLATE.py
+Amount of change: VERY SMALL - closest to the current template
+
+1. Keep DES-CBC, RSA and SHA-256 exactly as they are.
+
+2. Rename roles:
+   student -> employee
+   faculty -> hr_officer
+   hod -> company_head
+
+3. Rename fields:
+   student -> employee
+   encrypted_record -> encrypted_contract
+   uploaded_at -> contract_uploaded_at
+
+4. Rename the three role menus and their printed labels.
+
+5. Add optional fields contract_name and employee_id to student_upload().
+
+6. Restrict Employee view to their username exactly as student_view() already
+   does. HR sees all contracts. Company Head copies the present hod_menu logic.
+
+7. Keep both encrypted_hash and plaintext_hash. The Faculty verification code
+   already checks both, so only function/variable names need changing.
+
+
+QUESTION 4 - UNIVERSITY RESULT PORTAL VARIANT
+==============================================
+Best starting file: EASY_EXAM_TEMPLATE.py
+Amount of change: SMALL
+
+1. Keep Student and Faculty roles. Rename hod to examination_controller.
+
+2. Replace DES with AES-256:
+   - Import AES instead of DES.
+   - AES_KEY must be exactly 32 bytes.
+   - Use AES.MODE_CBC, AES.block_size and a 16-byte IV.
+   - Existing Base64 IV+ciphertext structure can remain.
+
+3. Rename record fields to encrypted_result_document and result_hash.
+
+4. Add a REVOKED_USERS list/set near USERS, or store a revoked flag inside
+   each user. In student_menu(), deny upload if the student is revoked.
+
+5. In examination_controller_menu(), add "Revoke student upload permission".
+   Ask for username, set revoked=True and call save if user data is persistent.
+
+6. Keep RSA signature, SHA-256, verification history, timestamps and file input.
+
+
+QUESTION 5 - SECURE SUPPLY-CHAIN ORDERS
+=======================================
+Best starting file: EASY_EXAM_TEMPLATE.py
+Amount of change: MEDIUM
+
+1. Rename roles:
+   student -> buyer
+   faculty -> supplier
+   hod -> auditor
+
+2. Replace DES-CBC with AES-CTR:
+   - Import AES.
+   - Use a 16/24/32-byte AES key.
+   - encrypt_data(): AES.new(key, AES.MODE_CTR), then encrypt without pad().
+   - Store cipher.nonce + ciphertext in Base64.
+   - decrypt_data(): split the stored nonce (normally first 8 bytes), create
+     AES.MODE_CTR with that nonce and decrypt without unpad().
+
+3. Add record fields:
+   order_id, buyer, supplier, encrypted_order, encrypted_hash,
+   signature, uploaded_at and status="PENDING".
+
+4. buyer_upload() must ask which supplier will receive the order.
+
+5. Supplier must see only records addressed to that supplier. Add Accept and
+   Reject options and store status_changed_at.
+
+6. Auditor prints metadata/hashes/status only. Keep RSA and SHA-256 unchanged.
+
+
+QUESTION 6 - DIGITAL CONTENT ACCESS SYSTEM
+==========================================
+Best starting file: EASY_EXAM_TEMPLATE.py + Lab 6 ElGamal functions
+Amount of change: LARGE
+
+1. Rename roles:
+   student -> content_creator
+   faculty -> customer
+   hod -> administrator
+
+2. Replace DES with AES-128 exactly as described for Question 1.
+
+3. Replace RSA signatures with ElGamal signatures:
+   - Copy elgamal_generate_keys(), elgamal_sign() and elgamal_verify() from
+     LAB_6_DIGITAL_SIGNATURE.py.
+   - sign_data() should return the tuple (r, s), stored in JSON as [r, s].
+   - verify_signature() should accept [r, s] and the public key (p, g, y).
+   - Remove PEM/Base64 handling only from signature keys/signatures.
+
+4. Add CONTENT_ACCESS storage. Each grant needs customer, content_id and
+   expiry_time. Use datetime.now() to deny access after expiry.
+
+5. Creator menu needs Upload, View own content, Grant access, Revoke access.
+   Customer menu needs View permitted content and Verify creator signature.
+   Administrator menu needs View hashes/logs and Revoke creator key.
+
+6. Keep JSON storage, hashing, timestamps, input and general login structure.
+
+
+QUESTION 7 - SECURE CLOUD FILE SHARING
+======================================
+Best starting file: EASY_EXAM_TEMPLATE.py + Lab 3 hybrid RSA functions
+Amount of change: LARGE
+
+1. Rename roles to uploader, receiver and administrator.
+
+2. Replace encrypt_data()/decrypt_data() with:
+   rsa_hybrid_encrypt_bytes() and rsa_hybrid_decrypt_bytes() from LAB_3.
+   RSA encrypts the random AES key; AES encrypts the file.
+
+3. Change get_record_from_user() to read bytes with Path(filename).read_bytes().
+   Do not call .encode() on file bytes.
+
+4. A hybrid package contains encrypted_key, nonce, tag and ciphertext. Convert
+   every bytes value to Base64 before json.dump(). Decode each before decrypt.
+
+5. Generate/load RSA keys for every Receiver, not only every Uploader.
+
+6. Add receiver to every record. Receiver menu must filter by its username.
+
+7. Sign encrypted["ciphertext"] using the Uploader RSA private key. Store the
+   uploader public key for verification.
+
+8. Administrator sees filename, uploader, receiver, ciphertext hash,
+   signature result and timestamps only. Add revoke_receiver/uploader actions.
+
+9. Keep login, permissions, JSON storage, choose_record and timestamps.
+
+
+QUESTION 8 - AUTHENTICATED DIFFIE-HELLMAN MESSAGING
+===================================================
+Best starting file: LAB_3_ASYMMETRIC.py + Lab 6 signatures
+Do not force the complete EduSecure record flow onto this question.
+Amount of change from template: LARGE
+
+1. Reuse login(), USERS, ROLE_PERMISSIONS and the three-menu structure only.
+   Rename roles sender, receiver and auditor.
+
+2. Replace student_upload() with send_message():
+   - Generate Sender and Receiver DH key pairs.
+   - Compute the shared secret.
+   - Derive AES key from SHA-256(shared_secret).
+   - Encrypt message using dh_encrypt() from LAB_6.
+
+3. Sign each DH public value using rsa_sign() from LAB_6. Receiver must verify
+   the signature before accepting the public value.
+
+4. Record fields: sender, receiver, sender_dh_public, receiver_dh_public,
+   encrypted_message, nonce, tag, signatures, hash and timestamp.
+
+5. Receiver menu verifies DH-public signature, recomputes shared secret and
+   decrypts. Auditor prints public values, hashes and verification result only.
+
+6. Add perf_counter() around key generation and shared-key computation.
+
+
+QUESTION 9 - CENTRALIZED HOSPITAL KEY SERVICE
+=============================================
+Best starting file: LAB_4_KEY_MANAGEMENT_ACCESS_CONTROL.py
+Use the template only for login and menus.
+Amount of change from template: LARGE
+
+1. Roles: hospital_user, clinic_user and key_administrator.
+
+2. Do not use template DES/RSA-signature record functions unless separately
+   asked. Use Lab 4 functions:
+   rabin_generate_keys(), rabin_encrypt(), rabin_decrypt(),
+   register_facility(), distribute_facility_keys(), revoke_facility(),
+   renew_facility() and renew_keys_older_than().
+
+3. Replace student_upload() with facility registration/key request.
+
+4. Key Administrator menu: register, distribute, revoke, renew, view audit log.
+
+5. Hospital/Clinic menu: request authorized keys, encrypt a short record,
+   decrypt a record and view own key status.
+
+6. Keep login(), role checking, timestamp style and menu loops from template.
+
+7. For persistence, JSON cannot directly store huge integer tuples cleanly
+   unless converted to lists/strings. For an exam demo, in-memory dictionaries
+   from Lab 4 are simpler unless persistent storage is explicitly required.
+
+
+QUESTION 10 - MULTI-DEPARTMENT ENTERPRISE SYSTEM
+================================================
+Best starting file: LAB_4_KEY_MANAGEMENT_ACCESS_CONTROL.py
+Amount of change from template: LARGE
+
+1. Use add_subsystem(), secure_communication(), revoke_subsystem(),
+   renew_subsystem_keys(), log_event() and show_audit_log() from Lab 4.
+
+2. Use template login/menu pattern with roles:
+   system_user, receiving_system, security_administrator.
+
+3. Replace the fixed Student/Faculty/HoD menus:
+   - System User: choose receiver and send encrypted document.
+   - Receiving System: list addressed documents and decrypt.
+   - Security Administrator: add subsystem, renew keys, revoke keys, view log.
+
+4. Add sender and receiver to every stored record.
+
+5. secure_communication() already combines RSA-protected DH exchange and AES.
+   Add encrypted_hash=hash_data(ciphertext) to meet integrity requirement.
+
+6. Do not keep student-specific public-key filenames or ownership checks.
+
+
+QUESTION 11 - CLIENT/SERVER INTEGRITY MONITOR
+=============================================
+Best starting file: LAB_5_HASHING.py
+Do not start from EASY_EXAM_TEMPLATE.py except for an optional Admin menu.
+Amount of change from template: COMPLETE ALGORITHM-FLOW REPLACEMENT
+
+1. Keep Lab 5 run_server(), run_client(), split_message(), receive_json_line(),
+   send_json_line(), md5_hash(), sha1_hash() and sha256_hash().
+
+2. Server change: compute and store all three hashes, message_id and timestamp.
+
+3. Client already has the tamper flag. Keep original_hash before changing one
+   part so the final comparison displays integrity failure.
+
+4. If an Administrator role is required, copy login() and a simple menu from
+   the template. Admin menu reads stored hashes but never prints message text.
+
+5. Run client and server from two terminal windows; do not combine them into
+   Student/Faculty/HOD menus.
+
+
+QUESTION 12 - CIA TRIAD DOCUMENT SYSTEM
+=======================================
+Best starting file: EASY_EXAM_TEMPLATE.py + Lab 6 CIA functions
+Amount of change: MEDIUM TO LARGE
+
+1. Rename roles:
+   student -> document_owner
+   faculty -> authorized_user
+   hod -> auditor
+
+2. Replace DES functions with create_cia_record() and open_cia_record() from
+   LAB_6_DIGITAL_SIGNATURE.py. These already use RSA+AES hybrid encryption.
+
+3. Generate/load RSA keys for both Owner and Authorized User.
+
+4. Owner chooses an authorized username during upload. Store owner, recipient,
+   encrypted AES key, nonce, tag, ciphertext, ciphertext hash, signature and
+   timestamp. Base64-encode all bytes before saving JSON.
+
+5. Authorized User filters documents by recipient, verifies signature/hash,
+   then decrypts.
+
+6. Auditor uses the present hod_menu pattern and never calls decryption.
+
+7. Add revoked=True/False to USERS. login() or authorized-user menu must deny
+   revoked users immediately.
+
+8. Keep file input, JSON functions, permission checks and menu loops.
+
+
+QUESTION 13 - DES/AES/3DES SELECTION AND TIMING
+===============================================
+Best starting file: LAB_2_ADVANCED_SYMMETRIC.py
+Do not use the role-based template.
+
+1. Keep imports and all DES/AES/3DES functions from Lab 2.
+2. Replace main() with an algorithm-choice menu.
+3. Ask for plaintext and key, call matching encrypt function, print .hex(),
+   call matching decrypt function and print recovered plaintext.
+4. Add a Compare option calling compare_des_and_all_aes().
+
+
+QUESTION 14 - MODES OF OPERATION AND GRAPH
+==========================================
+Best starting file: LAB_2_ADVANCED_SYMMETRIC.py
+Do not use the role-based template.
+
+1. Use aes_mode_encrypt(), aes_mode_decrypt() and compare_aes_modes().
+2. Add menu choices ECB, CBC, CFB, OFB and CTR.
+3. Store/display IV for CBC/CFB/OFB and nonce for CTR.
+4. Accept five messages in a loop and pass the list to compare_aes_modes().
+5. Keep matplotlib graph code. No login, roles or JSON is needed unless asked.
+
+
+QUESTION 15 - RSA VERSUS ELGAMAL PERFORMANCE
+============================================
+Best starting file: LAB_3_ASYMMETRIC.py
+Do not use the role-based template.
+
+1. Use rsa_generate_keys/encrypt/decrypt and
+   elgamal_generate_keys/encrypt/decrypt.
+2. Surround key generation, encryption and decryption with perf_counter().
+3. Print a small table containing the three times and ciphertext size.
+4. For realistic RSA-2048 data use rsa_hybrid_encrypt_bytes(), not direct RSA.
+5. No role or menu changes are needed unless the examiner explicitly asks.
+
+
+QUESTION 16 - RSA AND ECC HYBRID FILE ENCRYPTION
+================================================
+Best starting file: LAB_3_ASYMMETRIC.py
+Do not use the role-based template unless roles are explicitly included.
+
+1. Use rsa_encrypt_file(), rsa_decrypt_file(), ecc_encrypt_file(),
+   ecc_decrypt_file() and compare_rsa_ecc().
+2. Ask for input filename and two output filenames.
+3. Read/write in binary mode.
+4. Calculate SHA-256 of original and recovered bytes to prove equality.
+5. Add perf_counter() for key generation/encrypt/decrypt.
+
+
+QUESTION 17 - ELGAMAL AND SCHNORR SIGNATURES
+============================================
+Best starting file: LAB_6_DIGITAL_SIGNATURE.py
+Do not use the full role-based template.
+
+1. Keep ElGamal and Schnorr generate/sign/verify functions.
+2. Add menu: 1 ElGamal, 2 Schnorr, 3 Tampering demonstration.
+3. For tampering, sign original text, append/change one character, then call
+   verify on changed text. It must print False.
+4. Encryption/decryption functions are already included for reference.
+
+
+QUESTION 18 - RSA SIGNATURE CLIENT/SERVER
+=========================================
+Best starting file: LAB_6_DIGITAL_SIGNATURE.py
+Do not use EASY_EXAM_TEMPLATE.py.
+
+1. Use run_signature_server() in terminal 1.
+2. Use run_signature_client() in terminal 2.
+3. Keep Base64 conversion of message, signature and public PEM in JSON.
+4. Add timestamp/log file on the server if storage is requested.
+5. Add a tamper option by changing message bytes after creating the signature.
+
+
+QUESTION 19 - ADDITIVE/MULTIPLICATIVE/AFFINE MENU
+================================================
+Best starting file: LAB_1_BASIC_SYMMETRIC.py
+Do not use EASY_EXAM_TEMPLATE.py.
+
+1. Keep additive, multiplicative and affine encrypt/decrypt functions.
+2. main menu asks algorithm, encrypt/decrypt, text and numeric key(s).
+3. Check gcd(key, 26)==1 for multiplicative and affine a.
+4. Add attack choice using additive_brute_force() or
+   affine_key_from_known_pair().
+5. No users, RSA, hashing, timestamps or storage are required.
+
+
+QUESTION 20 - VIGENERE/AUTOKEY/PLAYFAIR/HILL MENU
+=================================================
+Best starting file: LAB_1_BASIC_SYMMETRIC.py
+Do not use EASY_EXAM_TEMPLATE.py.
+
+1. Keep all four encrypt/decrypt function pairs.
+2. Add algorithm-choice and encrypt/decrypt-choice menus.
+3. Vigenere asks keyword; autokey asks numeric first key.
+4. Playfair asks keyword and may print playfair_matrix(key).
+5. Hill asks four key values and builds [[a,b],[c,d]]. Print
+   hill_inverse_key(key) before decryption if the examiner asks for steps.
+6. No login, roles, JSON, RSA signatures or hashes are needed.
+
+
+FAST DECISION RULE DURING THE EXAM
+==================================
+
+If the question has 3 roles + encryption + signature + hashing:
+    Start with EASY_EXAM_TEMPLATE.py.
+
+If it mainly asks DES/AES/3DES or modes/timing:
+    Start with LAB_2_ADVANCED_SYMMETRIC.py.
+
+If it asks RSA/ECC/ElGamal/DH encryption or file transfer:
+    Start with LAB_3_ASYMMETRIC.py.
+
+If it asks key generation/distribution/revocation/Rabin/DRM:
+    Start with LAB_4_KEY_MANAGEMENT_ACCESS_CONTROL.py.
+
+If it asks socket hashing or collision comparison:
+    Start with LAB_5_HASHING.py.
+
+If it asks ElGamal/Schnorr/RSA signatures or CIA triad:
+    Start with LAB_6_DIGITAL_SIGNATURE.py.
+
+If it asks classical ciphers:
+    Start with LAB_1_BASIC_SYMMETRIC.py.

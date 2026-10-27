@@ -1,0 +1,14 @@
+{
+  "Patient": [
+    "submit_record"
+  ],
+  "Doctor": [
+    "verify_record",
+    "view_record",
+    "search_records"
+  ],
+  "Receptionist": [
+    "aggregate_records",
+    "threshold_decrypt"
+  ]
+}

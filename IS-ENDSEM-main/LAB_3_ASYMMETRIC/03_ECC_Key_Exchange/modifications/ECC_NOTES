@@ -1,0 +1,14 @@
+# BASIC IDEA:
+# 1. Sender and receiver generate ECC key pairs.
+# 2. They exchange their public keys.
+# 3. Using ECDH, both independently derive the same shared secret.
+#    The shared secret itself is never transmitted.
+# 4. HKDF (HMAC-based Key Derivation Function) derives a
+#    symmetric AES key from the shared secret.
+# 5. AES-GCM is then used to encrypt and decrypt the message.
+
+#Q: Why can't we just use ECC itself for encryption?
+#ECC is a public-key cryptographic framework based on elliptic-curve operations. In practical systems, ECC is mainly used for key establishment or digital signatures rather than directly encrypting bulk data. For encryption, we can use ECDH to establish a shared secret, use HKDF to derive a symmetric key, and then use AES for the actual data encryption. Alternatively, an ECC version of ElGamal can be used, where we generate two ciphertext points C1 and C2
+#OR We can use an ECC version of ElGamal. The procedure is analogous to ordinary ElGamal, except the values are elliptic-curve points. Encryption produces C1 and C2, and the private key is used to recover the message point.
+
+#AES is symmetric, so both parties need to already possess the same secret key. The problem is securely establishing that key. ECC with ECDH allows the two parties to establish a shared secret over an insecure channel without transmitting the secret itself. HKDF derives an AES key from that shared secret, and AES is then used for efficient encryption of the actual data

@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_35_Laboratory_Asset_Records",
+  "classical": "Multiplicative",
+  "symmetric": "Triple-DES",
+  "asymmetric": "ECDH",
+  "hash": "MD5",
+  "signature": "Schnorr",
+  "homomorphic": "RSA",
+  "search": "SSE"
+}

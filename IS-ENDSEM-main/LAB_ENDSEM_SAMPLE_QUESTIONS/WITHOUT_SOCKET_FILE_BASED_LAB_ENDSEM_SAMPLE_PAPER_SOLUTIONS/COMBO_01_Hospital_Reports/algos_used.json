@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_01_Hospital_Reports",
+  "classical": "Vigenere",
+  "symmetric": "AES-128",
+  "asymmetric": "RSA",
+  "hash": "SHA256",
+  "signature": "RSA",
+  "homomorphic": "Paillier",
+  "search": "SSE"
+}

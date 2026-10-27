@@ -1,0 +1,8 @@
+CONFIG: {'encryption': 'DES_CBC', 'hash_name': 'SHA256', 'signature': 'RSA', 'he': 'NONE', 'search': 'NONE', 'scenario': 'records'}
+Encrypted package: {'ct': '7239ce8efb9242ff4aefa07d80c1a9e49cb3dd7565b8bdb3fe556a049dc008b7', 'iv': '0e322cb80d680d08'}
+Hashes/signature: [{'id': '1', 'owner': 'alice', 'recipient': 'bob', 'time': 1792559941.682187, 'plain_hash': '3db5cd1dea68162e5791b110ed537a84b31260140bfd7b5ae4b6da814ce6e89e', 'cipher_hash': '60d50b0d44a4593934b4261bab655df8107ce0b28727f6d2a213f54c649becff', 'status': 'PENDING', 'valid': True}, {'id': '2', 'owner': 'eve', 'recipient': 'bob', 'time': 1792559941.6841908, 'plain_hash': '9b675ca1c9c108e7b2b778dae8451608067c09a72e765b8a518d8fcba7cb021a', 'cipher_hash': '91cffd2c5b7e785b488c0307150aa7f7ad601892a2667316ffd66b18ec7b5f61', 'status': 'PENDING', 'valid': True}]
+Decrypted: Academic record: score 85
+Decision: APPROVED
+PASS: auditor denied plaintext
+Tamper verification: False
+PASS: revoked upload denied

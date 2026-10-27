@@ -1,0 +1,76 @@
+36 CLIENT/SERVER PRACTICE COMBINATIONS
+======================================
+Every COMBO folder covers Labs 1, 2, 3, 5, 6, 7 and 8. Lab 4 is excluded.
+Start with COMBO_01; it is closest to the supplied hospital example.
+Each contains server.py, client.py, algos_used, PRACTICE.txt and requirements.txt.
+Keep both terminals in the SAME example folder. Follow PRACTICE.txt.
+
+HOW TO STUDY
+1. Learn the shared menu, JSON socket functions and handle_request structure.
+2. Read algos_used before each example; locate those helpers in server.py.
+3. Trace upload/get first, then search, then classical/homomorphic operations.
+4. Compare nearby folders; the algorithm helpers change while the flow stays similar.
+5. All examples are standalone and can be copied individually for practice.
+
+MANUAL ALIGNMENT / CORRECTIONS
+Sources: supplied Labs 1-4 manual (Lab 1 pp.12-13, Lab 2 pp.20-21,
+Lab 3 pp.30-31; PDF page numbers), Labs 5-6 manual (pp.2-3, 7-8),
+Labs 7-8 manual (pp.7-15). Lab 4 content is deliberately omitted.
+The Lab 7 sample labelled Paillier does not implement Paillier correctly;
+these examples use phe. ElGamal multiplication does not implement greater-than.
+The Lab 8 sample compares randomized ciphertexts for equality, which cannot
+reliably match words. SSE here uses deterministic keyed tokens. RSA/Paillier
+examples use encrypted indexes with explicitly labelled private-key owner
+scanning, not a claim of full trapdoor-based searchable encryption.
+The Lab 6 DH suggestion is treated as Lab 3 agreement, not a signature.
+Signatures use RSA, ElGamal or Schnorr. The hospital algos_used calls RSA PSS,
+but its code uses PKCS#1 v1.5; new labels match their actual code.
+Not every optional manual exercise is represented (e.g. Snort/GnuPG and
+cryptanalysis); this collection targets simple combinations of the seven labs.
+
+VALIDATION
+All 36 examples passed encryption/decryption, signatures, tamper rejection,
+ten-document search, Unicode document content, duplicate/invalid requests,
+role restrictions, classical cipher checks and homomorphic calculations.
+All 36 passed socket login/request tests; COMBO_01 and COMBO_36 also passed
+full interactive client/server runs. Re-run from the project root with:
+python tests/test_generated_combinations.py
+Use a Python environment with pycryptodome and phe installed.
+
+FOLDER | LAB1 | LAB2 | LAB3 | LAB5 | LAB6 | LAB7 | LAB8 | PORT
+COMBO_01_Hospital_Reports | Vigenere | AES-128 | RSA | SHA256 | RSA | Paillier | SSE | 5101
+COMBO_02_University_Results | Additive | AES-192 | ElGamal | SHA1 | RSA | RSA | SSE | 5102
+COMBO_03_Bank_Loan_Files | Multiplicative | AES-256 | ECDH | MD5 | RSA | ElGamal | SSE | 5103
+COMBO_04_Library_Archives | Affine | DES | DH | CUSTOM32 | RSA | Paillier | SSE | 5104
+COMBO_05_Pharmacy_Prescriptions | Autokey | Triple-DES | RSA | SHA256 | ElGamal | RSA | SSE | 5105
+COMBO_06_Insurance_Claims | Playfair | AES-128 | ElGamal | SHA1 | ElGamal | ElGamal | SSE | 5106
+COMBO_07_Research_Notebooks | Hill | AES-192 | ECDH | MD5 | ElGamal | Paillier | SSE | 5107
+COMBO_08_Payroll_Records | Transposition | AES-256 | DH | CUSTOM32 | ElGamal | RSA | SSE | 5108
+COMBO_09_Legal_Case_Files | Vigenere | DES | RSA | SHA256 | Schnorr | ElGamal | SSE | 5109
+COMBO_10_Warehouse_Inventory | Additive | Triple-DES | ElGamal | SHA1 | Schnorr | Paillier | SSE | 5110
+COMBO_11_School_Admissions | Multiplicative | AES-128 | ECDH | MD5 | Schnorr | RSA | SSE | 5111
+COMBO_12_Clinic_Lab_Results | Affine | AES-192 | DH | CUSTOM32 | Schnorr | ElGamal | SSE | 5112
+COMBO_13_Travel_Bookings | Autokey | AES-256 | RSA | SHA256 | RSA | Paillier | RSA_owner_scan | 5113
+COMBO_14_Supplier_Invoices | Playfair | DES | ElGamal | SHA1 | RSA | RSA | RSA_owner_scan | 5114
+COMBO_15_Employee_Training | Hill | Triple-DES | ECDH | MD5 | RSA | ElGamal | RSA_owner_scan | 5115
+COMBO_16_Property_Documents | Transposition | AES-128 | DH | CUSTOM32 | RSA | Paillier | RSA_owner_scan | 5116
+COMBO_17_Scholarship_Applications | Vigenere | AES-192 | RSA | SHA256 | ElGamal | RSA | RSA_owner_scan | 5117
+COMBO_18_Donation_Receipts | Additive | AES-256 | ElGamal | SHA1 | ElGamal | ElGamal | RSA_owner_scan | 5118
+COMBO_19_Exam_Question_Bank | Multiplicative | DES | ECDH | MD5 | ElGamal | Paillier | RSA_owner_scan | 5119
+COMBO_20_Transport_Permits | Affine | Triple-DES | DH | CUSTOM32 | ElGamal | RSA | RSA_owner_scan | 5120
+COMBO_21_Food_Quality_Reports | Autokey | AES-128 | RSA | SHA256 | Schnorr | ElGamal | RSA_owner_scan | 5121
+COMBO_22_Energy_Meter_Records | Playfair | AES-192 | ElGamal | SHA1 | Schnorr | Paillier | RSA_owner_scan | 5122
+COMBO_23_Sports_Registrations | Hill | AES-256 | ECDH | MD5 | Schnorr | RSA | RSA_owner_scan | 5123
+COMBO_24_Hotel_Guest_Requests | Transposition | DES | DH | CUSTOM32 | Schnorr | ElGamal | RSA_owner_scan | 5124
+COMBO_25_Farm_Soil_Reports | Vigenere | Triple-DES | RSA | SHA256 | RSA | Paillier | Paillier_owner_scan | 5125
+COMBO_26_Water_Test_Reports | Additive | AES-128 | ElGamal | SHA1 | RSA | RSA | Paillier_owner_scan | 5126
+COMBO_27_Equipment_Maintenance | Multiplicative | AES-192 | ECDH | MD5 | RSA | ElGamal | Paillier_owner_scan | 5127
+COMBO_28_Museum_Catalogue | Affine | AES-256 | DH | CUSTOM32 | RSA | Paillier | Paillier_owner_scan | 5128
+COMBO_29_Courier_Manifests | Autokey | DES | RSA | SHA256 | ElGamal | RSA | Paillier_owner_scan | 5129
+COMBO_30_Workshop_Certificates | Playfair | Triple-DES | ElGamal | SHA1 | ElGamal | ElGamal | Paillier_owner_scan | 5130
+COMBO_31_Disaster_Relief_Records | Hill | AES-128 | ECDH | MD5 | ElGamal | Paillier | Paillier_owner_scan | 5131
+COMBO_32_Veterinary_Reports | Transposition | AES-192 | DH | CUSTOM32 | ElGamal | RSA | Paillier_owner_scan | 5132
+COMBO_33_Housing_Society_Records | Vigenere | AES-256 | RSA | SHA256 | Schnorr | ElGamal | Paillier_owner_scan | 5133
+COMBO_34_Internship_Evaluations | Additive | DES | ElGamal | SHA1 | Schnorr | Paillier | Paillier_owner_scan | 5134
+COMBO_35_Laboratory_Asset_Records | Multiplicative | Triple-DES | ECDH | MD5 | Schnorr | RSA | Paillier_owner_scan | 5135
+COMBO_36_Community_Project_Files | Affine | AES-128 | DH | CUSTOM32 | Schnorr | ElGamal | Paillier_owner_scan | 5136

@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_21_Food_Quality_Reports",
+  "classical": "Autokey",
+  "symmetric": "AES-128",
+  "asymmetric": "RSA",
+  "hash": "SHA256",
+  "signature": "Schnorr",
+  "homomorphic": "ElGamal",
+  "search": "SSE"
+}

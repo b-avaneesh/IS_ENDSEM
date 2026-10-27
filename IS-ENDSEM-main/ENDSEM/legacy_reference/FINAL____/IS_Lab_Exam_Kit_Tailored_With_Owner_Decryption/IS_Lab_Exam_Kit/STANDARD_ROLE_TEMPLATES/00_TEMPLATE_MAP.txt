@@ -1,0 +1,111 @@
+STANDARD ROLE-BASED EXAM TEMPLATES
+==================================
+
+WHAT "HYBRID" MEANS
+--------------------
+A hybrid system uses two kinds of cryptography together:
+
+    RSA / ECC / Diffie-Hellman  -> protects or creates the small AES key
+    AES                         -> encrypts the actual record or file
+
+This is done because AES is fast for data, while public-key algorithms make
+key sharing safer. You do not combine any functions yourself; open the ready
+RSA_HYBRID, ECC_HYBRID or DIFFIE_HELLMAN_AES file.
+
+ZERO-THINKING METHOD
+--------------------
+1. Open READY_VARIANTS.
+2. Pick the filename containing the algorithm in the question.
+3. Copy the complete file.
+4. Edit only EDIT BOX 1 when the story uses different role names/logins.
+5. Edit plaintext/key values only when the question gives exact values.
+
+Do not paste AES/DES/Hill/RSA functions from another file. Every READY_VARIANT
+is already complete and includes encryption, decryption, hashing, signing,
+verification, roles, keyboard/file input, timestamps and file storage.
+
+
+QUESTION SAYS                         FILE TO OPEN
+-------------                         ------------
+Additive / Caesar                     ROLE_ADDITIVE.py
+Multiplicative                        ROLE_MULTIPLICATIVE.py
+Affine                                ROLE_AFFINE.py
+Vigenere                              ROLE_VIGENERE.py
+Autokey                               ROLE_AUTOKEY.py
+Playfair                              ROLE_PLAYFAIR.py
+Hill                                  ROLE_HILL.py
+Transposition                         ROLE_TRANSPOSITION.py
+
+DES                                   ROLE_DES.py
+DES-CBC                               ROLE_DES_CBC.py
+AES-128                               ROLE_AES_128.py
+AES-192                               ROLE_AES_192.py
+AES-256                               ROLE_AES_256.py
+AES-CBC                               ROLE_AES_CBC.py
+AES-CFB                               ROLE_AES_CFB.py
+AES-OFB                               ROLE_AES_OFB.py
+AES-CTR                               ROLE_AES_CTR.py
+Triple DES / 3DES                     ROLE_TRIPLE_DES.py
+
+RSA                                   ROLE_RSA.py
+Weak-RSA factor/attack                ROLE_RSA.py (also has attack_weak_rsa)
+ElGamal encryption                    ROLE_ELGAMAL.py
+Rabin                                 ROLE_RABIN.py
+RSA + AES hybrid                      ROLE_RSA_HYBRID.py
+ECC / ECIES / ECC + AES hybrid        ROLE_ECC_HYBRID.py
+Diffie-Hellman + AES                  ROLE_DIFFIE_HELLMAN_AES.py
+
+Custom 32-bit hash                    ROLE_HASH_CUSTOM.py
+MD5                                   ROLE_HASH_MD5.py
+SHA-1                                 ROLE_HASH_SHA1.py
+SHA-256                               ROLE_HASH_SHA256.py
+
+RSA digital signature                ROLE_RSA_SIGNATURE.py
+ElGamal digital signature             ROLE_ELGAMAL_SIGNATURE.py
+Schnorr digital signature             ROLE_SCHNORR_SIGNATURE.py
+
+
+ONLY COMMON STORY CHANGE
+------------------------
+For a hospital question, change only the displayed names in EDIT BOX 1:
+
+    ROLE_NAMES = {
+        "uploader": "Patient",
+        "reviewer": "Doctor",
+        "auditor": "Administrator",
+    }
+
+For a university question use Student, Faculty and HoD. For a company question
+use Employee, Manager and Administrator. Internal words such as uploader,
+reviewer, auditor, record and username never need changing.
+
+
+IMPORTANT NOTES
+---------------
+1. Signature and hashing algorithms do not themselves provide encryption.
+   Their templates still include easy AES encrypt_data() and decrypt_data()
+   functions so the complete role-based answer has both operations.
+
+2. Playfair changes J to I and may insert X. Hill/transposition may add a final
+   X as padding. This is normal.
+
+3. Small RSA, ElGamal and Rabin values are educational and intentionally easy.
+   Use the hybrid template when the question explicitly asks for realistic
+   file/message encryption.
+
+4. PyCryptodome must be installed before the offline exam:
+
+       pip install pycryptodome
+
+
+SELECTOR TEMPLATES (OPTIONAL)
+-----------------------------
+The six numbered files are reusable selector versions. READY_VARIANTS is
+easier in the exam because its files are already configured.
+
+01_CLASSICAL_CIPHERS_TEMPLATE.py  - all Lab 1 algorithms
+02_MODERN_SYMMETRIC_TEMPLATE.py   - DES/AES/3DES
+03_PUBLIC_KEY_TEMPLATE.py         - RSA/ElGamal/Rabin
+04_HYBRID_TEMPLATE.py             - RSA hybrid/ECC hybrid/DH-AES
+05_HASHING_TEMPLATE.py            - custom/MD5/SHA-1/SHA-256
+06_SIGNATURE_TEMPLATE.py          - RSA/ElGamal/Schnorr signatures

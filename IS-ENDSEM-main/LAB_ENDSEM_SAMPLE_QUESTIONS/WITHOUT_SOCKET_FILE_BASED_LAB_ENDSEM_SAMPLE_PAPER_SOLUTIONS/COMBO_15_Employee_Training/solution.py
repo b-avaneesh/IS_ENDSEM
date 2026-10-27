@@ -1,0 +1,499 @@
+from Crypto.Cipher import AES, DES, DES3, PKCS1_OAEP
+from Crypto.Util.Padding import pad, unpad
+from Crypto.PublicKey import RSA, ECC
+from Crypto.Signature import pkcs1_15
+from Crypto.Hash import SHA256
+from Crypto.Random import get_random_bytes
+from pathlib import Path
+from math import gcd
+import random
+import secrets
+import hashlib
+import hmac
+import math
+import base64
+import json
+import re
+
+# Standalone lab example; local teaching keys are stored in keys/.
+TITLE = 'Employee Training'
+ASYMMETRIC = 'ECDH'
+BASE = Path(__file__).resolve().parent
+BLOCK_CIPHER, KEY_BYTES = DES3, 24
+
+
+# =========================================================
+# SSE - CREATE ENCRYPTED INDEX AND SEARCH
+# =========================================================
+
+def token(key, word):
+    return hmac.new(key, word.lower().encode(), hashlib.sha256).hexdigest()
+
+
+def create_index(documents, key, iv=None):
+    index = {}
+    for doc_id, doc in documents.items():
+        for word in set(doc.lower().split()):
+            record_iv = get_random_bytes(BLOCK_CIPHER.block_size)
+            enc_id = symmetric_encrypt(doc_id, key, record_iv)
+            index.setdefault(token(SEARCH_KEY, word), []).append((record_iv.hex(), enc_id))
+    (BASE / "index.json").write_text(json.dumps(index), encoding="utf-8")
+    return index
+
+
+def search(index, query, key, documents=None):
+    results = []
+    for iv_hex, enc_id in index.get(token(SEARCH_KEY, query.strip()), []):
+        doc_id = symmetric_decrypt(enc_id, key, bytes.fromhex(iv_hex))
+        results.append((doc_id, read_document(doc_id)))
+    return results
+
+
+# =========================================================
+# HOMOMORPHIC ENCRYPTION AND DECRYPTION
+# =========================================================
+
+HOM_P, HOM_G, HOM_X = 467, 2, 127
+HOM_Y = pow(HOM_G, HOM_X, HOM_P)
+
+
+def encrypt_homomorphic_elgamal(m):
+    k = secrets.randbelow(HOM_P - 2) + 1
+    return pow(HOM_G, k, HOM_P), m * pow(HOM_Y, k, HOM_P) % HOM_P
+
+
+def decrypt_homomorphic(ciphertext):
+    a, b = ciphertext
+    return b * pow(pow(a, HOM_X, HOM_P), -1, HOM_P) % HOM_P
+
+
+def expected_homomorphic(a, b):
+    return a * b % HOM_P
+
+
+def calculate_homomorphic(a, b):
+    if not (1 <= a < HOM_P and 1 <= b < HOM_P):
+        raise ValueError("Use integers from 1 to 466")
+    c1, c2 = encrypt_homomorphic_elgamal(a), encrypt_homomorphic_elgamal(b)
+    combined = [c1[0] * c2[0] % HOM_P, c1[1] * c2[1] % HOM_P]
+    return {"operation": "multiplication modulo 467", "ciphertext": combined}
+
+
+# =========================================================
+# GENERATE KEYS, SIGN MESSAGE AND VERIFY SIGNATURE
+# =========================================================
+
+def digest_text(text):
+    return hashlib.md5(text.encode()).hexdigest()
+
+def generate_keys():
+    private_key = RSA.generate(2048)
+    return private_key, private_key.publickey().export_key().decode()
+
+
+def sign_message(message, private_key):
+    signature = pkcs1_15.new(private_key).sign(SHA256.new(message.encode()))
+    return signature.hex(), digest_text(message)
+
+
+def verify_signature(message, signature, public_key):
+    try:
+        pkcs1_15.new(RSA.import_key(public_key)).verify(SHA256.new(message.encode()), bytes.fromhex(signature))
+        return True
+    except (ValueError, TypeError):
+        return False
+
+
+# =========================================================
+# TRIPLE-DES ENCRYPTION AND DECRYPTION
+# =========================================================
+
+def symmetric_encrypt(plaintext, key, iv):
+    cipher = BLOCK_CIPHER.new(key, BLOCK_CIPHER.MODE_CBC, iv=iv)
+    return cipher.encrypt(pad(plaintext.encode(), BLOCK_CIPHER.block_size)).hex()
+
+
+def symmetric_decrypt(ciphertext_hex, key, iv):
+    cipher = BLOCK_CIPHER.new(key, BLOCK_CIPHER.MODE_CBC, iv=iv)
+    return unpad(cipher.decrypt(bytes.fromhex(ciphertext_hex)), BLOCK_CIPHER.block_size).decode()
+
+
+# =========================================================
+# ECDH KEY PROTECTION
+# =========================================================
+
+def b64(data):
+    return base64.b64encode(data).decode("ascii")
+
+def unb64(data):
+    return base64.b64decode(data)
+
+def wrap_key(key):
+    # ECC hybrid encryption: ephemeral ECDH -> SHA256 -> AES key wrapping.
+    ephemeral = ECC.generate(curve="P-256")
+    point = SERVER_ECC.pointQ * ephemeral.d
+    shared_key = hashlib.sha256(int(point.x).to_bytes(32, "big")).digest()
+    cipher = AES.new(shared_key, AES.MODE_EAX)
+    ciphertext, tag = cipher.encrypt_and_digest(key)
+    return [ephemeral.public_key().export_key(format="PEM"),
+            b64(cipher.nonce), b64(ciphertext), b64(tag)]
+
+def unwrap_key(wrapped):
+    public_pem, nonce, ciphertext, tag = wrapped
+    point = ECC.import_key(public_pem).pointQ * SERVER_ECC.d
+    shared_key = hashlib.sha256(int(point.x).to_bytes(32, "big")).digest()
+    cipher = AES.new(shared_key, AES.MODE_EAX, nonce=unb64(nonce))
+    return cipher.decrypt_and_verify(unb64(ciphertext), unb64(tag))
+
+# =========================================================
+# HILL CLASSICAL CIPHER
+# =========================================================
+
+def hill_mat_inverse_2x2(matrix, modulus=26):
+    a, b = matrix[0]
+    c, d = matrix[1]
+    det = (a * d - b * c) % modulus
+    det_inv = pow(det, -1, modulus)
+    return [
+        [(d * det_inv) % modulus, (-b * det_inv) % modulus],
+        [(-c * det_inv) % modulus, (a * det_inv) % modulus],
+    ]
+
+def hill_prepare(plaintext):
+    letters = "".join(ch for ch in plaintext.upper() if ch in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+    if len(letters) % 2 != 0:
+        letters += "X"
+    return letters
+
+def hill_encrypt(plaintext, key_matrix):
+    letters = hill_prepare(plaintext)
+    out = []
+    for i in range(0, len(letters), 2):
+        p1, p2 = ord(letters[i]) - ord('A'), ord(letters[i + 1]) - ord('A')
+        c1 = (key_matrix[0][0] * p1 + key_matrix[0][1] * p2) % 26
+        c2 = (key_matrix[1][0] * p1 + key_matrix[1][1] * p2) % 26
+        out.append(chr(c1 + ord('A')))
+        out.append(chr(c2 + ord('A')))
+    return "".join(out)
+
+def hill_decrypt(ciphertext, key_matrix):
+    inv = hill_mat_inverse_2x2(key_matrix)
+    out = []
+    for i in range(0, len(ciphertext), 2):
+        c1, c2 = ord(ciphertext[i]) - ord('A'), ord(ciphertext[i + 1]) - ord('A')
+        p1 = (inv[0][0] * c1 + inv[0][1] * c2) % 26
+        p2 = (inv[1][0] * c1 + inv[1][1] * c2) % 26
+        out.append(chr(p1 + ord('A')))
+        out.append(chr(p2 + ord('A')))
+    return "".join(out)
+
+def classical_demo(text):
+    if any(ch.isalpha() and ch not in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" for ch in text):
+        raise ValueError("Lab 1 uses English A-Z letters")
+    encrypted = hill_encrypt(text, [[3, 3], [2, 7]])
+    decrypted = hill_decrypt(encrypted, [[3, 3], [2, 7]])
+    return {"algorithm": "Hill", "ciphertext": encrypted, "decrypted_text": decrypted}
+
+# =========================================================
+# FILE STORAGE
+# =========================================================
+
+
+def initialize():
+    global SERVER_RSA, SERVER_ECC, PRIVATE_X, PUBLIC_Y
+    for name in ("encrypted", "hashes", "signature", "public_key", "add", "metadata", "keys"):
+        (BASE / name).mkdir(parents=True, exist_ok=True)
+    key_file = BASE / "keys" / "local.json"
+    if key_file.exists():
+        state = json.loads(key_file.read_text())
+    else:
+        state = {"symmetric": get_random_bytes(KEY_BYTES).hex(),
+                 "search": get_random_bytes(32).hex()}
+        if ASYMMETRIC == "RSA":
+            state["private"] = RSA.generate(2048).export_key().decode()
+        elif ASYMMETRIC == "ECDH":
+            state["private"] = ECC.generate(curve="P-256").export_key(format="PEM")
+        else:
+            state["private"] = secrets.randbelow(P - 3) + 2
+        key_file.write_text(json.dumps(state), encoding="utf-8")
+    if ASYMMETRIC == "RSA":
+        SERVER_RSA = RSA.import_key(state["private"])
+    elif ASYMMETRIC == "ECDH":
+        SERVER_ECC = ECC.import_key(state["private"])
+    else:
+        PRIVATE_X = state["private"]
+        PUBLIC_Y = pow(G, PRIVATE_X, P)
+    return bytes.fromhex(state["symmetric"]), bytes.fromhex(state["search"])
+
+
+def record_path(folder, filename):
+    if (not filename or filename in (".", "..") or
+            any(ch in filename for ch in '<>:"/\\|?*') or
+            filename.endswith((".", " ")) or
+            filename.split('.')[0].upper() in
+            {"CON", "PRN", "AUX", "NUL", *[f"COM{i}" for i in range(1, 10)],
+             *[f"LPT{i}" for i in range(1, 10)]}):
+        raise ValueError("Enter a plain filename, for example report1.txt")
+    return BASE / folder / filename
+
+
+def write_file(folder, filename, value):
+    record_path(folder, filename).write_text(value, encoding="utf-8")
+
+
+def read_file(folder, filename):
+    return record_path(folder, filename).read_text(encoding="utf-8")
+
+
+def load_documents():
+    documents = {}
+    for file in (BASE / "encrypted").iterdir():
+        if file.is_file():
+            try:
+                documents[file.name] = read_document(file.name)
+            except (ValueError, OSError, KeyError, TypeError):
+                print("Skipping invalid document:", file.name)
+    return documents
+
+
+# =========================================================
+# STUDENT
+# =========================================================
+
+def student(filename, plaintext, num1, num2, key, iv):
+    if record_path("encrypted", filename).exists():
+        raise ValueError("Document already exists!")
+    homomorphic = calculate_homomorphic(num1, num2)
+    # A fresh IV is stored for each record.
+    iv = get_random_bytes(BLOCK_CIPHER.block_size)
+    ciphertext = symmetric_encrypt(plaintext, key, iv)
+    private_key, public_key = generate_keys()
+    signature, hash_value = sign_message(ciphertext, private_key)
+    metadata = {"iv": iv.hex(), "wrapped_key": wrap_key(key), "num1": num1, "num2": num2}
+    write_file("encrypted", filename, ciphertext)
+    write_file("hashes", filename, hash_value)
+    write_file("signature", filename, json.dumps(signature))
+    write_file("public_key", filename, json.dumps(public_key))
+    write_file("add", filename, json.dumps(homomorphic))
+    write_file("metadata", filename, json.dumps(metadata))
+    print("Encrypted", homomorphic["operation"], ":", homomorphic["ciphertext"])
+    print("Record uploaded successfully.")
+
+# =========================================================
+# READ DOCUMENT
+# =========================================================
+
+def read_document(filename):
+    ciphertext = read_file("encrypted", filename)
+    if digest_text(ciphertext) != read_file("hashes", filename):
+        raise ValueError("Integrity verification failed.")
+    signature = json.loads(read_file("signature", filename))
+    public_key = json.loads(read_file("public_key", filename))
+    if not verify_signature(ciphertext, signature, public_key):
+        raise ValueError("Digital signature verification failed.")
+    metadata = json.loads(read_file("metadata", filename))
+    key = unwrap_key(metadata["wrapped_key"])
+    return symmetric_decrypt(ciphertext, key, bytes.fromhex(metadata["iv"]))
+
+# =========================================================
+# FACULTY
+# =========================================================
+
+def faculty(filename, num1=None, num2=None, key=None, iv=None):
+    ciphertext = read_file("encrypted", filename)
+    print("\nStudent Hash :", read_file("hashes", filename))
+    print("Faculty Hash :", digest_text(ciphertext))
+    plaintext = read_document(filename)
+    print("Hash verified successfully.")
+    print("Signature verified:", True)
+    metadata = json.loads(read_file("metadata", filename))
+    homomorphic = json.loads(read_file("add", filename))
+    result = decrypt_homomorphic(homomorphic["ciphertext"])
+    expected = expected_homomorphic(metadata["num1"], metadata["num2"])
+    print("Homomorphic decrypted result:", result)
+    if result != expected:
+        raise ValueError("Homomorphic verification failed.")
+    print("homomorphic verified")
+    print("\nPlaintext:")
+    print(plaintext)
+    return plaintext
+
+# =========================================================
+# HOD
+# =========================================================
+
+def hod(filename):
+    ciphertext = read_file("encrypted", filename)
+    saved_hash = read_file("hashes", filename)
+    signature = json.loads(read_file("signature", filename))
+    public_key = json.loads(read_file("public_key", filename))
+    result = (digest_text(ciphertext) == saved_hash and
+              verify_signature(ciphertext, signature, public_key))
+    print("\nHash:", saved_hash)
+    print("Signature and hash verified:", result)
+    return result
+
+# =========================================================
+# MAIN MENU
+# =========================================================
+
+def main():
+    global SEARCH_KEY
+    key, SEARCH_KEY = initialize()
+    documents = load_documents()
+    num1=0
+    num2=0
+    iv = None
+    create_index(documents, key)
+    while True:
+
+        print("\n" + "=" * 40)
+        print("             " + TITLE)
+        print("=" * 40)
+        print("1. Student")
+        print("2. Faculty")
+        print("3. HoD")
+        print("4. Exit")
+        print("=" * 40)
+
+        choice = input("Enter choice: ")
+
+        if choice == "1":
+
+            while True:
+                print("\n------ Student Menu ------")
+                print("1. Add a new document")
+                print("2. view documents")
+                print("3. Back to main menu")
+                print("4. Classical cipher demonstration")
+
+                student_choice = input("Enter choice: ")
+
+                if student_choice == "1":
+
+                    filename = input("Enter filename: ").strip()
+
+                    if filename == "":
+                        print("Filename cannot be empty.")
+                        continue
+
+                    if filename in documents:
+                        print("Document already exists!")
+                        continue
+
+                    plaintext = input("Enter document record: ")
+
+
+                    try:
+                        num1 = int(input("Enter first integer: "))
+                        num2 = int(input("Enter second integer: "))
+                    except ValueError:
+                        print("Enter valid integers.")
+                        continue
+
+                    try:
+                        student(filename, plaintext, num1, num2, key, iv)
+                        documents[filename] = plaintext
+                        create_index(documents, key)
+                    except (ValueError, OSError) as exc:
+                        print(exc)
+
+                elif student_choice == "2":
+
+                    if not documents:
+                        print("No documents uploaded yet.")
+                    else:
+                        print("\n------ All Documents ------")
+
+                        for filename, plaintext in documents.items():
+                            print(f"\nFilename: {filename}")
+                            print(f"Plaintext: {plaintext}")
+                elif student_choice == "4":
+                    try:
+                        result = classical_demo(input("Enter classical cipher text: "))
+                        print("Ciphertext:", result["ciphertext"])
+                        print("Decrypted text:", result["decrypted_text"])
+                    except ValueError as exc:
+                        print(exc)
+
+                elif student_choice == "3":
+                    break
+
+                else:
+                    print("Invalid choice. Please try again.")
+
+        elif choice == "2":
+
+            while True:
+                print("\n------ Faculty Menu ------")
+                print("1. Verify and decrypt a document")
+                print("2. Enter searchable text")
+                print("3. Back to main menu")
+
+                faculty_choice = input("Enter choice: ")
+
+                if faculty_choice == "1":
+
+                    filename = input("Enter filename: ").strip()
+
+                    if filename not in documents:
+                        print("Document not found!")
+                        continue
+
+
+                    try:
+                        faculty(filename)
+                    except (ValueError, OSError, KeyError, TypeError) as exc:
+                        print(exc)
+
+                elif faculty_choice == "2":
+
+                    if not documents:
+                        print("No documents uploaded yet.")
+                    else:                        
+                        search_text = input("Enter searchable text: ").lower()
+                        encrypted_index = json.loads((BASE / "index.json").read_text())
+                        try:
+                            results = search(encrypted_index, search_text, key, documents)
+                        except (ValueError, OSError, KeyError, TypeError) as exc:
+                            print(exc)
+                            continue
+                        
+                        
+                        if results:
+                            for doc_id, doc in results:
+                                print(doc_id, ":", doc)
+                        else:
+                            print("No matching documents found")
+                        
+
+                elif faculty_choice == "3":
+                    break
+
+                else:
+                    print("Invalid choice. Please try again.")
+
+        elif choice == "3":
+
+            filename = input("Enter filename: ")
+
+            try:
+                hod(filename)
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+                print(exc)
+
+        elif choice == "4":
+
+            print("\nExiting " + TITLE + "...")
+            break
+
+        else:
+
+            print("\nInvalid choice. Please try again.")
+
+# =========================================================
+# PROGRAM START
+# =========================================================
+
+if __name__ == "__main__":
+    main()

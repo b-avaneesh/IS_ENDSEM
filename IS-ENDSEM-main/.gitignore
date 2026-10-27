@@ -1,0 +1,41 @@
+# Python environments and generated caches
+venv/
+venv1/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Local editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local secrets and generated private keys
+.env
+.env.*
+!.env.example
+private_key.pem
+*_private.pem
+
+# Bundled copy of the project
+/ENDSEM_READY.zip
+
+# Generated voting test data and private keys
+/tmp/evoting_check*/
+
+# Local runtime records and keys from the file-based lab combinations
+/LAB_ENDSEM_SAMPLE_QUESTIONS/WITHOUT_SOCKET_FILE_BASED_LAB_ENDSEM_SAMPLE_PAPER_SOLUTIONS/COMBO_*/keys/
+/LAB_ENDSEM_SAMPLE_QUESTIONS/WITHOUT_SOCKET_FILE_BASED_LAB_ENDSEM_SAMPLE_PAPER_SOLUTIONS/COMBO_*/encrypted/
+/LAB_ENDSEM_SAMPLE_QUESTIONS/WITHOUT_SOCKET_FILE_BASED_LAB_ENDSEM_SAMPLE_PAPER_SOLUTIONS/COMBO_*/hashes/
+/LAB_ENDSEM_SAMPLE_QUESTIONS/WITHOUT_SOCKET_FILE_BASED_LAB_ENDSEM_SAMPLE_PAPER_SOLUTIONS/COMBO_*/signature/
+/LAB_ENDSEM_SAMPLE_QUESTIONS/WITHOUT_SOCKET_FILE_BASED_LAB_ENDSEM_SAMPLE_PAPER_SOLUTIONS/COMBO_*/public_key/
+/LAB_ENDSEM_SAMPLE_QUESTIONS/WITHOUT_SOCKET_FILE_BASED_LAB_ENDSEM_SAMPLE_PAPER_SOLUTIONS/COMBO_*/add/
+/LAB_ENDSEM_SAMPLE_QUESTIONS/WITHOUT_SOCKET_FILE_BASED_LAB_ENDSEM_SAMPLE_PAPER_SOLUTIONS/COMBO_*/metadata/
+/LAB_ENDSEM_SAMPLE_QUESTIONS/WITHOUT_SOCKET_FILE_BASED_LAB_ENDSEM_SAMPLE_PAPER_SOLUTIONS/COMBO_*/index.json
+
+# Local election records, credentials and private keys
+/election_files/

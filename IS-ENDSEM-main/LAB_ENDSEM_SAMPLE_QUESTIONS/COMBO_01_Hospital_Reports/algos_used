@@ -1,0 +1,15 @@
+HOSPITAL REPORTS
+ALGORITHMS / CONCEPTS USED
+
+Lab 1 - Vigenere; fixed demo key/parameters: "HEALTH"
+Lab 2 - AES-128-CBC; fresh IV; PKCS#7 padding
+Lab 3 - RSA; protects the randomly generated document encryption key
+Lab 5 - SHA256; stored content digest and client-side digest comparison
+Lab 6 - RSA-2048 PKCS#1 v1.5 with SHA-256; signs document ID, author and content
+Lab 7 - Paillier homomorphic addition
+Lab 8 - HMAC-SHA256 keyword tokens + symmetric-encrypted document IDs (SSE)
+
+Lab 4 is not included: no Rabin, KMS service, rotation or revocation exercises.
+The simple role menu, TCP sockets, JSON messages and audit log mirror the
+hospital reference; they are application scaffolding, not a Lab 4 module.
+Signature and search helpers use SHA-256 independently of the Lab 5 digest.

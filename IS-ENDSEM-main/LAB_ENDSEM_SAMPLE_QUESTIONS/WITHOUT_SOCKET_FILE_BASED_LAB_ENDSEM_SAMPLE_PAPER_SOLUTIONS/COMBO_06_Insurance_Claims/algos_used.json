@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_06_Insurance_Claims",
+  "classical": "Playfair",
+  "symmetric": "AES-128",
+  "asymmetric": "ElGamal",
+  "hash": "SHA1",
+  "signature": "ElGamal",
+  "homomorphic": "ElGamal",
+  "search": "SSE"
+}

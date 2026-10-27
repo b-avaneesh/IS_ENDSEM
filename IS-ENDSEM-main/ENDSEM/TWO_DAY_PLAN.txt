@@ -1,0 +1,66 @@
+TWO DAYS: LEARN THE REUSABLE FLOWS, NOT 4,608 FILES
+================================================
+
+DAY 1
+90 min - Lab 7: run Paillier/RSA/ElGamal examples. Write encrypt, decrypt,
+combine from memory. Explain sum versus product and why OAEP is different.
+90 min - Lab 8: build ten documents, index and query. Test hit/miss/case.
+Explain why random ciphertexts cannot be compared for equality.
+60 min - Midsem: run EduSecure as each role. Trace cipher_hash/plain_hash,
+sign/verify, assignment and denied auditor access.
+90 min - Endsem: run voting demo and menu. Trace every image bullet to a method.
+Explain candidate ID sum versus one-hot counts; test trustee restrictions.
+45 min - Revise Labs 1-3: keys, mode sizes, bytes, padding, RSA hybrid/ECDH.
+45 min - Revise Labs 4-6: key lifecycle, access, hash, signature, socket framing.
+Take breaks between blocks. Finish with a clean start and run without help.
+
+DAY 2
+75 min - Mock A below, timed. Use only notes you expect to be allowed to use.
+30 min - Diagnose failures and explain the pipeline aloud.
+75 min - Mock B below, timed; swap algorithms without breaking access policy.
+45 min - Run socket normal/tamper cases; search with absent keywords; expired
+record; wrong role; duplicate/late vote; missing trustee; changed signature.
+45 min - Prepare short writeups: exact algorithm equations and role table.
+30 min - Verify Python/packages and exported files on the intended machine.
+Final review - Read SOURCE_CORRECTIONS and EXAM_GUIDE sections 10-12. Sleep.
+
+MOCK A: HEALTH REPORTS + SUM + SEARCH
+Patients upload reports encrypted with AES-256-CBC. Sign SHA-512 with ElGamal.
+Assigned doctors decrypt and verify. Administrators see hashes/timestamps only.
+Encrypt consultation charges with Paillier and total without reading each fee.
+Search encrypted records by diagnosis keyword. Revoke a patient's upload access.
+
+Start: scenarios/02_MEDISECURE.py or filter AES_CBC/SHA512/ELGAMAL/PAILLIER/SSE.
+Rename users/labels. Upload charges 15 and 25; expected total 40. Query a shared
+keyword; expect both records for auditor, only own record for each patient.
+Demonstrate wrong user and auditor plaintext denial; modify data and reject it.
+
+MOCK B: CLOUD ORDERS + PRODUCT + SEARCH
+Buyers submit orders to a named supplier. RSA protects a fresh AES session key.
+Use SHA256 and Schnorr signatures. Supplier approves/rejects each order.
+Use ElGamal multiplicative HE for two numeric factors. Auditor searches orders
+by product keyword and sees only hashes, time and verification metadata.
+
+Start: RSA_HYBRID/SHA256/SCHNORR/ELGAMAL/SSE combination.
+For 7 and 3 expected product 21 (not 10). Reject one order and recompute the
+aggregate. Change recipient field after signing and demonstrate rejection.
+
+BONUS 30-MIN DRILL
+Reproduce sample election with candidates 2,1,2. Correct counts 1,2,0; sum IDs 5.
+Run --socket-demo. Reject duplicate vote, modified HE count and missing trustee.
+State clearly what the local TSA, shared-process trustees and honest client mean.
+
+BE ABLE TO ANSWER THESE VIVA QUESTIONS
+- Why does Paillier multiply ciphertexts to add plaintexts?
+- Why is RSA OAEP unsuitable for multiplicative HE?
+- Can ElGamal directly compare two blood pressure readings? No; explain why.
+- What is signed, and which key verifies it?
+- Does an unkeyed hash alone authenticate a sender? No.
+- Why is H(plaintext) different from H(ciphertext)?
+- Why does CBC need padding and a fresh IV?
+- What does SSE reveal even when document text is encrypted?
+- What is the difference between 3-of-3 partial decryption and reconstructing
+  a shared private key with Shamir?
+- Why does adding candidate IDs not count votes per candidate?
+- Can a server holding the AES decryption key read a ballot? Yes.
+- Does zero observed collisions in 100 random inputs prove hash security? No.

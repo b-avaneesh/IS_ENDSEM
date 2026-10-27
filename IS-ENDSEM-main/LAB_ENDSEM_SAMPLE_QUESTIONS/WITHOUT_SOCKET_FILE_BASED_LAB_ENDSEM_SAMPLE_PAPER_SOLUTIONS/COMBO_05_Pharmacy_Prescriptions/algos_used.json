@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_05_Pharmacy_Prescriptions",
+  "classical": "Autokey",
+  "symmetric": "Triple-DES",
+  "asymmetric": "RSA",
+  "hash": "SHA256",
+  "signature": "ElGamal",
+  "homomorphic": "RSA",
+  "search": "SSE"
+}

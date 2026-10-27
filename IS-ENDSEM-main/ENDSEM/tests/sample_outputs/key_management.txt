@@ -1,0 +1,4 @@
+Before rotation: b'patient report'
+After rotation old record: b'patient report'
+PASS: facility revocation enforced
+Audit: [('GENERATE', 'hospital', 1, 1792559939.6071768), ('GRANT', 'hospital', 'doctor', 1792559939.6071768), ('ENCRYPT', '1', 1, 1792559939.6071768), ('DECRYPT', '1', 'doctor', 1792559939.6071768), ('GENERATE', 'hospital', 2, 1792559939.656175), ('DECRYPT', '1', 'doctor', 1792559939.656175), ('REVOKE', 'hospital', 1792559939.6711774)]

@@ -1,0 +1,132 @@
+RSA — Lab 3 Quick Notes
+
+1. WHAT IS RSA?
+- RSA is an asymmetric encryption algorithm.
+- Public Key = (n, e) -> encryption
+- Private Key = (n, d) -> decryption
+
+2. KEY GENERATION
+Choose two prime numbers: p, q
+
+n = p * q
+phi(n) = (p - 1) * (q - 1)
+
+Choose e such that:
+1 < e < phi(n)
+gcd(e, phi(n)) = 1
+
+Find d such that:
+(e * d) % phi(n) = 1
+
+Remember:
+p, q -> n, phi -> e -> d
+
+Public Key  = (n, e)
+Private Key = (n, d)
+
+3. ENCRYPTION
+For plaintext number M:
+C = M^e mod n
+
+Python:
+C = pow(M, e, n)
+
+4. DECRYPTION
+For ciphertext C:
+M = C^d mod n
+
+Python:
+M = pow(C, d, n)
+
+5. HANDLING CHARACTERS
+RSA works with numbers, so convert characters to numbers.
+
+General approach:
+M = ord(ch)
+
+Examples:
+'A' -> 65
+'a' -> 97
+'0' -> 48
+' ' -> 32
+'@' -> 64
+'#' -> 35
+
+After decryption:
+ch = chr(M)
+
+Flow:
+character -> ord() -> M -> RSA -> C -> RSA -> M -> chr() -> character
+
+6. IMPORTANT CODE PARTS
+
+from math import gcd
+
+p = 10007
+q = 10009
+
+n = p * q
+phi = (p - 1) * (q - 1)
+
+Find e:
+for i in range(2, phi):
+    if gcd(i, phi) == 1:
+        e = i
+        break
+
+Find d:
+for i in range(1, phi):
+    if (e * i) % phi == 1:
+        d = i
+        break
+
+Encrypt:
+for ch in plaintext:
+    M = ord(ch)
+    C = pow(M, e, n)
+    ciphertext.append(C)
+
+Decrypt:
+for C in ciphertext:
+    M = pow(C, d, n)
+    decrypted += chr(M)
+
+7. FOUR LINES TO REMEMBER
+
+M = ord(ch)
+C = pow(M, e, n)
+
+M = pow(C, d, n)
+ch = chr(M)
+
+Mathematically:
+C = M^e mod n
+M = C^d mod n
+
+8. COMPLETE FLOW
+
+KEY GENERATION:
+p, q
+  |
+n = p * q
+  |
+phi = (p-1)(q-1)
+  |
+choose e
+  |
+find d
+  |
+Public: (n,e)
+Private: (n,d)
+
+ENCRYPTION:
+Plaintext -> ord() -> M -> M^e mod n -> C -> Ciphertext
+
+DECRYPTION:
+Ciphertext -> C -> C^d mod n -> M -> chr() -> Plaintext
+
+9. EXAM POINT
+Raw RSA requires:
+0 <= M < n
+
+In this implementation, ord(ch) is used as M. With the chosen p and q, n is large enough for ordinary character codes.

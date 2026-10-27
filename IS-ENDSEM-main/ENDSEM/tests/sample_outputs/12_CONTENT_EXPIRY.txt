@@ -1,0 +1,9 @@
+CONFIG: {'encryption': 'AES_CBC', 'hash_name': 'SHA256', 'signature': 'ELGAMAL', 'he': 'NONE', 'search': 'SSE', 'scenario': 'records'}
+Encrypted package: {'ct': 'a323347a18de492eefbb9591dec965e8a300900d47b709e6768eee409fdd7df5', 'iv': 'd17f69f14ae6f6648fb3fc66f40b6368'}
+Hashes/signature: [{'id': '1', 'owner': 'alice', 'recipient': 'bob', 'time': 1792559936.3072467, 'plain_hash': '3db5cd1dea68162e5791b110ed537a84b31260140bfd7b5ae4b6da814ce6e89e', 'cipher_hash': '363160e1e1dc7510bbc71e83ff728c54d640e2d26ae3abfa292a3f28f3a5b73d', 'status': 'PENDING', 'valid': True}, {'id': '2', 'owner': 'eve', 'recipient': 'bob', 'time': 1792559936.3112452, 'plain_hash': '9b675ca1c9c108e7b2b778dae8451608067c09a72e765b8a518d8fcba7cb021a', 'cipher_hash': '7f24da61f42b3f886d8d9eb2d2d4b16dcffa63b3e83feb002e846c6a4e9333e7', 'status': 'PENDING', 'valid': True}]
+Decrypted: Academic record: score 85
+Encrypted search education: ['1', '2']
+Decision: APPROVED
+PASS: auditor denied plaintext
+Tamper verification: False
+PASS: revoked upload denied

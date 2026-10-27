@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_17_Scholarship_Applications",
+  "classical": "Vigenere",
+  "symmetric": "AES-192",
+  "asymmetric": "RSA",
+  "hash": "SHA256",
+  "signature": "ElGamal",
+  "homomorphic": "RSA",
+  "search": "SSE"
+}

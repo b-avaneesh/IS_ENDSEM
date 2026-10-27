@@ -1,0 +1,214 @@
+AVA REFERENCE - CLIENT/SERVER QUESTIONS (generator_server_client_original.py)
+=====================================================================
+
+WHEN TO USE THIS
+  The question says "client side / server side", "sockets", "server verifies",
+  or describes a voter/user device sending data to a server.
+  (Single-program questions: see ava_which_tool.txt.)
+
+DO LAB_ENDSEM_SAMPLE_QUESTIONS COVER THE E-VOTING QUESTION?  -> NO
+  The 36 COMBO folders are document vaults:
+    - all crypto runs on the SERVER (question wants hashing, AES, RSA wrap,
+      signing and Paillier on the CLIENT)
+    - data is kept in memory: a restart wipes everything
+    - no ballot fields, no trusted timestamp, no deadline check
+    - homomorphic is only a "type two numbers" demo, not a tally of stored votes
+    - no time-range search, no threshold decryption
+  sample1_rsa_aes_elgamal_socket is the closest (client does SHA-512, AES-256-CBC,
+  RSA-OAEP, ElGamal signature) but has no Paillier, timestamp, search, tally or
+  threshold. generator_server_client_original.py covers all of these AND every algorithm
+  combination of the 36 combos (tested: e-voting + all 36 combos).
+
+
+------------------------------------------------------------
+HOW TO RUN
+------------------------------------------------------------
+1. python generator_server_client_original.py      -> answer the prompts (below)
+2. cd into the folder it prints
+3. Terminal 1: python server.py            -> FIRST RUN asks:
+       - submission start + deadline (only if you enabled a deadline)
+         format YYYY-MM-DD HH:MM:SS (IST). Start = a few minutes ago,
+         deadline = later today, or every submission is rejected.
+       - authority 1 + authority 2 passwords (only if threshold = y)
+       - then generates keys (a few seconds)
+4. Terminal 2 (and 3, 4...): python client.py  -> log in as a role.
+   The menu shows ONLY that role's actions; anything else -> "Permission denied".
+5. Restart test: Ctrl+C the server, run python server.py again -> it prints
+   "Stored records: N" and everything still verifies.
+6. Fresh start: delete server_data/ and client_data/.
+
+
+------------------------------------------------------------
+GENERATOR PROMPTS (in order)
+------------------------------------------------------------
+System title                     -> any
+Record name                      -> ballot / document / report ...
+Number of record fields          -> NOT counting the ID (the ID is always asked)
+ For each field:
+  Field name                     -> letters/digits/_ (no spaces)
+  Type                           -> text / integer / choice
+  (choice) Allowed choices       -> e.g. 1,2,3
+  (text)   Search: none / exact / words
+             exact = whole value (e.g. constituency C101)
+             words = any single word in it (document keyword search)
+  (integer/choice) exact-value search?   y/n
+  (integer, or choice with numeric choices) homomorphic total?  y/n
+  (choice) homomorphic count for each choice?                    y/n
+Also hash one field on its own?  -> n normally
+Enforce a submission period?     -> y for deadline questions
+Close submissions once tallied?  -> y for elections
+Threshold decryption?            -> y if "no single authority can decrypt"
+Minimum records in a tally [2]   -> Enter
+
+ALGORITHMS (type the number; Enter = option 1)
+  Classical : 1 none 2 Additive 3 Multiplicative 4 Affine 5 Vigenere
+              6 Autokey 7 Playfair 8 Hill 9 Transposition  (then key: Enter = lab key)
+  Symmetric : 1 AES-256 2 AES-128 3 AES-192 4 DES 5 Triple-DES
+  Mode      : 1 CBC 2 ECB 3 CFB 4 OFB 5 CTR
+  Hash      : 1 SHA-512 2 SHA-256 3 SHA-1 4 MD5 5 SHA3-256 6 CUSTOM32
+  Key protect: 1 RSA 2 ECDH 3 DH 4 ElGamal   (RSA -> bits: 1024/2048/3072/4096)
+  Signature : 1 ElGamal 2 RSA 3 RSA-PSS 4 Schnorr   (RSA -> bits)
+  Search    : 1 SSE 2 RSA_owner_scan 3 Paillier_owner_scan
+              (SSE -> token cipher 1 HMAC-SHA256 2 AES 3 DES)
+  Homomorphic: 1 Paillier(sum) 2 RSA(product) 3 ElGamal(product) 4 ElGamal-Exp(sum)
+               (RSA -> bits)
+
+ROLES - action numbers
+   1 submit   client hashes, signs, encrypts; server verifies, timestamps, indexes
+   2 verify   re-verify a stored record (no plaintext shown)
+   3 view     verify, then decrypt and show plaintext
+   4 list     list record IDs
+   5 search   field value / one word / time range (returns IDs only)
+   6 tally    homomorphic combine of selected IDs (Enter = all)
+   7 decrypt  decrypt ONLY the final aggregate (asks authority passwords if threshold)
+   8 audit    audit log
+   9 classical  classical cipher demo
+  10 he_demo    homomorphic demo on two integers
+  11 tamper     corrupt a stored record (then verify it to show REJECTED)
+ Per role: name, actions, username [Enter = role name], password [Enter = name+123]
+Server port [5200]   -> Enter
+Output folder        -> Enter
+
+
+============================================================
+Q1. SECURE E-VOTING (client side / server side question)
+============================================================
+TYPE THIS (one line per prompt; "Enter" = just press Enter)
+  System title            : Secure E-Voting
+  Record name             : ballot
+  Number of fields        : 2
+    Field 1 name          : candidate_id
+      Type                : choice
+      Allowed choices     : 1,2,3
+      exact-value search? : n
+      homomorphic total?  : y      (Paillier sum of candidate IDs, as the question says)
+      count per choice?   : y      (votes per candidate = the real tally)
+    Field 2 name          : constituency
+      Type                : text
+      Search              : exact
+  Hash one field alone?   : n
+  Submission period?      : y
+  Close after tally?      : y
+  Threshold decryption?   : y
+  Minimum records         : Enter
+  Classical               : 1   (none)
+  Symmetric               : 1   (AES-256)
+  Mode                    : 1   (CBC)
+  Hash                    : 1   (SHA-512)
+  Key protection          : 1   (RSA)  -> bits: 4096
+  Signature               : 1   (ElGamal)
+  Search                  : 1   (SSE) -> token cipher: 1 (HMAC-SHA256)
+  Homomorphic             : 1   (Paillier)
+  Number of roles         : 3
+    Role 1                : voter            actions: 1,4      user/pass: Enter, Enter
+    Role 2                : election server  actions: 2,3,4,5,6,8,11   Enter, Enter
+    Role 3                : tally authority  actions: 4,7      Enter, Enter
+  Port, folder            : Enter, Enter
+  Accounts created: voter/voter123, electionserver/electionserver123,
+                    tallyauthority/tallyauthority123
+
+FIRST SERVER RUN: start = now minus a few minutes, deadline = later today,
+then set the two authority passwords (remember them).
+
+DEMO
+  voter   -> Submit: V001 / candidate 1 / C101
+             Submit: V002 / candidate 2 / C101
+             Submit: V003 / candidate 2 / C202
+             Each shows: SHA-512, ElGamal signature, Paillier ciphertexts,
+             AES-256 key, IV, CBC ciphertext, RSA-4096-OAEP wrapped key;
+             server reply: hash MATCH, signature VALID, Paillier check,
+             trusted timestamp + TSA signature, "within submission period".
+             Client prints "timestamp authority signature VALID".
+             Invalid: candidate 9 / duplicate V001 -> rejected.
+  election server -> Verify V001 (no plaintext) | View V002 (plaintext)
+             Search 1 (constituency) C101 -> V001, V002
+             Search 2 (time range) -> IDs in that window
+             Tamper V003 -> Verify V003 -> REJECTED
+             Tally: Enter (all) -> fails because V003 is tampered;
+             Tally: V001, V002 -> combined Paillier ciphertexts (hex)
+             (without tampering, Enter tallies all verified ballots)
+  tally authority -> Decrypt -> authority 1 + 2 passwords ->
+             partial decryptions + Record count, Total candidate_id,
+             candidate_id = 1 / 2 / 3 counts. Wrong password -> error.
+  voter tries to submit after tally -> "Submissions are closed".
+  voter tries a role action it lacks -> menu doesn't show it; server denies it.
+
+
+============================================================
+Q2. HOSPITAL / DOCUMENT STORE (COMBO-style practice question)
+"writer uploads, reader searches IDs without plaintext, auditor verifies"
+============================================================
+  System title            : Hospital Reports
+  Record name             : document
+  Number of fields        : 1
+    Field 1 name          : content
+      Type                : text
+      Search              : words
+  Hash one field alone?   : n
+  Submission period?      : n
+  Close after tally?      : n
+  Threshold decryption?   : n
+  Minimum records         : Enter
+  Classical 5 (Vigenere) key Enter (HEALTH) | Symmetric 2 (AES-128) | Mode 1
+  Hash 2 (SHA-256) | Key protection 1 (RSA) bits Enter | Signature 3 (RSA-PSS) bits Enter
+  Search 1 (SSE) -> 1 | Homomorphic 1 (Paillier)
+  Number of roles         : 4
+    admin    : all
+    writer   : 1,3,4,5,9,10
+    reader   : 4,5
+    auditor  : 2,4,8
+  DEMO: writer submits R101 "fever treatment followup"; view R101; search fever;
+        Vigenere demo HELLO; he_demo 7 and 3 -> 10; reader tries view -> not in menu;
+        auditor verify R101 -> VERIFIED; audit log.
+
+
+============================================================
+ANY COMBO_XX FROM LAB_ENDSEM_SAMPLE_QUESTIONS
+============================================================
+Read its algos_used / COMBINATIONS_INDEX.json and translate:
+  classical   : Additive 2, Multiplicative 3, Affine 4, Vigenere 5, Autokey 6,
+                Playfair 7, Hill 8, Transposition 9   (keys: Enter = same as combos)
+  symmetric   : AES-256 1, AES-128 2, AES-192 3, DES 4, Triple-DES 5
+  asymmetric  : RSA 1, ECDH 2, DH 3, ElGamal 4
+  hash        : SHA256 2, SHA1 3, MD5 4, CUSTOM32 6
+  signature   : ElGamal 1, RSA 2, Schnorr 4
+  homomorphic : Paillier 1, RSA 2, ElGamal 3
+  search      : SSE 1, RSA_owner_scan 2, Paillier_owner_scan 3
+Then use the Q2 fields/roles. Example COMBO_14 (Playfair/DES/ElGamal/SHA1/RSA/RSA/
+RSA_owner_scan): classical 7, symmetric 4, mode 1, hash 3, key 4, signature 2,
+search 2, homomorphic 2.
+
+
+------------------------------------------------------------
+TRAPS
+------------------------------------------------------------
+- Deadline on: the start/deadline you type on first server run must include NOW.
+- Threshold on: the decrypt step needs BOTH authority passwords from first run.
+- RSA / ElGamal homomorphic = PRODUCT, values must be >= 1. For SUMS use Paillier
+  or ElGamal-Exp.
+- Tally re-verifies every selected record; a tampered one blocks the tally
+  (that is the point - pick the untampered IDs).
+- Start the server BEFORE the client. Same folder for both.
+- Changing fields/roles/algorithms = run the generator again into a NEW folder.
+- Signing keys live in client_data/<username>_signing.json; the server registers
+  the first public key a user signs with and rejects a different one later.

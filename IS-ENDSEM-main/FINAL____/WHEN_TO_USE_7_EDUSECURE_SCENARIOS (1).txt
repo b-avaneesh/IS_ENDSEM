@@ -1,0 +1,164 @@
+WHEN TO USE THE 7 EDUSECURE-STYLE SCENARIO TYPES
+================================================
+
+FIRST DECISION
+--------------
+Use these seven folders only when the question asks for a large system with
+three roles, login/access control, encryption, hashing, digital signatures,
+timestamps and record/file storage.
+
+After selecting the correct scenario folder, select the file whose name
+contains the encryption/decryption algorithm specified in the question.
+
+
+1. Q01_MEDISECURE
+-----------------
+Use when the question involves:
+- Patients uploading medical reports or health records.
+- Doctors viewing/decrypting only records assigned to them.
+- A Hospital Administrator viewing hashes and verification status only.
+- The administrator must not see decrypted medical information.
+
+Main identifying requirement:
+One uploader's record is specifically assigned to an authorized reviewer.
+
+Typical role conversion:
+Uploader = Patient, Reviewer = Doctor, Auditor = Hospital Administrator.
+
+
+2. Q02_BANKVAULT
+----------------
+Use when the question involves:
+- Customers submitting transactions, payment requests or loan requests.
+- A Bank Manager approving or rejecting each request.
+- PENDING, APPROVED and REJECTED statuses.
+- An Auditor viewing transaction IDs, hashes, signatures and decisions only.
+
+Main identifying requirement:
+The reviewer must make and store an approval/rejection decision.
+
+Typical role conversion:
+Uploader = Customer, Reviewer = Bank Manager, Auditor = Auditor.
+
+
+3. Q03_EMPLOYEE_SAFE
+--------------------
+Use when the question involves:
+- Employees uploading contracts, documents or confidential company records.
+- HR decrypting and verifying employee submissions.
+- A Company Head viewing hashes, timestamps and verification status only.
+- No special recipient assignment, approval or revocation is required.
+
+Main identifying requirement:
+This is the closest basic replacement of the original EduSecure workflow;
+mainly the domain and displayed role names change.
+
+Typical role conversion:
+Uploader = Employee, Reviewer = HR Officer, Auditor = Company Head.
+
+
+4. Q04_RESULT_SECURE
+--------------------
+Use when the question involves:
+- Students uploading result documents, assignments or academic records.
+- Faculty decrypting and verifying the submissions.
+- An Examination Controller viewing metadata without seeing plaintext.
+- The controller can revoke a student's upload permission.
+
+Main identifying requirement:
+The third role must revoke or disable an uploader after invalid activity.
+
+Typical role conversion:
+Uploader = Student, Reviewer = Faculty,
+Auditor = Examination Controller.
+
+
+5. Q05_SUPPLY_SECURE
+--------------------
+Use when the question involves:
+- Buyers creating orders for a specifically named supplier.
+- Suppliers viewing only orders addressed to them.
+- Suppliers accepting or rejecting orders.
+- An Auditor seeing routing, status, hashes and timestamps only.
+
+Main identifying requirement:
+Both recipient routing and ACCEPTED/REJECTED status are required.
+
+Typical role conversion:
+Uploader = Buyer, Reviewer = Supplier, Auditor = Auditor.
+
+
+6. Q07_CLOUD_SAFE
+-----------------
+Use when the question involves:
+- Uploaders sending files to a particular receiver.
+- A random AES session key encrypting the file.
+- RSA/ECC/Diffie-Hellman protecting or deriving the AES key.
+- A Receiver downloading only files addressed to that username.
+- An Administrator viewing file metadata but not decrypted file contents.
+
+Main identifying requirement:
+The question explicitly asks for hybrid encryption or secure file sharing.
+
+Typical role conversion:
+Uploader = Uploader, Reviewer = Receiver, Auditor = Administrator.
+
+
+7. Q12_CIA_STORE
+----------------
+Use when the question explicitly discusses the CIA triad:
+- Confidentiality through encryption.
+- Integrity through SHA-256 hash checking.
+- Authenticity through digital signatures.
+- Availability/access control through assignment and user revocation.
+- An Authorized User decrypts only documents assigned to that username.
+- An Auditor sees hashes, signatures and verification status only.
+
+Main identifying requirement:
+The question explicitly asks for confidentiality, integrity and authenticity,
+usually together with recipient authorization and immediate revocation.
+
+Typical role conversion:
+Uploader = Document Owner, Reviewer = Authorized User, Auditor = Auditor.
+
+
+QUICK DIFFERENCE TABLE
+----------------------
+Assigned doctor / medical report             -> Q01_MEDISECURE
+Approve or reject banking transaction         -> Q02_BANKVAULT
+Basic employee/HR/company document system     -> Q03_EMPLOYEE_SAFE
+Controller revokes student upload permission  -> Q04_RESULT_SECURE
+Supplier routing plus accept/reject            -> Q05_SUPPLY_SECURE
+Hybrid encryption and receiver file sharing   -> Q07_CLOUD_SAFE
+CIA triad plus assigned user and revocation    -> Q12_CIA_STORE
+
+
+AFTER CHOOSING THE SCENARIO
+---------------------------
+1. Open its folder.
+2. Read the encryption/decryption algorithm stated in the question.
+3. Open the matching ROLE_<ALGORITHM>.py file.
+4. Read the short requirements written at the top of that file.
+5. Change usernames, printed role names, keys or fixed values only when the
+   question explicitly provides different ones.
+
+Examples:
+- Hospital question asking AES-CBC:
+  Q01_MEDISECURE -> ROLE_AES_CBC.py
+
+- Banking question asking Triple DES:
+  Q02_BANKVAULT -> ROLE_TRIPLE_DES.py
+
+- Supply-chain question asking AES-CTR:
+  Q05_SUPPLY_SECURE -> ROLE_AES_CTR.py
+
+- CIA-triad question asking RSA-AES hybrid encryption:
+  Q12_CIA_STORE -> ROLE_RSA_HYBRID.py
+
+
+DO NOT USE THESE SEVEN TYPES WHEN
+---------------------------------
+The question only asks for one short algorithm, numerical calculation,
+performance graph, brute-force attack, socket client/server program, hashing
+comparison or signature demonstration without a three-role system. For those,
+use the corresponding answer from ALL_20_IS_LAB_EXAM_ANSWERS instead.

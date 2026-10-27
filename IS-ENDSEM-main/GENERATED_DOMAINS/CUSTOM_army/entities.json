@@ -1,0 +1,15 @@
+{
+  "captain": [
+    "search_records"
+  ],
+  "base sol": [
+    "submit_record"
+  ],
+  "lt": [
+    "verify_record",
+    "view_record",
+    "search_records",
+    "aggregate_records",
+    "threshold_decrypt"
+  ]
+}

@@ -1,0 +1,273 @@
+CRYPTOGRAPHY PYTHON — STRING / BYTES / HEX NOTES
+===================================================
+
+1. BASIC CONVERSIONS
+
+String -> Bytes:
+    text.encode()
+
+Fixed string -> Bytes:
+    b"Hello"
+
+Bytes -> String:
+    data.decode()
+
+Bytes -> Hex string:
+    data.hex()
+
+Hex string -> Bytes:
+    bytes.fromhex("48656c6c6f")
+
+
+2. IMPORTANT TYPES
+
+    "A1B2C3D4"   -> str
+    b"A1B2C3D4"  -> bytes
+
+A value such as:
+    "48656C6C6F"
+
+is still a STRING containing hexadecimal characters.
+
+Convert it to actual bytes using:
+    bytes.fromhex("48656C6C6F")
+
+
+3. ENCRYPTION AND DECRYPTION
+
+In common Python crypto libraries such as PyCryptodome:
+
+    ciphertext = cipher.encrypt(data)
+
+returns BYTES.
+
+And:
+
+    plaintext = cipher.decrypt(ciphertext)
+
+also returns BYTES.
+
+Therefore:
+
+    encrypt() -> bytes
+    decrypt() -> bytes
+
+
+4. input() ALWAYS RETURNS A STRING
+
+    text = input("Enter text: ")
+
+The result is always a STRING.
+
+If the user enters normal text:
+    data = text.encode()
+
+If the user enters hexadecimal:
+    data = bytes.fromhex(text)
+
+
+5. .hex() IS NOT ENCRYPTION
+
+Encryption:
+    ciphertext = cipher.encrypt(data)
+
+Displaying ciphertext as hexadecimal:
+    print(ciphertext.hex())
+
+.hex() only converts BYTES into a hexadecimal STRING for representation/display.
+
+
+6. PADDING
+
+Block ciphers require data to fit their block size.
+
+DES block size:
+    8 bytes = 64 bits
+
+AES block size:
+    16 bytes = 128 bits
+
+Padding is performed on BYTES:
+
+    padded = pad(data, DES.block_size)
+
+After decryption:
+
+    decrypted = cipher.decrypt(ciphertext)
+    decrypted = unpad(decrypted, DES.block_size)
+
+Then, if the original data was text:
+
+    text = decrypted.decode()
+
+
+7. NORMAL-TEXT ENCRYPTION PIPELINE
+
+    USER INPUT
+        |
+        v
+      STRING
+        |
+        | .encode()
+        v
+      BYTES
+        |
+        | pad()
+        v
+    PADDED BYTES
+        |
+        | encrypt()
+        v
+    CIPHERTEXT BYTES
+        |
+        | .hex()
+        v
+    HEX STRING FOR DISPLAY
+
+
+8. HEX-CIPHERTEXT DECRYPTION PIPELINE
+
+    HEX CIPHERTEXT STRING
+        |
+        | bytes.fromhex()
+        v
+    CIPHERTEXT BYTES
+        |
+        | decrypt()
+        v
+    DECRYPTED BYTES
+        |
+        | unpad()
+        v
+    PLAINTEXT BYTES
+        |
+        | .decode()
+        v
+    PLAINTEXT STRING
+
+
+9. SIMPLE EXAMPLE
+
+    text = "Hello"
+
+    a = text.encode()
+    # b'Hello'
+
+    b = a.hex()
+    # '48656c6c6f'
+
+    c = bytes.fromhex(b)
+    # b'Hello'
+
+    d = c.decode()
+    # 'Hello'
+
+
+10. DES IMPORTANT SIZES
+
+DES:
+    Block size = 64 bits = 8 bytes
+    Key input = 64 bits = 8 bytes
+    Effective key strength = 56 bits
+
+DES-CBC:
+    IV size = 64 bits = 8 bytes
+
+3DES (3-key):
+    Key input = 192 bits = 24 bytes
+    Block size = 64 bits = 8 bytes
+
+
+11. AES IMPORTANT SIZES
+
+AES:
+    Block size = 128 bits = 16 bytes
+
+AES-128:
+    Key = 128 bits = 16 bytes
+
+AES-192:
+    Key = 192 bits = 24 bytes
+
+AES-256:
+    Key = 256 bits = 32 bytes
+
+
+12. COMMON PYTHON CRYPTO PATTERNS
+
+Normal text:
+    plaintext = input("Enter plaintext: ")
+    plaintext = plaintext.encode()
+
+Hex input:
+    hex_data = input("Enter data in HEX: ")
+    data = bytes.fromhex(hex_data)
+
+Encryption:
+    ciphertext = cipher.encrypt(data)
+
+Display encrypted data as HEX:
+    print(ciphertext.hex())
+
+Decryption:
+    plaintext = cipher.decrypt(ciphertext)
+
+Convert decrypted bytes to text:
+    print(plaintext.decode())
+
+
+13. DO NOT MIX THESE UP
+
+NORMAL TEXT:
+    "Hello"
+        |
+        | .encode()
+        v
+    b"Hello"
+
+HEX TEXT:
+    "48656c6c6f"
+        |
+        | bytes.fromhex()
+        v
+    b"Hello"
+
+BYTES:
+    b"Hello"
+        |
+        | .hex()
+        v
+    "48656c6c6f"
+
+BYTES:
+    b"Hello"
+        |
+        | .decode()
+        v
+    "Hello"
+
+
+14. MOST IMPORTANT EXAM MEMORY TRICK
+
+    STRING --(.encode())--> BYTES --(.hex())--> HEX STRING
+
+    STRING <--(.decode())-- BYTES <--(bytes.fromhex())-- HEX STRING
+
+
+Quick reference:
+
+    .encode()       = String -> Bytes
+    b"Hello"        = directly create Bytes
+    .decode()       = Bytes -> String
+    .hex()          = Bytes -> Hex String
+    bytes.fromhex() = Hex String -> Bytes
+
+    encrypt()       = usually returns Bytes
+    decrypt()       = usually returns Bytes
+
+Remember:
+    .hex() is NOT encryption.
+    input() always returns a STRING.
+    Padding is done on BYTES.
+    DES block size = 8 bytes.
+    AES block size = 16 bytes.

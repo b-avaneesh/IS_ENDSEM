@@ -1,0 +1,15 @@
+SCHOLARSHIP APPLICATIONS
+ALGORITHMS / CONCEPTS USED
+
+Lab 1 - Vigenere; fixed demo key/parameters: "HEALTH"
+Lab 2 - AES-192-CBC; fresh IV; PKCS#7 padding
+Lab 3 - RSA; protects the randomly generated document encryption key
+Lab 5 - SHA256; stored content digest and client-side digest comparison
+Lab 6 - Textbook ElGamal signature with SHA-256 (tiny p=467 demo); signs document ID, author and content
+Lab 7 - RSA homomorphic multiplication
+Lab 8 - RSA-OAEP encrypted keyword hashes and IDs; private-key owner scan (PKSE teaching approximation)
+
+Lab 4 is not included: no Rabin, KMS service, rotation or revocation exercises.
+The simple role menu, TCP sockets, JSON messages and audit log mirror the
+hospital reference; they are application scaffolding, not a Lab 4 module.
+Signature and search helpers use SHA-256 independently of the Lab 5 digest.

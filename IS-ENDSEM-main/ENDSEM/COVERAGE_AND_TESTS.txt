@@ -1,0 +1,73 @@
+COVERAGE AND VALIDATION
+=======================
+
+LAB | NEW ENTRYPOINT | COVERAGE
+1   | labs/lab1.py | Additive, multiplicative, affine, Vigenere, autokey,
+    |             | Playfair, Hill, affine brute force, manual examples.
+    | crypto_blocks.py / chain.py | Transposition and reversible file envelopes.
+2   | labs/lab2_6.py | DES ECB/CBC, 3DES CBC, AES key sizes and five modes, timing.
+3   | labs/lab2_6.py | RSA OAEP, RSA/AES hybrid, ECC/AES hybrid, DH/AES,
+    |              | ElGamal byte encryption and comparisons.
+4   | labs/key_management.py | Rabin, versioned keys, grants, expiry, renew/revoke.
+    | workbench.py | Assigned recipient, role checks, revoke, content expiry.
+    | legacy_reference | Original detailed KMS/DRM/SecureCorp variants.
+5   | labs/lab2_6.py | Custom 32-bit hash, standard hashes, timings/collision count.
+    | labs/hash_socket.py | Real separate-process multipart hash server/client.
+6   | crypto_blocks.py / workbench.py | RSA, ElGamal, Schnorr; ECDSA bonus;
+    | voting.py --socket-demo | Signatures on socket-delivered packages.
+7   | labs/lab7.py | Paillier addition/scalar/subtraction/average, RSA product,
+    |             | ElGamal product, shared data, threshold, benchmarking.
+8   | labs/lab8.py | Ten documents, SSE, encrypted posting lists, Paillier
+    |             | private comparison scan, matching IDs and recovered docs.
+    | labs/GNUPG_SNORT.txt | External tool recipes, not executed tool exercises.
+
+PAPER | ENTRYPOINT
+Midsem EduSecure | scenarios/01_EDUSECURE.py or standalone/EDUSECURE.py
+Endsem election | voting.py or standalone/VOTING_ENDSEM.py
+
+COMBINATIONS
+4,608 self-contained Python files: 24 x 4 x 4 x 4 x 3 algorithm choices.
+12 named full-system presets. 16 additional convenience standalone files.
+chain.py supports arbitrary ordered encryption cascades beyond the finite grid.
+Names such as MEDISECURE specify a suggested role mapping; the common menu
+retains generic user names. Read each preset's docstring and scenario map.
+
+AUTOMATED VALIDATION
+tests/test_endsem.py contains 10 test groups, including many subcases:
+- All 24 encryption variants: empty, repeated/special, binary data round trips.
+- All 16 signature/hash pairs: valid, tampered and wrong-key cases.
+- All 3 HE schemes: correct aggregates and invalid negative inputs.
+- Paillier randomized encryption and scalar multiplication.
+- Both search variants: case normalization, deduplication, hit and miss.
+- 3-of-3 partial decryption and missing-share rejection.
+- Every 2-of-3 pair for the separate Shamir custody demonstration.
+- Access, assignment, expiry, revocation, rejection, package tamper tests.
+- Election: changed packets, duplicate votes, wrong roles, missing trustees,
+  correct per-candidate tally, and rejection after closure.
+- All 4,608 generated files parsed; configs compared with the index.
+- 24 complete record workflows rotating encryption/hash/signature/HE/search.
+- Direct classical known values and key rotation retaining older records.
+
+tests/verify_delivery.py exercises:
+- Every one of the 12 scenario entrypoints.
+- Short lab entrypoints, ordered chain, a selected combination.
+- Voting over real loopback TCP.
+- Four convenience standalone files from a different working directory.
+- Interactive EduSecure upload/decrypt/denied auditor sequence.
+- Separate-process hash socket client/server, normal and tampered transfers.
+
+Logs: tests/test_results.txt and tests/delivery_results.txt.
+Example outputs: tests/sample_outputs/. Random ciphertexts/timings vary.
+Runtime used: bundled Python 3.12.14 and cryptography 50.0.2 on Windows.
+RUN.ps1 was also checked on this computer.
+
+WHAT THIS DOES NOT CLAIM
+- Not every one of the 4,608 full programs was executed independently.
+  All were parsed/config-checked; core option coverage and selected complete
+  integrations were exercised. No 4,608-runtime-test claim is made.
+- Original reference copies were structurally inventoried, not all executed.
+- GnuPG/Snort recipes were checked against official documentation, not run.
+- No independent-machine deployment, malicious-ballot proofs, production
+  public-key searchable encryption or durable identity store is claimed.
+- No finite list can anticipate arbitrary new workflows; EXAM_GUIDE explains
+  how to compose the blocks and where a new protocol is actually required.

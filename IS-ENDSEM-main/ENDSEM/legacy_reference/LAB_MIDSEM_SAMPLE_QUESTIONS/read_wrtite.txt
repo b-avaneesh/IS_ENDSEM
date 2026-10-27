@@ -1,0 +1,37 @@
+| Algorithm / Object          | What your code returns        | Store in normal `.txt` file | Retrieve from file           | Conversion needed          |
+| --------------------------- | ----------------------------- | --------------------------- | ---------------------------- | -------------------------- |
+| **Additive Cipher**         | `str`                         | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **Multiplicative Cipher**   | `str`                         | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **Affine Cipher**           | `str`                         | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **Vigenere Cipher**         | `str`                         | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **Autokey Cipher**          | `str`                         | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **Playfair Cipher**         | `str`                         | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **Hill Cipher**             | `str`                         | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **DES ciphertext**          | `hex str` *(in your wrapper)* | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **DES ciphertext** *(raw)*  | `bytes`                       | `f.write(x.hex())`          | `bytes.fromhex(f.read())`    | `.hex()` / `fromhex()`     |
+| **AES ciphertext**          | `hex str` *(in your wrapper)* | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **AES ciphertext** *(raw)*  | `bytes`                       | `f.write(x.hex())`          | `bytes.fromhex(f.read())`    | `.hex()` / `fromhex()`     |
+| **3DES ciphertext**         | `hex str` *(in your wrapper)* | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **3DES ciphertext** *(raw)* | `bytes`                       | `f.write(x.hex())`          | `bytes.fromhex(f.read())`    | `.hex()` / `fromhex()`     |
+| **RSA ciphertext**          | `list[int]`                   | `f.write(str(x))`           | `ast.literal_eval(f.read())` | `str()` / `literal_eval()` |
+| **RSA public key**          | RSA key object                | `key.export_key().decode()` | `RSA.import_key(f.read())`   | `.decode()`                |
+| **RSA private key**         | RSA key object                | `key.export_key().decode()` | `RSA.import_key(f.read())`   | `.decode()`                |
+| **RSA signature**           | `bytes`                       | `f.write(x.hex())`          | `bytes.fromhex(f.read())`    | `.hex()` / `fromhex()`     |
+| **ECC public key**          | ECC key object                | PEM bytes / PEM text        | `load_pem_public_key()`      | serialization              |
+| **ECC private key**         | ECC key object                | PEM bytes / PEM text        | `load_pem_private_key()`     | serialization              |
+| **ECDH shared secret**      | `bytes`                       | `f.write(x.hex())`          | `bytes.fromhex(f.read())`    | `.hex()` / `fromhex()`     |
+| **HKDF-derived AES key**    | `bytes`                       | `f.write(x.hex())`          | `bytes.fromhex(f.read())`    | `.hex()` / `fromhex()`     |
+| **AES-GCM ciphertext**      | `bytes`                       | `f.write(x.hex())`          | `bytes.fromhex(f.read())`    | `.hex()` / `fromhex()`     |
+| **AES-GCM nonce**           | `bytes`                       | `f.write(x.hex())`          | `bytes.fromhex(f.read())`    | `.hex()` / `fromhex()`     |
+| **ElGamal ciphertext**      | `list[tuple]`                 | `f.write(str(x))`           | `ast.literal_eval(f.read())` | `str()` / `literal_eval()` |
+| **ElGamal public key**      | `tuple[int]`                  | `f.write(str(x))`           | `ast.literal_eval(f.read())` | `str()` / `literal_eval()` |
+| **ElGamal private key**     | `int`                         | `f.write(str(x))`           | `int(f.read())`              | `str()` / `int()`          |
+| **DH public value**         | `int`                         | `f.write(str(x))`           | `int(f.read())`              | `str()` / `int()`          |
+| **DH private value**        | `int`                         | `f.write(str(x))`           | `int(f.read())`              | `str()` / `int()`          |
+| **DH shared secret**        | `int`                         | `f.write(str(x))`           | `int(f.read())`              | `str()` / `int()`          |
+| **Schnorr signature**       | `tuple[int,int]`              | `f.write(str(x))`           | `ast.literal_eval(f.read())` | `str()` / `literal_eval()` |
+| **ECC signature**           | `bytes`                       | `f.write(x.hex())`          | `bytes.fromhex(f.read())`    | `.hex()` / `fromhex()`     |
+| **SHA-256**                 | `hexdigest str`               | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **SHA-1**                   | `hexdigest str`               | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **MD5**                     | `hexdigest str`               | `f.write(x)`                | `f.read()`                   | Nothing                    |
+| **Custom hash**             | `int`                         | `f.write(str(x))`           | `int(f.read())`              | `str()` / `int()`          |

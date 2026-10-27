@@ -1,0 +1,210 @@
+AVA REFERENCE - INPUTS FOR generator2_original.py
+==========================================
+
+HOW TO USE
+  1. python generator2_original.py      -> answer the prompts listed below
+  2. cd into the folder it creates
+  3. python solution.py        -> first run asks for passwords (see "FIRST RUN")
+
+"Enter" = just press Enter (keeps the default shown in [brackets]).
+y / n   = yes / no prompts.
+
+
+------------------------------------------------------------
+GENERATOR PROMPT ORDER (same for every question)
+------------------------------------------------------------
+A. DOMAIN
+   System/domain title            -> any name
+   Record name                    -> e.g. patent / patient / grant
+                                     (the program later asks "<record name> ID:")
+   Number of record fields        -> count of fields, NOT counting the ID
+   For each field:
+     Field N name                 -> letters/digits/_ only, no spaces
+     Type                         -> text / integer / decimal / choice / keywords
+     (decimal)  Decimal places    -> 1..6
+     (choice)   Allowed choices   -> comma separated
+     Allow exact-value search?    -> y if you must search on this field
+     (integer/decimal) Compute an encrypted total?  -> y for the homomorphic sum
+     (choice)   Compute encrypted counts?           -> y for per-choice counts
+   Also hash one field on its own?  -> y + field number (e.g. description)
+   Enforce a submission period/deadline?  -> n (unless the question has a deadline)
+   Close submissions after aggregation?   -> n
+   Minimum verified records before aggregate decryption [2]  -> Enter
+
+B. ALGORITHMS (type the number)
+   Encryption : 1 AES-256  2 AES-128  3 AES-192  4 DES  5 Triple-DES
+   Hash       : 1 SHA-512  2 SHA-256  3 SHA-1    4 MD5
+   Key        : 1 RSA  2 ECDH      (protects the AES key)
+                -> RSA bits for key protection [4096]: Enter
+   Signature  : 1 ElGamal  2 RSA  3 Schnorr
+                -> if RSA: RSA bits [2048]: Enter
+   Search     : 1 SSE  2 PKSE
+                -> if SSE : SSE cipher  1 HMAC-SHA256  2 AES  3 DES
+                -> if PKSE: PKSE cipher 1 RSA  2 Paillier   (RSA -> bits: Enter)
+   Homomorphic: 1 Paillier (sum)  2 RSA (product)  3 ElGamal (product)
+                4 ElGamal-Exp (sum, exponential ElGamal)
+
+C. ENTITIES (roles)
+   Number of entities -> count
+   Name of entity N   -> role name (spaces allowed)
+   Allowed workflows  -> comma-separated numbers:
+       1 submit_record      (hash, sign, encrypt, homomorphic encrypt, index)
+       2 verify_record      (decrypt internally, compare hashes + signature)
+       3 view_record        (verify, then show decrypted plaintext)
+       4 search_records     (search on searchable fields)
+       5 aggregate_records  (asks IDs to combine; Enter = all verified)
+       6 threshold_decrypt  (decrypt aggregate; asks Authority 1 + 2 passwords)
+
+D. NEW output folder -> Enter (default folder) or type a new folder path
+
+
+------------------------------------------------------------
+FIRST RUN OF solution.py
+------------------------------------------------------------
+  - Set a password (and confirm it) for every entity, in the order you created them.
+  - Then "Set authority 1 password" and "Set authority 2 password".
+    REMEMBER THESE: decryption (workflow 6) asks for both of them.
+  - Key generation takes a few seconds.
+
+RUNNING A ROLE
+  Pick the entity number -> its password -> "1. Run workflow".
+  The workflow runs ALL of that role's assigned actions in order
+  (submit -> verify -> view -> search -> aggregate -> decrypt).
+  The record ID is asked once and reused within that run.
+  To repeat something (e.g. a second search), choose "1. Run workflow" again.
+
+RESTART TEST
+  Exit, run python solution.py again. Records are stored in record_files/
+  and are still there (verify / search / aggregate them again).
+
+
+============================================================
+Q1. SECURE IP ASSET REGISTRY PORTAL
+============================================================
+A. DOMAIN
+   System/domain title  : IP Asset Registry
+   Record name          : patent
+   Number of fields     : 3
+     Field 1: description | text     | search n
+     Field 2: valuation   | integer  | search n | encrypted total y
+     Field 3: keywords    | keywords | search y
+   Also hash one field on its own? y -> 1 (description)
+   Deadline n | Close n | Minimum Enter
+
+B. ALGORITHMS
+   Encryption 1 (AES-256) | Hash 2 (SHA-256) | Key 1 (RSA) -> Enter
+   Signature 1 (ElGamal)  | Search 2 (PKSE) -> PKSE cipher 1 (RSA) -> Enter
+   Homomorphic 4 (ElGamal-Exp)    <- additive, gives the SUM
+
+C. ENTITIES: 3
+   Inventor         -> 1
+   Patent Examiner  -> 2,3,4
+   Audit Officer    -> 5,6
+
+DEMO (from the sample)
+   Inventor run 1: patent ID IP101 | description Quantum lattice scheme
+                   | valuation 1200000 | keywords Cryptography, Lattice
+   Inventor run 2: patent ID IP102 | description Secure multiparty routing
+                   | valuation 1400000 | keywords Network, Lattice
+   Invalid test  : valuation -5  -> rejected (non-negative digits only)
+   Examiner run  : ID IP101 -> verify (description + record SHA-256, signature)
+                   -> decrypted record shown -> Search by 1 (keywords)
+                   -> Keyword: LATTICE -> IP101, IP102
+                   Repeat with IP102; also search Blockchain -> [] (no matches)
+   Auditor run   : IDs: IP101, IP102 -> authority 1 + 2 passwords
+                   -> Total valuation = 2600000
+   Restart       : exit, rerun, Examiner searches lattice -> IP101, IP102
+
+NOTES
+   - The sample's "Quantum -> IP101" is a word from the description, not a
+     keyword. Keyword search gives no match; say so in the write-up.
+   - Error text is "use nonnegative digits...", not literally "Invalid valuation".
+   - Not covered: Inventor "View submissions" list, printing the PKSE tokens,
+     signature printed in hex, a "2 records loaded" message on restart.
+     Decryption also asks for the 2 authority passwords.
+
+
+============================================================
+Q2. PATIENT RECORDS (9-option menu)
+============================================================
+A. DOMAIN
+   System/domain title  : Patient Records
+   Record name          : patient        (so "patient ID:" = Patient_id)
+   Number of fields     : 4
+     Field 1: patient_name  | text    | search n
+     Field 2: diagnosis     | text    | search y
+     Field 3: blood_glucose | integer | search n | encrypted total y
+              (use decimal, 1 or 2 places, if the dataset has decimals)
+     Field 4: treatment     | text    | search n
+   Also hash one field on its own? n
+   Deadline n | Close n | Minimum Enter
+
+B. ALGORITHMS
+   Encryption 1 (AES-256) | Hash 2 (SHA-256) | Key 1 (RSA) -> Enter
+   Signature 2 (RSA) -> Enter | Search 1 (SSE) -> SSE cipher Enter
+   Homomorphic 1 (Paillier)
+
+C. ENTITIES: 3
+   Data Entry -> 1
+   Doctor     -> 2,3,4
+   Analyst    -> 5,6
+
+QUESTION MENU ITEM -> WHERE IT HAPPENS
+   2 encrypt with AES        -> Data Entry run (every record encrypted on submit)
+   3 SHA-256 by patient ID   -> Doctor run: enter ID, digest printed + compared
+   4 sign with RSA           -> on submit (each record signed)
+   5 verify signature        -> Doctor run (signature comparison MATCH/MISMATCH)
+   6 Paillier glucose sum    -> Analyst run: Enter (= all) -> authority passwords
+   7 search by diagnosis     -> Doctor run: Search by 1 (diagnosis), exact value
+   8 display after verify    -> Doctor run (view after verification)
+   9 exit                    -> last option in the main menu
+
+NOTES (weak fit, check before using)
+   - The dataset must be typed in one record at a time (one Data Entry run each).
+   - No "1 display dataset" option. No Patient_records / encrypted_patient_records
+     files: data is stored in record_files/ folders instead.
+   - Each record is signed separately, not the dataset as one whole.
+   - Diagnosis search matches the whole diagnosis text (case-insensitive).
+   - The menu is per role, not the single 1-9 menu the question shows.
+     A small standalone script matches this question better.
+
+
+============================================================
+Q3. SECURE GRANT EXPENSE PORTAL
+============================================================
+A. DOMAIN
+   System/domain title  : Grant Expense Portal
+   Record name          : grant          (so "grant ID:" = Grant ID)
+   Number of fields     : 2
+     Field 1: description | text    | search n
+     Field 2: amount      | decimal | Decimal places 2 | search n | encrypted total y
+              (or integer if amounts are whole numbers)
+   Also hash one field on its own? n    (MD5 is over the whole grant record)
+   Deadline n | Close n | Minimum Enter
+
+B. ALGORITHMS
+   Encryption 3 (AES-192) | Hash 4 (MD5) | Key 1 (RSA) -> Enter
+   Signature 2 (RSA) -> Enter | Search 1 (SSE) -> SSE cipher Enter
+   Homomorphic 1 (Paillier)
+
+C. ENTITIES: 3
+   Researcher      -> 1
+   Reviewer        -> 2,3,4
+   Finance Officer -> 5,6
+
+DEMO
+   Researcher run : grant ID G101 | description ... | amount 50000.00  (repeat for G102...)
+   Reviewer run   : ID G101 -> RSA signature + MD5 compared -> decrypted record shown
+                    (do this for EVERY grant to be aggregated)
+   Finance run    : IDs: G101, G102 -> authority 1 + 2 passwords -> Total amount
+   Tamper test    : edit a file in record_files/ -> Reviewer run -> "Receipt mismatch"
+   Restart        : exit, rerun -> earlier grants still verifiable/aggregatable
+
+NOTES
+   - Search by Grant ID: the ID itself is not a searchable field. Workaround: add a
+     third field grant_code (text, search y) and type the same ID into it.
+   - Not covered: Researcher "view all submitted records" list, and the decrypted
+     description is shown as plain text, not as a hex dump.
+   - The Finance Officer relies on the Reviewer's verification (aggregation only
+     accepts verified, untampered records); it does not re-run the signature
+     check itself.

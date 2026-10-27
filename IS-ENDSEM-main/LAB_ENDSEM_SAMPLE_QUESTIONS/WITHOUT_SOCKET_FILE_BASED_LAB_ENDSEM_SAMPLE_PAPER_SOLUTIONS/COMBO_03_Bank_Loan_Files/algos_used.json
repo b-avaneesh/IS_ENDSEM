@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_03_Bank_Loan_Files",
+  "classical": "Multiplicative",
+  "symmetric": "AES-256",
+  "asymmetric": "ECDH",
+  "hash": "MD5",
+  "signature": "RSA",
+  "homomorphic": "ElGamal",
+  "search": "SSE"
+}

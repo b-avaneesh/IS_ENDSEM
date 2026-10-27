@@ -1,0 +1,54 @@
+DONATION RECEIPTS - PRACTICE QUESTION AND RUN GUIDE
+
+QUESTION
+Build a client/server system to store a donation receipt. An admin or writer uploads
+documents; a reader searches IDs without reading plaintext; an auditor verifies
+integrity without receiving the document. Use the algorithms in algos_used.
+Add a Additive demonstration and a ElGamal encrypted-number calculation.
+
+RUN (two terminals opened in this folder)
+1. python -m pip install -r requirements.txt
+2. First terminal: python server.py
+3. Second terminal: python client.py
+Port: 5118. Each example has a separate port.
+
+LOGIN
+admin/admin123: all actions
+writer/write123: upload, read, search, list, classical cipher, homomorphic demo
+reader/read123: search and list IDs only
+auditor/audit123: verify, list and view log
+
+TRY THIS
+1. Log in as writer; option 1; ID R101; text: education donation receipt
+2. Option 2, R101: original text, digest and signature_verified=true.
+   Client hash check must also be True.
+3. Option 3, education: R101. Uppercase/punctuation also match.
+4. Option 7, HELLO: see Additive ciphertext and decrypted text.
+5. Option 8, 7 and 3: decrypted_result = 21.
+   Ciphertexts are combined before the final result is decrypted.
+6. Quit, reconnect as reader and attempt option 2: permission denied.
+7. Reconnect as auditor; option 6, R101: verified=true.
+8. Upload ten IDs with different texts; search a shared keyword and a missing word.
+9. Duplicate R101, blank ID and a two-word search should give clear errors.
+
+READ THE CODE IN THIS ORDER
+USERS/constants -> crypto helpers -> handle_request -> client_thread -> main.
+upload: symmetric encryption -> key protection -> digest -> signature -> index.
+get: unwrap key -> decrypt -> digest/signature verification -> return text.
+Lab 1 and Lab 7 are separate menu demonstrations, just like the reference.
+
+EXAM SCOPE
+Data and keys live in memory; restart clears records. audit.log is generated
+beside server.py. Each folder is standalone; no parent-folder imports.
+For easy tracing, crypto runs on the trusted server (including signing and
+the key-owner role). Local TCP is not TLS and passwords are demo credentials.
+Classical ciphers, DES/3DES, MD5/SHA1/custom hashes, textbook groups and raw
+homomorphic RSA are study material, not production security choices.
+ElGamal and DH examples use tiny p=467 groups so the arithmetic is readable.
+Homomorphic multiplication is modulo n (RSA) or 467 (ElGamal).
+Playfair merges I/J and keeps filler letters; Hill and transposition keep
+padding X characters. These ciphers do not restore original formatting.
+SSE reveals repeated-token/access patterns. Public-key owner-scan examples
+decrypt the index to compare; they are NOT full trapdoor-based PEKS.
+DH is key agreement, not a signature. ECDH uses P-256, SHA256 derivation
+and AES-EAX wrapping; RSA signatures here use PKCS#1 v1.5, not PSS.

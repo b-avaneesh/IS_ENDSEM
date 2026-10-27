@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_07_Research_Notebooks",
+  "classical": "Hill",
+  "symmetric": "AES-192",
+  "asymmetric": "ECDH",
+  "hash": "MD5",
+  "signature": "ElGamal",
+  "homomorphic": "Paillier",
+  "search": "SSE"
+}

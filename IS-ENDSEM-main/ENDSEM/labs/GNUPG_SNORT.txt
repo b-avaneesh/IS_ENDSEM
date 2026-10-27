@@ -1,0 +1,60 @@
+LAB 8 ADDITIONAL QUESTIONS - EXTERNAL TOOL WORKFLOWS
+===================================================
+These are practice command recipes, not claimed execution results. GnuPG and
+Snort require their own installations and an appropriate local lab environment.
+
+GnuPG: generate identities, exchange public keys, encrypt/sign, decrypt/verify
+----------------------------------------------------------------------------
+1. Generate an exam-only key interactively:
+   gpg --full-generate-key
+   Use a demonstration identity, e.g. Alice Lab <alice@example.test>.
+   Generate/import a recipient key for Bob Lab <bob@example.test>.
+2. Inspect and export public keys:
+   gpg --list-keys --fingerprint
+   gpg --armor --export alice@example.test > alice-public.asc
+   gpg --import bob-public.asc
+   Compare the recipient fingerprint through the lab's trusted channel.
+3. Create signed encrypted data for Bob:
+   gpg --output report.gpg --local-user alice@example.test --recipient bob@example.test --sign --encrypt report.txt
+4. Transfer report.gpg plus Alice's public key through the lab's chosen channel.
+5. On Bob's side:
+   gpg --import alice-public.asc
+   gpg --output recovered.txt --decrypt report.gpg
+   Observe signature verification output; compare recovered content.
+6. Detached signature variant:
+   gpg --armor --detach-sign report.txt
+   gpg --verify report.txt.asc report.txt
+   Modify a COPY of the plaintext and verify against it; observe failure.
+
+Show: public fingerprint, encrypted file, successful decrypt, valid signature,
+and failed verification after modification. Do not export private keys as part
+of ordinary public-key exchange.
+
+Snort 3: simple NIDS rule, offline packet capture, live lab traffic
+-----------------------------------------------------------------
+Create local.rules containing:
+alert icmp any any -> any any (msg:"LAB ICMP packet"; sid:1000001; rev:1;)
+
+Check version and available options:
+   snort -V
+   snort --help
+Validate your installation's configuration (replace CONFIG_PATH):
+   snort -T -c CONFIG_PATH
+Inspect a lab-provided capture:
+   snort -q -R local.rules -r lab-traffic.pcap -A alert_fast
+Inspect live traffic on the lab interface (replace INTERFACE):
+   snort -c CONFIG_PATH -R local.rules -i INTERFACE -A alert_fast
+
+Generate an ordinary ping between machines in the authorized lab. Read alerts;
+record timestamp, source/destination IP, protocol, rule SID and message. An ICMP
+alert here means the rule matched, not that every ping is a malicious intrusion.
+Capture capability, privileges and interface names depend on the lab OS.
+Snort 2 uses different configuration conventions; do not paste a Snort 3 Lua
+configuration into a Snort 2 installation.
+
+Sources (official manuals):
+https://gnupg.org/documentation/manuals/gnupg/Operational-GPG-Commands.html
+https://gnupg.org/documentation/manuals/gnupg/OpenPGP-Key-Management.html
+https://docs.snort.org/start/help
+https://docs.snort.org/start/inspection
+https://docs.snort.org/start/alert_logging

@@ -1,0 +1,46 @@
+All 36 solutions passed automated checks.
+
+Checked: syntax; two-document upload/decryption; independent number verification;
+HoD verification; SSE match, case handling, missing word and deduplication;
+module restart with persisted keys and index; classical demonstration;
+homomorphic modular arithmetic; duplicate and path rejection;
+ciphertext tampering and signature tampering rejection.
+
+COMBO_01_Hospital_Reports
+COMBO_02_University_Results
+COMBO_03_Bank_Loan_Files
+COMBO_04_Library_Archives
+COMBO_05_Pharmacy_Prescriptions
+COMBO_06_Insurance_Claims
+COMBO_07_Research_Notebooks
+COMBO_08_Payroll_Records
+COMBO_09_Legal_Case_Files
+COMBO_10_Warehouse_Inventory
+COMBO_11_School_Admissions
+COMBO_12_Clinic_Lab_Results
+COMBO_13_Travel_Bookings
+COMBO_14_Supplier_Invoices
+COMBO_15_Employee_Training
+COMBO_16_Property_Documents
+COMBO_17_Scholarship_Applications
+COMBO_18_Donation_Receipts
+COMBO_19_Exam_Question_Bank
+COMBO_20_Transport_Permits
+COMBO_21_Food_Quality_Reports
+COMBO_22_Energy_Meter_Records
+COMBO_23_Sports_Registrations
+COMBO_24_Hotel_Guest_Requests
+COMBO_25_Farm_Soil_Reports
+COMBO_26_Water_Test_Reports
+COMBO_27_Equipment_Maintenance
+COMBO_28_Museum_Catalogue
+COMBO_29_Courier_Manifests
+COMBO_30_Workshop_Certificates
+COMBO_31_Disaster_Relief_Records
+COMBO_32_Veterinary_Reports
+COMBO_33_Housing_Society_Records
+COMBO_34_Internship_Evaluations
+COMBO_35_Laboratory_Asset_Records
+COMBO_36_Community_Project_Files
+
+All 36 also passed scripted interactive menus and fresh-process restarts.

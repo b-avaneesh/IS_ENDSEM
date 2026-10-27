@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_33_Housing_Society_Records",
+  "classical": "Vigenere",
+  "symmetric": "AES-256",
+  "asymmetric": "RSA",
+  "hash": "SHA256",
+  "signature": "Schnorr",
+  "homomorphic": "ElGamal",
+  "search": "SSE"
+}

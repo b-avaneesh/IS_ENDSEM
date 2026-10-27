@@ -1,0 +1,108 @@
+AVA - WHICH TOOL TO USE IN THE EXAM
+===================================
+
+Two tools:
+  [GEN]  generator2.py   (IS-ENDSEM-main/generator2.py, inputs in ava_ref.txt)
+  [PACK] ENDSEM_COMPLETE_ALL_IN_ONE_NEW_DOWNLOAD (2)/  (ready-made .py answers)
+
+
+------------------------------------------------------------
+30-SECOND DECISION
+------------------------------------------------------------
+Go down the list and stop at the first YES.
+
+1. Is it a single lab-manual topic? (e.g. "implement Playfair", "Paillier demo",
+   "Schnorr signature", "SSE on 10 documents")
+      -> [PACK] 03_LAB_MANUAL_CODES/
+
+2. Is it exactly the Grant Expense Portal or the Secure Voting sample?
+      -> [PACK] 01_EXACT_SAMPLE_ANSWERS/
+         Grant_Expense_Portal_Answer.py  /  Secure_Voting_Sample_Answer.py
+
+3. Does the question need ANY of these?
+      - ElGamal that gives a SUM ("encode as g^m", "recover the bounded sum")
+      - PKSE / "encrypt keywords with RSA-OAEP" or with Paillier
+      - a list of keywords per record, searched one keyword at a time
+      - more fields than ID + description + one number
+        (e.g. name, diagnosis, glucose, treatment)
+      - a choice field with per-category counts (e.g. votes per candidate)
+      - SSE tokens made with AES or DES
+      - a hash of ONE field (e.g. description digest) besides the record hash
+      - ECDH for protecting the AES key
+      -> [GEN]
+
+4. Is the record ID + description + ONE number (amount, fee, bill, salary...)
+   with a sum or product of that number?
+      -> [PACK] 02_PICK_A_VARIANT/Grant_Style/<closest story>/
+         <operation>/<cipher_mode>/<hash>/<signature>.py
+
+5. Is it a numeric choice + group ID (vote + constituency, bid + auction...)
+   with a time window, group/time search and a tally?
+      -> [PACK] 02_PICK_A_VARIANT/Voting_Style/<closest story>.zip
+
+6. None of the above (e.g. AES-GCM, one big 1-9 menu over a dataset file)
+      -> start from the closest [PACK] file and edit it, or write it yourself.
+
+
+------------------------------------------------------------
+WHAT EACH TOOL CAN AND CAN'T DO
+------------------------------------------------------------
+                         [GEN] generator2.py          [PACK] all-in-one
+Record fields            ANY number; text, integer,   Fixed: ID + description
+                         decimal, choice, keywords    + one number
+Cipher                   AES-128/192/256, DES, 3DES   AES-128/192/256, DES, 3DES
+Mode                     CBC ONLY                     CBC, ECB, CFB, OFB, CTR
+Hash                     SHA-512, SHA-256, SHA-1, MD5 + SHA3-256
+Signature                ElGamal, RSA (v1.5), Schnorr + RSA-PSS, DSA, ECDSA
+AES-key protection       RSA-OAEP or ECDH             (per sample)
+Homomorphic              Paillier sum,                Paillier sum,
+                         ElGamal-Exp SUM,             Paillier scalar x sum,
+                         RSA product,                 RSA product,
+                         ElGamal product              ElGamal product
+Search                   SSE (HMAC/AES/DES) or        By ID (HMAC or SIV index)
+                         PKSE (RSA-OAEP/Paillier),
+                         by any field or keyword,
+                         or by time range
+Menus                    Per role, BUT one "Run       Proper numbered menus per
+                         workflow" option that runs   role (1 Submit | 2 View |
+                         all that role's steps        3 Back, etc.)
+View all records list    NO                           YES
+Search by record ID      NO                           YES
+Decrypted text as hex    NO                           YES
+Aggregate selected IDs   YES                          YES
+Decrypting the total     Asks Authority 1 + 2         Direct (Grant style);
+                         passwords (threshold)        threshold in Voting style
+Restart / persistence    YES (record_files/)          YES
+Big real numbers         YES                          Only with DEMO_MODE=False
+
+
+------------------------------------------------------------
+TRAPS
+------------------------------------------------------------
+[PACK]
+  - DEMO_MODE = True uses a tiny Paillier key (n = 3127): amounts <= 1000 and
+    at most 3 selected records. For real amounts (e.g. 50000, Rs 1200000) set
+    DEMO_MODE = False, save under a NEW filename, run fresh.
+  - Pick the folder by the algorithm the paper names. Changing a printed
+    label does NOT change the algorithm.
+  - 04_PRODUCT_ELGAMAL MULTIPLIES. If the paper wants an ElGamal SUM, use [GEN].
+  - Exact story name not there? Pick any story with the same shape and
+    rename the labels in CONFIG['story'] at the top of the file.
+
+[GEN]
+  - CBC only. If the paper says ECB/CFB/OFB/CTR, [GEN] doesn't match.
+  - Remember the two authority passwords set on first run.
+  - A role runs ALL its steps every time ("Run workflow"). Split roles so
+    each run makes sense (ava_ref.txt shows how).
+  - ElGamal-Exp totals must stay <= 10^10.
+  - Numeric totals with RSA/ElGamal (product) need values >= 1.
+
+
+------------------------------------------------------------
+QUESTIONS SEEN SO FAR
+------------------------------------------------------------
+  IP Asset Registry (ElGamal sum, RSA-OAEP keywords) -> [GEN]   (ava_ref.txt Q1)
+  Grant Expense Portal                               -> [PACK]  exact answer
+  Secure E-Voting                                    -> [PACK]  exact answer
+  Patient Records (9-option dataset menu)            -> neither fits cleanly;
+        closest is [GEN] (ava_ref.txt Q2), or write a small standalone script

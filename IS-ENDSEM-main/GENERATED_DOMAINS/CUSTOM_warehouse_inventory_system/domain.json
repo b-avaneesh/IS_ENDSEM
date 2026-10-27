@@ -1,0 +1,38 @@
+{
+  "title": "warehouse inventory system",
+  "record_name": "application",
+  "fields": [
+    {
+      "name": "supplier_name",
+      "type": "text",
+      "search": true,
+      "sum": false,
+      "count": false
+    },
+    {
+      "name": "category",
+      "type": "text",
+      "search": true,
+      "sum": false,
+      "count": false
+    },
+    {
+      "name": "quantity",
+      "type": "integer",
+      "search": false,
+      "sum": true,
+      "count": false
+    },
+    {
+      "name": "delivery_cost",
+      "type": "decimal",
+      "search": false,
+      "sum": true,
+      "count": false,
+      "decimals": 2
+    }
+  ],
+  "use_deadline": false,
+  "close_on_aggregate": false,
+  "min_records": 3
+}

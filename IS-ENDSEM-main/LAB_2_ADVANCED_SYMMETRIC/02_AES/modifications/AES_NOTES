@@ -1,0 +1,489 @@
+AES — INPUT / OUTPUT / CHARACTER SPACE / KEY & MODE NOTES
+===============================================================
+
+1. BASIC AES FACTS
+------------------
+AES = Advanced Encryption Standard
+Symmetric block cipher.
+
+AES block size:
+    128 bits = 16 bytes
+
+AES key sizes:
+    AES-128 = 128 bits = 16 bytes
+    AES-192 = 192 bits = 24 bytes
+    AES-256 = 256 bits = 32 bytes
+
+Rounds:
+    AES-128 = 10 rounds
+    AES-192 = 12 rounds
+    AES-256 = 14 rounds
+
+IMPORTANT:
+    AES block size is ALWAYS 128 bits.
+    Key size changes, but block size does not.
+
+
+2. STRING <-> BYTES <-> HEX
+----------------------------
+Python input:
+    input() always returns a STRING.
+
+String -> Bytes:
+    plaintext.encode()
+
+Bytes -> String:
+    data.decode()
+
+Bytes -> HEX string:
+    data.hex()
+
+HEX string -> Bytes:
+    bytes.fromhex(hex_string)
+
+Example:
+    "Hello".encode() -> b"Hello"
+    "Hello".encode().hex() -> "48656c6c6f"
+    bytes.fromhex("48656c6c6f") -> b"Hello"
+
+IMPORTANT:
+    .hex() is NOT encryption.
+    It is only a representation of bytes.
+
+
+3. AES KEY INPUT — ASCII / b""
+------------------------------
+If the key is written using b"...":
+    key = b"0123456789ABCDEF"
+
+Each ASCII character = 1 byte.
+
+Therefore:
+    AES-128 -> 16 characters -> 16 bytes
+    AES-192 -> 24 characters -> 24 bytes
+    AES-256 -> 32 characters -> 32 bytes
+
+
+4. AES KEY INPUT — HEX
+----------------------
+If the key is a hexadecimal representation:
+    key = bytes.fromhex("...")
+
+Every 2 HEX characters = 1 byte.
+
+Therefore:
+    AES-128 -> 32 HEX characters -> 16 bytes
+    AES-192 -> 48 HEX characters -> 24 bytes
+    AES-256 -> 64 HEX characters -> 32 bytes
+
+
+5. VERY IMPORTANT KEY CONFUSION
+-------------------------------
+These are NOT the same:
+
+    key = b"0123456789ABCDEF0123456789ABCDEF"
+
+    32 ASCII characters
+    -> 32 bytes
+    -> 256 bits
+    -> AES-256
+
+But:
+
+    key = bytes.fromhex("0123456789ABCDEF0123456789ABCDEF")
+
+    32 HEX characters
+    -> 16 bytes
+    -> 128 bits
+    -> AES-128
+
+MEMORY:
+    b"..."               -> 1 character = 1 byte
+    bytes.fromhex("...") -> 2 HEX characters = 1 byte
+
+
+6. MANUAL AES KEY INTERPRETATION
+--------------------------------
+The lab manual gives the AES-128 key as:
+
+    0123456789ABCDEF0123456789ABCDEF
+
+For the AES-128 interpretation used in our code, treat this as HEX:
+
+    key = bytes.fromhex(
+        "0123456789ABCDEF0123456789ABCDEF"
+    )
+
+32 HEX characters -> 16 bytes -> 128 bits -> AES-128.
+
+Do NOT write it as b"..." if you intend this manual value to be AES-128.
+
+
+7. BASIC AES INPUT / OUTPUT
+---------------------------
+Normal plaintext:
+    input() -> STRING
+    plaintext.encode() -> BYTES
+
+Encryption:
+    AES encrypt -> CIPHERTEXT BYTES
+    ciphertext.hex() -> HEX STRING
+
+Typical flow:
+    Plaintext STRING
+        -> encode()
+        -> BYTES
+        -> AES encrypt
+        -> CIPHERTEXT BYTES
+        -> .hex()
+        -> HEX STRING
+
+
+8. DECRYPTION
+-------------
+If ciphertext is given as HEX:
+
+    hex_ciphertext = input("Enter ciphertext in HEX: ")
+    ciphertext = bytes.fromhex(hex_ciphertext)
+
+Then:
+    decrypted = cipher.decrypt(ciphertext)
+
+If padding was used:
+    decrypted = unpad(decrypted, AES.block_size)
+
+Finally:
+    decrypted.decode()
+
+Flow:
+    HEX ciphertext
+        -> bytes.fromhex()
+        -> ciphertext bytes
+        -> AES decrypt
+        -> padded plaintext bytes
+        -> unpad()
+        -> plaintext bytes
+        -> decode()
+        -> plaintext string
+
+
+9. PADDING
+----------
+AES block size = 16 bytes.
+
+For ECB/CBC in our programs, plaintext is padded to a multiple of 16 bytes.
+
+Use:
+    from Crypto.Util.Padding import pad, unpad
+
+Encryption:
+    padded_text = pad(plaintext, AES.block_size)
+
+Decryption:
+    decrypted = unpad(decrypted, AES.block_size)
+
+CTR mode does NOT require padding in our implementation.
+
+
+10. AES ECB MODE
+---------------
+Create cipher:
+    cipher = AES.new(key, AES.MODE_ECB)
+
+ECB:
+    - No IV required.
+    - AES block size = 16 bytes.
+    - Each block is encrypted independently.
+
+Conceptually:
+    P1 -> AES -> C1
+    P2 -> AES -> C2
+    P3 -> AES -> C3
+
+
+11. AES CBC MODE
+----------------
+Create cipher:
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+
+CBC requires an IV.
+
+AES block size:
+    16 bytes = 128 bits
+
+CBC IV:
+    16 bytes = 128 bits
+
+IMPORTANT:
+    IV size = BLOCK SIZE.
+    IV size does NOT depend on AES-128/192/256 key size.
+
+CBC concept:
+    P1 XOR IV -> AES -> C1
+    P2 XOR C1  -> AES -> C2
+    P3 XOR C2  -> AES -> C3
+
+Therefore:
+    AES-128 -> key 16 B, IV 16 B
+    AES-192 -> key 24 B, IV 16 B
+    AES-256 -> key 32 B, IV 16 B
+
+
+12. AES CTR MODE
+----------------
+Create cipher:
+    cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)
+
+CTR concept:
+    nonce + counter
+        -> AES
+        -> keystream
+        -> XOR with plaintext
+        -> ciphertext
+
+CTR does not require padding in our implementation.
+
+Manual AES-CTR exercise:
+    Key   = 0123456789ABCDEF0123456789ABCDEF
+    Nonce = 0000000000000000
+
+The key is interpreted as HEX:
+    32 HEX characters -> 16 bytes -> AES-128
+
+The specified nonce is:
+    8 bytes.
+
+IMPORTANT:
+    Do not reuse the same nonce with the same key for different plaintexts.
+
+
+13. AES FILE INPUT / OUTPUT
+---------------------------
+For files, use binary mode:
+
+    open("input.txt", "rb")
+    open("encrypted.bin", "wb")
+
+Files are handled as BYTES, so you normally do not need
+.encode() or .decode() for the binary file data.
+
+Encryption flow:
+    input.txt
+        -> rb
+        -> plaintext bytes
+        -> pad (ECB/CBC)
+        -> AES
+        -> ciphertext bytes
+        -> wb
+        -> encrypted.bin
+
+Decryption flow:
+    encrypted.bin
+        -> rb
+        -> ciphertext bytes
+        -> AES decrypt
+        -> unpad
+        -> plaintext bytes
+        -> wb
+        -> decrypted.txt
+
+
+14. PERFORMANCE TIMING
+----------------------
+Use:
+    import time
+
+Measure:
+    start = time.perf_counter()
+
+    ciphertext = cipher.encrypt(padded_text)
+
+    end = time.perf_counter()
+
+    encryption_time = end - start
+
+Same idea for decryption.
+
+For comparisons, keep the test conditions consistent:
+    - same plaintext
+    - appropriate key
+    - same operation
+    - encryption/decryption measured separately
+
+
+15. AES MODES — QUICK COMPARISON
+--------------------------------
+ECB:
+    Key: YES
+    IV: NO
+    Padding: YES in our ECB programs
+    AES block: 16 bytes
+
+CBC:
+    Key: YES
+    IV: YES
+    IV size: 16 bytes
+    Padding: YES in our CBC programs
+    AES block: 16 bytes
+
+CTR:
+    Key: YES
+    Nonce: YES
+    Padding: NO in our implementation
+    AES block size: 16 bytes
+
+
+16. AES INTERNAL STRUCTURE
+--------------------------
+AES transformations:
+    SubBytes
+    ShiftRows
+    MixColumns
+    AddRoundKey
+
+Encryption structure:
+
+    Initial AddRoundKey
+        ->
+    Main rounds:
+        SubBytes
+        ShiftRows
+        MixColumns
+        AddRoundKey
+        ->
+    Final round:
+        SubBytes
+        ShiftRows
+        AddRoundKey
+
+IMPORTANT:
+    Final AES round does NOT contain MixColumns.
+
+Rounds:
+    AES-128 -> 10
+    AES-192 -> 12
+    AES-256 -> 14
+
+
+17. AES-192 KEY EXPANSION
+-------------------------
+AES-192:
+    Original key = 192 bits = 24 bytes
+    Block = 128 bits = 16 bytes
+    Rounds = 12
+
+The original key is expanded into round keys:
+
+    Original AES-192 key
+            ->
+       Key Expansion
+            ->
+       Round Key 0
+       Round Key 1
+       Round Key 2
+            ...
+       Round Key 12
+
+PyCryptodome performs these internal operations automatically.
+If a question explicitly asks to SHOW key expansion or individual
+AES rounds, a manual AES implementation is needed rather than
+only calling AES.new().
+
+
+18. COMMON AES PROGRAM TYPES
+----------------------------
+A. Normal plaintext -> AES -> HEX ciphertext
+B. HEX plaintext -> AES -> HEX ciphertext
+C. HEX ciphertext -> AES -> plaintext
+D. AES-128 / AES-192 / AES-256 selection
+E. AES ECB
+F. AES CBC
+G. AES CTR
+H. File encryption/decryption
+I. Encryption/decryption timing
+J. Compare ECB vs CBC
+K. Multiple messages
+L. Show AES-192 key expansion / rounds
+
+
+19. EXAM INPUT / OUTPUT CHEAT SHEET
+-----------------------------------
+NORMAL TEXT:
+    input() -> STRING
+    use .encode() before AES
+
+HEX INPUT:
+    input() -> STRING
+    use bytes.fromhex() before AES
+
+AES OUTPUT:
+    encryption/decryption -> BYTES
+
+DISPLAY CIPHERTEXT AS HEX:
+    ciphertext.hex()
+
+CONVERT HEX BACK TO BYTES:
+    bytes.fromhex()
+
+DISPLAY DECRYPTED NORMAL TEXT:
+    decrypted.decode()
+
+FILES:
+    rb / wb
+    data is already BYTES
+
+
+20. SIZE CHEAT SHEET
+--------------------
+AES block:
+    128 bits = 16 bytes
+
+Keys:
+    AES-128 = 128 bits = 16 bytes
+    AES-192 = 192 bits = 24 bytes
+    AES-256 = 256 bits = 32 bytes
+
+HEX key lengths:
+    AES-128 = 32 HEX characters
+    AES-192 = 48 HEX characters
+    AES-256 = 64 HEX characters
+
+CBC:
+    IV = 128 bits = 16 bytes
+
+CTR:
+    Nonce size depends on implementation/configuration.
+    Manual exercise specifies:
+        0000000000000000 = 8 bytes.
+
+
+21. MASTER MEMORY DIAGRAM
+-------------------------
+STRING
+   |
+   | .encode()
+   v
+BYTES
+   |
+   | .hex()
+   v
+HEX STRING
+
+HEX STRING
+   |
+   | bytes.fromhex()
+   v
+BYTES
+   |
+   | .decode()
+   v
+STRING
+
+AES:
+    Block = ALWAYS 128 bits
+
+    Key:
+        128 / 192 / 256 bits
+
+    CBC IV:
+        ALWAYS 128 bits

@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_09_Legal_Case_Files",
+  "classical": "Vigenere",
+  "symmetric": "DES",
+  "asymmetric": "RSA",
+  "hash": "SHA256",
+  "signature": "Schnorr",
+  "homomorphic": "ElGamal",
+  "search": "SSE"
+}

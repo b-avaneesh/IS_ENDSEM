@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_29_Courier_Manifests",
+  "classical": "Autokey",
+  "symmetric": "DES",
+  "asymmetric": "RSA",
+  "hash": "SHA256",
+  "signature": "ElGamal",
+  "homomorphic": "RSA",
+  "search": "SSE"
+}

@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_10_Warehouse_Inventory",
+  "classical": "Additive",
+  "symmetric": "Triple-DES",
+  "asymmetric": "ElGamal",
+  "hash": "SHA1",
+  "signature": "Schnorr",
+  "homomorphic": "Paillier",
+  "search": "SSE"
+}

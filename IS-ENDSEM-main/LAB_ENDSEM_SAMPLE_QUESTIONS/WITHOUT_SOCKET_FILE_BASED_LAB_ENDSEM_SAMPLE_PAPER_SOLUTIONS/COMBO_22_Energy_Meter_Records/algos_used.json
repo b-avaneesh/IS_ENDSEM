@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_22_Energy_Meter_Records",
+  "classical": "Playfair",
+  "symmetric": "AES-192",
+  "asymmetric": "ElGamal",
+  "hash": "SHA1",
+  "signature": "Schnorr",
+  "homomorphic": "Paillier",
+  "search": "SSE"
+}

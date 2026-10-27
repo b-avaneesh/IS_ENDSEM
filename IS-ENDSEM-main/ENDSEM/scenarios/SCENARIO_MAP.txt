@@ -1,0 +1,35 @@
+01_EDUSECURE.py | Student -> assigned Faculty; HoD sees hashes only.
+  {'encryption': 'DES_CBC', 'hash_name': 'SHA256', 'signature': 'RSA', 'he': 'NONE', 'search': 'NONE'} | Combination ID 1825
+
+02_MEDISECURE.py | Patient -> assigned Doctor; Administrator audit; sum fees.
+  {'encryption': 'AES_CBC', 'hash_name': 'SHA512', 'signature': 'ELGAMAL', 'he': 'PAILLIER', 'search': 'SSE'} | Combination ID 2849
+
+03_BANKVAULT.py | Customer -> Manager approval/rejection; total non-rejected amounts.
+  {'encryption': 'TRIPLE_DES', 'hash_name': 'SHA256', 'signature': 'RSA', 'he': 'PAILLIER', 'search': 'SSE'} | Combination ID 2021
+
+04_EMPLOYEE_SAFE.py | Employee -> HR; salary total; keyword audit.
+  {'encryption': 'AES_CBC', 'hash_name': 'SHA256', 'signature': 'RSA', 'he': 'PAILLIER', 'search': 'SSE'} | Combination ID 2789
+
+05_RESULT_SECURE.py | Student -> Faculty; controller revokes; encrypted marks sum.
+  {'encryption': 'AES_CBC', 'hash_name': 'SHA512', 'signature': 'SCHNORR', 'he': 'PAILLIER', 'search': 'SSE'} | Combination ID 2861
+
+06_SUPPLY_SECURE.py | Buyer -> Supplier; approve/reject; numeric product.
+  {'encryption': 'AES_CTR', 'hash_name': 'SHA256', 'signature': 'SCHNORR', 'he': 'ELGAMAL', 'search': 'SSE'} | Combination ID 3395
+
+07_CLOUD_SAFE.py | Uploader -> Receiver; fresh AES key wrapped by RSA; keyword search.
+  {'encryption': 'RSA_HYBRID', 'hash_name': 'SHA256', 'signature': 'RSA', 'he': 'NONE', 'search': 'SSE'} | Combination ID 3746
+
+08_CIA_STORE.py | Owner -> Authorized User; auditor; verify and revoke.
+  {'encryption': 'ECC_HYBRID', 'hash_name': 'SHA512', 'signature': 'ECDSA', 'he': 'NONE', 'search': 'SSE'} | Combination ID 4022
+
+09_PAILLIER_SEARCH.py | Encrypted records with authorized Paillier equality scan; NOT PEKS.
+  {'encryption': 'AES_CBC', 'hash_name': 'SHA256', 'signature': 'RSA', 'he': 'PAILLIER', 'search': 'PAILLIER_PRIVATE_SCAN'} | Combination ID 2790
+
+10_PRODUCT_ANALYTICS.py | Hybrid records; textbook RSA numeric product on separate field.
+  {'encryption': 'RSA_HYBRID', 'hash_name': 'SHA256', 'signature': 'ELGAMAL', 'he': 'RSA', 'search': 'NONE'} | Combination ID 3763
+
+11_DH_RECORDS.py | DH-derived AES; signed ephemeral value in package; encrypted sum.
+  {'encryption': 'DIFFIE_HELLMAN_AES', 'hash_name': 'SHA256', 'signature': 'RSA', 'he': 'PAILLIER', 'search': 'SSE'} | Combination ID 4133
+
+12_CONTENT_EXPIRY.py | Content owner -> assigned user; optional expiry; revoke; search.
+  {'encryption': 'AES_CBC', 'hash_name': 'SHA256', 'signature': 'ELGAMAL', 'he': 'NONE', 'search': 'SSE'} | Combination ID 2798

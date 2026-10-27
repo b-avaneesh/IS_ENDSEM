@@ -1,0 +1,9 @@
+CONFIG: {'encryption': 'RSA_HYBRID', 'hash_name': 'SHA256', 'signature': 'RSA', 'he': 'NONE', 'search': 'SSE', 'scenario': 'records'}
+Encrypted package: {'ct': 'c39601c07dab47a5922a3b3e62f6e83d2075627668ecb8890cda8798da5fdec7', 'iv': '395847931756628718ef0f2cfea09569', 'wrapped': '8f91ee5b67fe65ecda5faa380364ebce6be9a9f6decadfeae23287b6dd4a1022787b80a9896215f4f7a857244caef18910b67affae095bb5632a0051ea231210e02144a27cf47a500dfde554b4e96c89eb83d5eea0da884331ffa5e6cbd397c2390fc0b00b5016ca597979ea87a9bec2adc9e7655177ce8ab98bd8f6cbee604fa73a7a9afc4c92c4715502e252c88bdf94a7402c721e54057aa370bc5c5ad423ba00c8df07707eb595a56ad32c85de654365c8d0af516fb9a604dedd2234fa8780d3bf6e55e763c23e797784bbfa031e97db91eb75f9a664945564af181dba9e9dbc7759d61bd4ef367bfd4aa9ce9d298b97c47ae8721802e539a02d25962363'}
+Hashes/signature: [{'id': '1', 'owner': 'alice', 'recipient': 'bob', 'time': 1792559934.8787808, 'plain_hash': '3db5cd1dea68162e5791b110ed537a84b31260140bfd7b5ae4b6da814ce6e89e', 'cipher_hash': 'd0768067c886c37bc66ff9efe0e6994c0fa3106d063c7f1f87304fd628499aae', 'status': 'PENDING', 'valid': True}, {'id': '2', 'owner': 'eve', 'recipient': 'bob', 'time': 1792559934.8807843, 'plain_hash': '9b675ca1c9c108e7b2b778dae8451608067c09a72e765b8a518d8fcba7cb021a', 'cipher_hash': '6ceaaa5a0002f2e39f0228b14a0c17445fd4a38c429efe97c76ee7655bd20d07', 'status': 'PENDING', 'valid': True}]
+Decrypted: Academic record: score 85
+Encrypted search education: ['1', '2']
+Decision: APPROVED
+PASS: auditor denied plaintext
+Tamper verification: False
+PASS: revoked upload denied

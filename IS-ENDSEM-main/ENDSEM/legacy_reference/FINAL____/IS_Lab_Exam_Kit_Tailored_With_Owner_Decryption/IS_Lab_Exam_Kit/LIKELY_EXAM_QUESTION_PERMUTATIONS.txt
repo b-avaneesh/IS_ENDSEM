@@ -1,0 +1,361 @@
+INFORMATION SECURITY LAB - LIKELY EXAM QUESTION PERMUTATIONS
+============================================================
+
+Basis of prediction
+-------------------
+The uploaded sample paper combines four separately marked areas:
+
+1. Encryption and decryption
+2. Digital signatures
+3. Hashing and integrity verification
+4. Role-based access control
+
+It then places them inside one menu-driven system with three roles, file or
+database storage, retrieval, and timestamps. Therefore, the most likely new
+question is the same architecture with a different domain, different role
+names, and one or two changed algorithms.
+
+These are predictions, not leaked questions. Questions 1-6 are the most useful
+to practise first because they preserve the exact structure of the sample.
+
+
+TIER A - VERY LIKELY FULL-SCENARIO QUESTIONS
+============================================
+
+QUESTION 1 - SECURE HOSPITAL RECORD SYSTEM
+------------------------------------------
+You are required to develop a secure patient-record system called MediSecure.
+It must protect medical reports, permit access only to authorized users, and
+detect any modification of stored reports. The system has three roles:
+
+Patient:
+- Uploads a medical report using keyboard input or a text file.
+- Encrypts the report using AES-128 before storage.
+- Signs the SHA-256 hash of the encrypted report using the patient's RSA
+  private key.
+- Views their previous encrypted reports and hashes with timestamps.
+
+Doctor:
+- Views reports belonging to assigned patients.
+- Decrypts reports using the shared AES key.
+- Verifies the patient's RSA signature.
+- Recomputes the SHA-256 hash and stores the verification result with time.
+
+Hospital Administrator:
+- Views only patient names, report hashes, timestamps, and verification status.
+- Must not view decrypted medical information.
+- Can verify the digital signature for audit purposes.
+
+Task:
+Develop a menu-driven Python program implementing AES encryption/decryption,
+RSA digital signatures, SHA-256 hashing, role-based access control, persistent
+file/database storage, and timestamps.
+
+
+QUESTION 2 - SECURE BANKING TRANSACTION SYSTEM
+----------------------------------------------
+Develop BankVault, a system for securely storing and approving transaction
+requests. Use Triple DES for confidentiality, RSA signatures for authenticity,
+and SHA-256 for integrity.
+
+Customer:
+- Enters or uploads a transaction request.
+- Encrypts it with Triple DES.
+- Signs the hash of the encrypted transaction using an RSA private key.
+- Views their submitted transaction IDs, ciphertexts, hashes, and timestamps.
+
+Bank Manager:
+- Decrypts transaction requests using the shared Triple DES key.
+- Verifies customer signatures and hashes.
+- Approves or rejects each transaction and stores the result with a timestamp.
+
+Auditor:
+- Views only transaction IDs, hashes, signatures, approval results, and times.
+- Cannot decrypt or modify transactions.
+- Verifies stored signatures during an audit.
+
+Task:
+Create a menu-driven Python program with login, separate menus for the three
+roles, encryption/decryption functions, signature functions, hash functions,
+access control, and JSON or text-file storage.
+
+
+QUESTION 3 - EMPLOYEE DOCUMENT MANAGEMENT
+-----------------------------------------
+An organization requires EmployeeSafe for confidential storage of employee
+contracts. Use DES in CBC mode, RSA digital signatures, and SHA-256 hashing.
+
+Employee:
+- Uploads a contract from the keyboard or from a file.
+- Encrypts it using DES-CBC with a shared key and IV.
+- Signs the SHA-256 digest of the ciphertext.
+- Views only their previous submissions and timestamps.
+
+HR Officer:
+- Decrypts the selected employee contract.
+- Verifies the employee's RSA signature.
+- Compares newly calculated plaintext and ciphertext hashes with stored hashes.
+- Stores a verified/not-verified result with a timestamp.
+
+Company Head:
+- Views employee name, hashes, timestamps and verification status only.
+- Verifies signatures but cannot decrypt the contract.
+
+Task:
+Implement a menu-driven Python program. Store IV, ciphertext, hashes,
+signature, public key and timestamp so that old records can still be verified.
+
+
+QUESTION 4 - UNIVERSITY RESULT PORTAL VARIANT
+---------------------------------------------
+Develop ResultSecure for protecting semester-result files. The roles are
+Student, Faculty and Examination Controller. Use AES-256 instead of DES, an
+RSA signature, and SHA-256.
+
+Student:
+- Uploads a result-related document and encrypts it using AES-256.
+- Signs the SHA-256 hash of the ciphertext using an RSA private key.
+- Views only their own encrypted files and upload history.
+
+Faculty:
+- Decrypts a selected student's document.
+- Verifies the signature and both stored hashes.
+- Adds a verification remark and timestamp.
+
+Examination Controller:
+- Views hashes, signatures, student IDs, verification remarks and timestamps.
+- Cannot view decrypted documents.
+- Can revoke a student's upload permission after detecting an invalid signature.
+
+Task:
+Write a menu-driven program with AES encrypt/decrypt functions, RSA
+sign/verify functions, SHA-256, access control, timestamps, file input and
+persistent storage.
+
+
+QUESTION 5 - SECURE SUPPLY-CHAIN ORDERS
+--------------------------------------
+Develop SupplySecure for exchanging procurement orders among Buyers,
+Suppliers and Auditors. Use AES in CTR mode, RSA signatures and SHA-256.
+
+Buyer:
+- Creates an order using keyboard or file input.
+- Encrypts it using AES-CTR with a nonce.
+- Signs the encrypted order and uploads it with its hash and timestamp.
+- Views only orders created by that buyer.
+
+Supplier:
+- Decrypts orders addressed to the supplier.
+- Verifies the buyer's signature and ciphertext hash.
+- Changes the status to accepted/rejected and records the verification time.
+
+Auditor:
+- Views order number, buyer/supplier names, hashes, status and timestamps only.
+- Verifies signatures without decrypting order details.
+
+Task:
+Implement the system using functions for AES-CTR encryption/decryption,
+SHA-256, RSA signing/verification, storage and role checks. The nonce must be
+stored with the ciphertext for later decryption.
+
+
+QUESTION 6 - DIGITAL CONTENT ACCESS SYSTEM
+------------------------------------------
+Create ContentGuard for securely distributing e-books. Use AES-128 for content
+encryption, ElGamal digital signatures and SHA-256 hashing.
+
+Content Creator:
+- Uploads and encrypts an e-book description or text file.
+- Signs the hash of encrypted content with an ElGamal private key.
+- Grants a customer access for a limited time.
+- Can revoke customer access.
+
+Customer:
+- Views and decrypts only content for which access is active.
+- Verifies the creator's ElGamal signature and SHA-256 hash.
+- Is denied access after the expiry time.
+
+Administrator:
+- Views content IDs, hashes, access grants, expiry times and audit logs.
+- Cannot view decrypted content.
+- Can revoke a compromised content creator's key.
+
+Task:
+Build a menu-driven program with encryption/decryption, ElGamal sign/verify,
+hashing, time-based access control, key revocation, and audit logs.
+
+
+TIER B - HIGH-PROBABILITY ALGORITHM/ARCHITECTURE VARIANTS
+=========================================================
+
+QUESTION 7 - SECURE CLOUD FILE SHARING
+--------------------------------------
+Create CloudSafe with the roles Uploader, Receiver and Administrator.
+
+- The Uploader encrypts a file with a random AES session key.
+- The AES key is encrypted using the Receiver's RSA public key.
+- The Uploader signs the SHA-256 hash of the encrypted file.
+- The Receiver decrypts the AES key with an RSA private key, decrypts the file,
+  verifies the signature and checks the hash.
+- The Administrator sees file names, hashes, owners, receivers and timestamps,
+  but cannot decrypt decrypted data.
+- Every upload, download, failed verification and key revocation is logged.
+
+Develop a menu-driven Python program using hybrid RSA-AES encryption, RSA
+digital signatures, SHA-256, role-based access and persistent storage.
+
+
+QUESTION 8 - AUTHENTICATED DIFFIE-HELLMAN MESSAGING
+--------------------------------------------------
+Build PeerSecure for communication between Sender, Receiver and Auditor.
+
+- Sender and Receiver generate Diffie-Hellman private/public values.
+- Their public DH values are authenticated using RSA signatures.
+- Both compute the same shared secret and derive an AES key using SHA-256.
+- Sender encrypts a message using the derived AES key.
+- Receiver verifies the sender's signature and decrypts the message.
+- Auditor views public values, hashes, signature results and timestamps only.
+- The program measures key-generation and shared-key computation time.
+
+Implement separate functions for DH key generation, shared-secret calculation,
+AES encryption/decryption, RSA signing/verification and role checks.
+
+
+QUESTION 9 - CENTRALIZED HOSPITAL KEY SERVICE
+--------------------------------------------
+Develop a centralized key-management system for Hospitals, Clinics and a Key
+Administrator using the Rabin cryptosystem.
+
+- Register a hospital/clinic and generate its Rabin public/private keys.
+- Distribute keys only after role authorization.
+- Encrypt and decrypt a short patient record.
+- Revoke keys belonging to a closed or compromised facility.
+- Renew keys that are older than a given period.
+- Keep private keys unavailable to ordinary users.
+- Log generation, distribution, revocation and renewal with timestamps.
+- Demonstrate that Rabin decryption gives four roots and identify the correct
+  plaintext using a fixed redundancy prefix.
+
+Create a menu-driven Python program and briefly compare Rabin with RSA.
+
+
+QUESTION 10 - MULTI-DEPARTMENT ENTERPRISE SYSTEM
+-----------------------------------------------
+An enterprise contains Finance, HR and Supply Chain subsystems. Implement a
+system that:
+
+- Generates an RSA key pair for every subsystem.
+- Uses protected Diffie-Hellman exchange to establish a shared secret.
+- Derives an AES key and encrypts documents sent between subsystems.
+- Allows a subsystem to decrypt only documents addressed to it.
+- Supports adding a new department without rewriting the program.
+- Supports key renewal and revocation.
+- Records every send, receive, key generation and key revocation operation.
+- Uses SHA-256 to detect document modification.
+
+Create a menu-driven Python implementation with System User, Receiving System
+and Security Administrator access levels.
+
+
+QUESTION 11 - CLIENT/SERVER INTEGRITY MONITOR
+---------------------------------------------
+Write a client-server Python system that verifies messages using hashing.
+
+Client:
+- Accepts a message and divides it into multiple parts.
+- Computes SHA-256 of the original complete message.
+- Sends all parts to the server.
+- Receives the server's hash and displays verified or tampered.
+
+Server:
+- Receives and reassembles all message parts in the correct order.
+- Computes MD5, SHA-1 and SHA-256 hashes.
+- Returns SHA-256 to the client and stores all hashes with a timestamp.
+
+Administrator:
+- Views message IDs, hashes, collision results and timestamps only.
+- Can choose a tampering option that changes one message part before hashing.
+
+Also generate 50-100 random strings and compare MD5, SHA-1 and SHA-256 by
+execution time and collisions.
+
+
+QUESTION 12 - CIA TRIAD DOCUMENT SYSTEM
+--------------------------------------
+Develop CIAStore with the roles Document Owner, Authorized User and Auditor.
+
+Confidentiality:
+- Encrypt documents using AES.
+- Encrypt the AES session key using the authorized user's RSA public key.
+
+Integrity:
+- Store a SHA-256 hash of the encrypted document.
+- Recompute and compare the hash whenever a document is retrieved.
+
+Authenticity:
+- Owner signs the hash using an RSA private key.
+- Authorized User and Auditor verify using the owner's public key.
+
+Availability and access control:
+- Authorized User can decrypt an assigned document.
+- Auditor can view hashes, signatures, verification status and timestamps only.
+- Revoked users must be denied immediately.
+
+Implement login, role-based menus, upload from keyboard/file, persistent
+storage, encryption/decryption, sign/verify, hashing, revocation and audit logs.
+
+
+TIER C - POSSIBLE SHORTER QUESTIONS
+===================================
+
+13. Create a menu-driven program that allows a user to select DES, AES-128,
+    AES-192, AES-256 or Triple DES; encrypt/decrypt a message; and compare time.
+
+14. Write a program that supports ECB, CBC, CFB, OFB and CTR modes, stores the
+    required IV/nonce, decrypts correctly and plots execution time for 5 inputs.
+
+15. Implement RSA and ElGamal encrypt/decrypt functions for the same message.
+    Measure key generation, encryption and decryption time and compare results.
+
+16. Implement RSA and ECC hybrid file encryption for two files of different
+    sizes. Verify that decrypted files equal the originals using SHA-256.
+
+17. Implement ElGamal and Schnorr signature generation and verification. Add a
+    tampering option to prove that verification fails after changing a message.
+
+18. Implement RSA signing on a client and signature verification on a server.
+    Transmit the message, signature and public key using sockets.
+
+19. Implement additive, multiplicative and affine encryption/decryption in one
+    menu. Include brute-force additive and known-plaintext affine attacks.
+
+20. Implement Vigenere, autokey, Playfair and Hill encryption/decryption using
+    user input. Display the generated Playfair matrix and inverse Hill key.
+
+
+WHAT TO PRACTISE FIRST
+======================
+
+1. Question 1 - closest complete algorithm swap from the sample.
+2. Question 4 - closest domain and role permutation.
+3. Question 7 - likely combination of Labs 2, 3, 5 and 6.
+4. Question 8 - likely combination of RSA, DH, AES and SHA-256.
+5. Question 12 - directly matches the Lab 6 CIA-triad additional exercise.
+6. Question 11 - directly matches the Lab 5 client-server exercises.
+
+
+QUICK TEMPLATE-ADJUSTMENT MAP
+=============================
+
+Question 1: Replace DES functions with AES functions; rename the roles.
+Question 2: Replace DES with 3DES; add approve/reject to Faculty-style menu.
+Question 3: Use DES-CBC and store IV along with ciphertext.
+Question 4: Use AES-256; add revoke permission to the HoD-style role.
+Question 5: Use AES-CTR and store nonce instead of CBC IV.
+Question 6: Replace RSA sign/verify with ElGamal sign/verify; add expiry time.
+Question 7: Use RSA/ECC hybrid file functions from Lab 3.
+Question 8: Use DH functions from Lab 3 plus RSA signatures from Lab 6.
+Question 9: Use the Rabin service functions from Lab 4.
+Question 10: Use SecureCorp functions from Lab 4.
+Question 11: Use the server/client functions from Lab 5.
+Question 12: Use the CIA record functions from Lab 6.

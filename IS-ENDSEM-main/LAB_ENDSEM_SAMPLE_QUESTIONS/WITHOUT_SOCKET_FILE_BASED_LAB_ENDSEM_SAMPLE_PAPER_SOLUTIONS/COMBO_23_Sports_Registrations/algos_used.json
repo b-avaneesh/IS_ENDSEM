@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_23_Sports_Registrations",
+  "classical": "Hill",
+  "symmetric": "AES-256",
+  "asymmetric": "ECDH",
+  "hash": "MD5",
+  "signature": "Schnorr",
+  "homomorphic": "RSA",
+  "search": "SSE"
+}

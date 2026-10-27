@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_02_University_Results",
+  "classical": "Additive",
+  "symmetric": "AES-192",
+  "asymmetric": "ElGamal",
+  "hash": "SHA1",
+  "signature": "RSA",
+  "homomorphic": "RSA",
+  "search": "SSE"
+}

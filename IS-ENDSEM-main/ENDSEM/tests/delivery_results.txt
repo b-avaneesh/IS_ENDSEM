@@ -1,0 +1,32 @@
+All new Python files parse
+PASS scenarios\01_EDUSECURE.py
+PASS scenarios\02_MEDISECURE.py
+PASS scenarios\03_BANKVAULT.py
+PASS scenarios\04_EMPLOYEE_SAFE.py
+PASS scenarios\05_RESULT_SECURE.py
+PASS scenarios\06_SUPPLY_SECURE.py
+PASS scenarios\07_CLOUD_SAFE.py
+PASS scenarios\08_CIA_STORE.py
+PASS scenarios\09_PAILLIER_SEARCH.py
+PASS scenarios\10_PRODUCT_ANALYTICS.py
+PASS scenarios\11_DH_RECORDS.py
+PASS scenarios\12_CONTENT_EXPIRY.py
+PASS labs/lab1.py
+PASS labs/lab2_6.py
+PASS labs/lab7.py
+PASS labs/lab8.py
+PASS labs/key_management.py
+PASS voting.py
+PASS chain.py
+PASS combinations/AES_CBC/SHA512/ELGAMAL__PAILLIER__SSE.py
+PASS standalone/EDUSECURE.py
+PASS standalone/VOTING_ENDSEM.py
+PASS standalone/LAB7_ALL.py
+PASS standalone/LAB8_ALL.py
+PASS scenarios/01_EDUSECURE.py
+PASS separate-process hash socket; tamper= False
+PASS separate-process hash socket; tamper= True
+DELIVERY CHECKS PASSED
+
+PASS copied full combination from isolated directory
+PASS all 724 original Python source hashes unchanged

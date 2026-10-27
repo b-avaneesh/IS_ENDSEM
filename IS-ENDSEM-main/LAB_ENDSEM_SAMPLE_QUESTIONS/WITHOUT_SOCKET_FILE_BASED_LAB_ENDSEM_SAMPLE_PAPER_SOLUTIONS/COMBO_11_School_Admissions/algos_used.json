@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_11_School_Admissions",
+  "classical": "Multiplicative",
+  "symmetric": "AES-128",
+  "asymmetric": "ECDH",
+  "hash": "MD5",
+  "signature": "Schnorr",
+  "homomorphic": "RSA",
+  "search": "SSE"
+}

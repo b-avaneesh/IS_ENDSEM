@@ -1,0 +1,167 @@
+ELGAMAL — QUICK NOTES
+
+1. ALICE -> BOB
+
+If Alice wants to send a message to Bob:
+- Bob generates the ElGamal key pair.
+- Alice uses Bob's PUBLIC KEY for encryption.
+- Bob uses his PRIVATE KEY for decryption.
+
+Bob's Private Key = x
+Bob's Public Key  = (p, g, h)
+
+
+2. KEY GENERATION
+
+Publicly known:
+p = prime number
+g = generator
+
+Bob chooses:
+x = private key
+
+Calculate:
+h = g^x mod p
+
+Therefore:
+PUBLIC KEY  = (p, g, h)
+PRIVATE KEY = x
+
+Remember:
+x       -> Bob's private key
+(p,g,h) -> Bob's public key
+
+
+3. ENCRYPTION — ALICE
+
+Alice gets Bob's public key (p,g,h).
+
+For message m:
+
+Step 1:
+Choose a random temporary value k.
+
+Step 2:
+c1 = g^k mod p
+
+Step 3:
+c2 = m * h^k mod p
+
+Ciphertext:
+(c1, c2)
+
+Alice sends (c1,c2) to Bob.
+
+
+4. DECRYPTION — BOB
+
+Bob receives (c1,c2).
+
+Step 1:
+s = c1^x mod p
+
+Step 2:
+Find modular inverse:
+s^(-1) mod p
+
+Step 3:
+m = c2 * s^(-1) mod p
+
+Then convert m back to the original character/message.
+
+
+5. COMPLETE FLOW
+
+BOB:
+Generate private x
+Generate public (p,g,h)
+        |
+        v
+      ALICE
+        |
+Uses Bob's public key
+        |
+Choose random k
+        |
+c1 = g^k mod p
+c2 = m*h^k mod p
+        |
+Ciphertext = (c1,c2)
+        |
+        v
+      BOB
+        |
+s = c1^x mod p
+        |
+s inverse
+        |
+m = c2*s^(-1) mod p
+        |
+Original message
+
+
+6. PYTHON CODE MAPPING
+
+Bob's private key:
+x = 127
+
+Bob's public key component:
+h = pow(g, x, p)
+
+Bob's public key:
+(p, g, h)
+
+Alice chooses random k:
+k = random.randint(1, p - 2)
+
+Encryption:
+c1 = pow(g, k, p)
+c2 = (m * pow(h, k, p)) % p
+
+Decryption:
+s = pow(c1, x, p)
+s_inv = pow(s, -1, p)
+m = (c2 * s_inv) % p
+
+
+7. WHAT TO MEMORIZE
+
+KEYS:
+Private = x
+Public  = (p,g,h)
+
+h = g^x mod p
+
+ENCRYPTION:
+c1 = g^k mod p
+c2 = m*h^k mod p
+
+Ciphertext = (c1,c2)
+
+DECRYPTION:
+s = c1^x mod p
+m = c2*s^(-1) mod p
+
+
+8. MOST IMPORTANT CONCEPT
+
+For Alice -> Bob:
+
+Alice encrypts using Bob's PUBLIC key.
+Bob decrypts using Bob's PRIVATE key.
+
+The receiver owns the key pair.
+
+The random k is a temporary value chosen during encryption.
+
+
+9. CHARACTER HANDLING
+
+For general text:
+m = ord(ch)
+
+After decryption:
+ch = chr(m)
+
+The plaintext number must satisfy:
+0 <= m < p

@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_34_Internship_Evaluations",
+  "classical": "Additive",
+  "symmetric": "DES",
+  "asymmetric": "ElGamal",
+  "hash": "SHA1",
+  "signature": "Schnorr",
+  "homomorphic": "Paillier",
+  "search": "SSE"
+}

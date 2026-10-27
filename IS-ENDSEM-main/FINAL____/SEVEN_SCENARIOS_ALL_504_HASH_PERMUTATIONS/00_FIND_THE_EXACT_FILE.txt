@@ -1,0 +1,47 @@
+FIND THE CORRECT HASH + ENCRYPTION PERMUTATION
+================================================
+
+TOTAL FILES
+-----------
+7 scenarios x 24 encryption algorithms x 3 record hashes = 504 solutions.
+
+STEP 1 - SELECT THE HASH FOLDER
+-------------------------------
+Question says SHA-256 hashing -> open SHA256
+Question says SHA-1 hashing   -> open SHA1
+Question says MD5 hashing     -> open MD5
+
+This folder changes the record/plaintext integrity hash only. Digital
+signatures continue using SHA-256 internally unless a question explicitly
+states that the signature digest must also change.
+
+STEP 2 - SELECT THE SCENARIO
+----------------------------
+Patient + assigned Doctor                     -> Q01_MEDISECURE
+Customer + bank approval/rejection            -> Q02_BANKVAULT
+Employee + HR + contract                      -> Q03_EMPLOYEE_SAFE
+Student result + Controller revocation        -> Q04_RESULT_SECURE
+Buyer/Supplier + addressed order + decision   -> Q05_SUPPLY_SECURE
+Cloud Uploader + Receiver                     -> Q07_CLOUD_SAFE
+CIA triad + Authorized User + revocation      -> Q12_CIA_STORE
+
+STEP 3 - SELECT THE ENCRYPTION FILE
+-----------------------------------
+Open the ROLE filename matching the encryption/decryption algorithm stated in
+the question, for example ROLE_AES_CBC.py, ROLE_RSA.py or ROLE_ECC_HYBRID.py.
+
+EXAMPLE
+-------
+Question says:
+- Patient/Doctor/Hospital Administrator
+- AES-CBC encryption
+- SHA-1 record hashing
+
+Open:
+SHA1/Q01_MEDISECURE/05_ROLE_AES_CBC.py
+
+IMPORTANT
+---------
+MD5 and SHA-1 are included because they appear in the lab syllabus, although
+they are considered weak for modern real-world security. Use them only when
+the exam question explicitly names them. Otherwise select SHA256.

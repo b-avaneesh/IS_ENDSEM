@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_27_Equipment_Maintenance",
+  "classical": "Multiplicative",
+  "symmetric": "AES-192",
+  "asymmetric": "ECDH",
+  "hash": "MD5",
+  "signature": "RSA",
+  "homomorphic": "ElGamal",
+  "search": "SSE"
+}

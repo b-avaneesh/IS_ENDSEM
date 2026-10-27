@@ -1,0 +1,12 @@
+{
+  "encryption": "AES-256",
+  "hash": "SHA-256",
+  "key": "RSA",
+  "signature": "ElGamal",
+  "search": "PKSE",
+  "rsa_bits": {
+    "key": 2048,
+    "signature": 2048,
+    "search": 2048
+  }
+}

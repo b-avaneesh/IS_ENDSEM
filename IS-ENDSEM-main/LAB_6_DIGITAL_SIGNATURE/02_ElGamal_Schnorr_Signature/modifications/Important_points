@@ -1,0 +1,244 @@
+ELGAMAL & SCHNORR DIGITAL SIGNATURE
+VARIABLE + PUBLIC/PRIVATE PARAMETER CHEAT SHEET
+
+============================================================
+ELGAMAL
+============================================================
+
+p
+Name: Prime modulus
+Meaning: Prime number used for modular arithmetic.
+Status: PUBLIC
+
+g
+Name: Generator
+Meaning: Generator/base used in modular exponentiation.
+Status: PUBLIC
+
+private_key
+Math notation: x
+Name: Private key
+Meaning: Secret key of the signer.
+Status: PRIVATE — MUST NOT be shared.
+
+public_key
+Math notation: y
+Name: Public key
+Meaning: y = g^x mod p.
+Status: PUBLIC — can be shared.
+
+k
+Name: Random/ephemeral signing value
+Meaning: Temporary value used to create a signature.
+Status: SECRET during signing — do not reveal or improperly reuse.
+In this lab code: k = 61 (hardcoded only for demonstration).
+
+h
+Name: Hash value / message digest
+Meaning: SHA-256(message), reduced modulo (p-1) in this code.
+Status: DERIVED value, not a secret.
+
+k_inverse
+Name: Modular inverse of k
+Meaning: k^(-1) mod (p-1), used in the signature equation.
+Status: SECRET/INTERMEDIATE value.
+
+r
+Name: First signature component
+Meaning: r = g^k mod p.
+Status: PUBLIC as part of the signature.
+
+s
+Name: Second signature component
+Meaning: s = k^(-1)(h - x*r) mod (p-1).
+Status: PUBLIC as part of the signature.
+
+message
+Name: Message
+Meaning: Data being digitally signed.
+Status: Usually PUBLIC in a signature-only scenario.
+
+signature
+Name: Digital signature
+Meaning: The pair (r, s).
+Status: PUBLIC.
+
+ElGamal key relationship:
+    x = private key
+    y = public key = g^x mod p
+
+Signing:
+    h = H(message) mod (p-1)
+    r = g^k mod p
+    s = k^(-1)(h - x*r) mod (p-1)
+
+Signature:
+    (r, s)
+
+Verification:
+    y^r * r^s = g^h (mod p)
+
+Parameters in THIS code:
+    PUBLIC:  p = 467, g = 2
+    PRIVATE: private_key = 127
+    SECRET:  k = 61 (temporary signing value)
+
+
+============================================================
+SCHNORR
+============================================================
+
+p
+Name: Prime modulus
+Meaning: Prime number used for modular arithmetic.
+Status: PUBLIC
+
+q
+Name: Subgroup order / prime-order parameter
+Meaning: Parameter used for Schnorr calculations and modulo q.
+Status: PUBLIC
+
+g
+Name: Generator
+Meaning: Generator used for modular exponentiation.
+Status: PUBLIC
+
+private_key
+Math notation: x
+Name: Private key
+Meaning: Secret key of the signer.
+Status: PRIVATE — MUST NOT be shared.
+
+public_key
+Math notation: y
+Name: Public key
+Meaning: y = g^x mod p in this code.
+Status: PUBLIC — can be shared.
+
+k
+Name: Random/ephemeral signing value
+Meaning: Temporary value used during signing.
+Status: SECRET during signing — do not reveal or improperly reuse.
+In this lab code: k = 5 (hardcoded only for demonstration).
+
+r
+Name: Commitment / first signature component
+Meaning: r = g^k mod p.
+Status: PUBLIC as part of the signature.
+
+e
+Name: Challenge
+Meaning: e = H(message + str(r)) mod q in this code.
+Status: DERIVED/PUBLIC.
+
+s
+Name: Response / second signature component
+Meaning: s = k + x*e mod q.
+Status: PUBLIC as part of the signature.
+
+message
+Name: Message
+Meaning: Data being digitally signed.
+Status: Usually PUBLIC in a signature-only scenario.
+
+signature
+Name: Digital signature
+Meaning: The pair (r, s).
+Status: PUBLIC.
+
+Schnorr key relationship:
+    x = private key
+    y = public key = g^x mod p
+
+Signing:
+    r = g^k mod p
+    e = H(message || r) mod q
+    s = k + x*e mod q
+
+Signature:
+    (r, s)
+
+Verification:
+    g^s = r * y^e (mod p)
+
+Parameters in THIS code:
+    PUBLIC:  p = 23, q = 11, g = 2
+    PRIVATE: private_key = 3
+    SECRET:  k = 5 (temporary signing value)
+
+
+============================================================
+QUICK TABLE
+============================================================
+
+ELGAMAL
+p               PUBLIC      Prime modulus
+g               PUBLIC      Generator
+private_key x   PRIVATE     Secret key
+public_key y    PUBLIC      Public key
+k               SECRET      Temporary signing value
+h               DERIVED     Message hash
+k_inverse       SECRET      Modular inverse of k
+r               PUBLIC      Signature component
+s               PUBLIC      Signature component
+(r,s)            PUBLIC      Digital signature
+message         USUALLY PUBLIC  Message being signed
+
+SCHNORR
+p               PUBLIC      Prime modulus
+q               PUBLIC      Subgroup/order parameter
+g               PUBLIC      Generator
+private_key x   PRIVATE     Secret key
+public_key y    PUBLIC      Public key
+k               SECRET      Temporary signing value
+r               PUBLIC      Commitment/signature component
+e               DERIVED     Challenge
+s               PUBLIC      Response/signature component
+(r,s)            PUBLIC      Digital signature
+message         USUALLY PUBLIC  Message being signed
+
+
+============================================================
+MOST IMPORTANT LAB RULES
+============================================================
+
+1. Public parameters can be shared:
+   ElGamal: p, g
+   Schnorr: p, q, g
+
+2. Public key y can be shared.
+
+3. Digital signature (r, s) can be shared.
+
+4. Private key x MUST remain secret.
+
+5. Temporary signing value k is also secret.
+   Real implementations generate it securely.
+
+6. Digital signatures are NOT encryption.
+   For signatures:
+       SIGN   -> sender's PRIVATE key
+       VERIFY -> sender's PUBLIC key
+
+Memory trick:
+
+ElGamal:
+    p,g = public parameters
+    x   = private key
+    y   = public key
+    k   = temporary secret
+    h   = hash
+    r,s = signature
+
+Schnorr:
+    p,q,g = public parameters
+    x     = private key
+    y     = public key
+    k     = temporary secret
+    r     = commitment
+    e     = challenge
+    s     = response
+
+NOTE:
+Exact equations/conventions can vary between implementations.
+For the lab, follow the convention used in the given code/manual.

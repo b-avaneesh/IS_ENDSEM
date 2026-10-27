@@ -1,0 +1,340 @@
+INFORMATION_SECURITY_MIDSEM/
+├── COMBINATIONS/
+│   ├── LEVEL_1_TWO_BLOCKS/
+│   │   ├── 01_Encrypt_Then_Hash.py
+│   │   └── 02_Hash_Then_RSA_Sign.py
+│   ├── LEVEL_2_THREE_BLOCKS/
+│   │   └── 01_Encrypt_Hash_Sign.py
+│   ├── LEVEL_3_SCENARIOS/
+│   │   └── 01_Secure_File_Package.py
+│   └── MOCK_MIDSEMS/
+│       ├── MOCK_01/
+│       │   ├── solution/
+│       │   │   └── README.md
+│       │   └── question.md
+│       ├── MOCK_02/
+│       │   ├── solution/
+│       │   │   └── README.md
+│       │   └── question.md
+│       ├── MOCK_03/
+│       │   ├── solution/
+│       │   │   └── README.md
+│       │   └── question.md
+│       └── MOCK_04/
+│           ├── solution/
+│           │   └── README.md
+│           └── question.md
+├── LAB_1_BASIC_CIPHERS/
+│   ├── 01_Additive_Cipher/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_additive.py
+│   │   │   ├── additive.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 02_Multiplicative_Cipher/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_multiplicative.py
+│   │   │   ├── multiplicative.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 03_Affine_Cipher/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_affine.py
+│   │   │   ├── affine.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 04_Vigenere_Cipher/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_vigenere.py
+│   │   │   ├── TESTS.md
+│   │   │   └── vigenere.py
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 05_Autokey_Cipher/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_autokey.py
+│   │   │   ├── autokey.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 06_Playfair_Cipher/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_playfair.py
+│   │   │   ├── playfair.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 07_Hill_Cipher/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_hill.py
+│   │   │   ├── hill.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   └── 08_Cipher_Attacks/
+│       ├── 00_original/
+│       │   ├── generated_baseline.py
+│       │   └── SOURCE_STATUS.md
+│       ├── modifications/
+│       │   ├── 02_attacks.py
+│       │   ├── attacks.py
+│       │   └── TESTS.md
+│       ├── NOTES.md
+│       └── README.md
+├── LAB_2_ADVANCED_SYMMETRIC/
+│   ├── 01_DES/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_des.py
+│   │   │   ├── des.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 02_AES/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_aes.py
+│   │   │   ├── aes.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 03_Triple_DES/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_triple_des.py
+│   │   │   ├── TESTS.md
+│   │   │   └── triple_des.py
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   └── 04_DES_AES_Performance/
+│       ├── 00_original/
+│       │   ├── generated_baseline.py
+│       │   └── SOURCE_STATUS.md
+│       ├── modifications/
+│       │   ├── 02_benchmark.py
+│       │   ├── benchmark.py
+│       │   └── TESTS.md
+│       ├── NOTES.md
+│       └── README.md
+├── LAB_3_ASYMMETRIC/
+│   ├── 01_RSA/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_rsa.py
+│   │   │   ├── rsa.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 02_ElGamal/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_elgamal.py
+│   │   │   ├── elgamal.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 03_ECC_Key_Exchange/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_ecc_ecdh.py
+│   │   │   ├── ecc_ecdh.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 04_Diffie_Hellman/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_diffie_hellman.py
+│   │   │   ├── diffie_hellman.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   └── 05_RSA_ECC_File_Transfer/
+│       ├── 00_original/
+│       │   ├── generated_baseline.py
+│       │   └── SOURCE_STATUS.md
+│       ├── modifications/
+│       │   ├── 02_hybrid_file.py
+│       │   ├── hybrid_file.py
+│       │   └── TESTS.md
+│       ├── NOTES.md
+│       └── README.md
+├── LAB_4_ADVANCED_ASYMMETRIC/
+│   ├── 01_RSA_ElGamal_Rabin_Comparison/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_compare.py
+│   │   │   ├── compare.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 02_Key_Management_System/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_key_manager.py
+│   │   │   ├── key_manager.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 03_Access_Control/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_access_control.py
+│   │   │   ├── access_control.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 04_SecureCorp_Communication/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_securecorp.py
+│   │   │   ├── securecorp.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   └── 05_Rabin_Healthcare_KMS/
+│       ├── 00_original/
+│       │   ├── generated_baseline.py
+│       │   └── SOURCE_STATUS.md
+│       ├── modifications/
+│       │   ├── 02_rabin_kms.py
+│       │   ├── rabin_kms.py
+│       │   └── TESTS.md
+│       ├── NOTES.md
+│       └── README.md
+├── LAB_5_HASHING/
+│   ├── 01_User_Defined_Hash/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_custom_hash.py
+│   │   │   ├── custom_hash.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 02_Socket_Hash_Integrity/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_server.py
+│   │   │   ├── server.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   └── 03_Hash_Performance_Collisions/
+│       ├── 00_original/
+│       │   ├── generated_baseline.py
+│       │   └── SOURCE_STATUS.md
+│       ├── modifications/
+│       │   ├── 02_hash_benchmark.py
+│       │   ├── hash_benchmark.py
+│       │   └── TESTS.md
+│       ├── NOTES.md
+│       └── README.md
+├── LAB_6_DIGITAL_SIGNATURE/
+│   ├── 01_RSA_Digital_Signature/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_rsa_signature.py
+│   │   │   ├── rsa_signature.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 02_ElGamal_Signature/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_elgamal_signature.py
+│   │   │   ├── elgamal_signature.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 03_Schnorr_Signature/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_schnorr.py
+│   │   │   ├── schnorr.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   ├── 04_Client_Server_Signature/
+│   │   ├── 00_original/
+│   │   │   ├── generated_baseline.py
+│   │   │   └── SOURCE_STATUS.md
+│   │   ├── modifications/
+│   │   │   ├── 02_signed_channel.py
+│   │   │   ├── signed_channel.py
+│   │   │   └── TESTS.md
+│   │   ├── NOTES.md
+│   │   └── README.md
+│   └── 05_CIA_RSA_SHA_Signature/
+│       ├── 00_original/
+│       │   ├── generated_baseline.py
+│       │   └── SOURCE_STATUS.md
+│       ├── modifications/
+│       │   ├── 02_cia_demo.py
+│       │   ├── cia_demo.py
+│       │   └── TESTS.md
+│       ├── NOTES.md
+│       └── README.md
+├── SOURCE_MATERIAL/
+│   ├── IS Lab Manual [1-4].pdf
+│   └── IS Lab Manual [5-6].pdf
+├── tests/
+│   └── smoke_test.py
+├── README.md
+├── requirements.txt
+└── TREE.txt

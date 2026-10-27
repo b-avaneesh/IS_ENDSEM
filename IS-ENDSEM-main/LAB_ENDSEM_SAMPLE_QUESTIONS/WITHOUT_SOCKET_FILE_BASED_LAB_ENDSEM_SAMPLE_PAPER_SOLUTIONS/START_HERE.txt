@@ -1,0 +1,167 @@
+SECURE E-VOTING - FILE-BASED SAMPLE PAPER SOLUTION
+================================================
+
+The supplied PDF contains ONE integrated e-voting question. SecureEVoting.py
+implements that question as one program with no sockets, database, classes,
+or separate client/server processes.
+
+It follows the midsem style: small functions, role menus, explicit steps,
+with open(...), separate folders, and hexadecimal ciphertext files.
+The extra code implements the additional endsem requirements.
+
+HOW TO RUN
+----------
+Open SecureEVoting.py in your IDE and use the project's venv1 interpreter.
+Or run this from PowerShell in this folder:
+
+& 'D:\IS-ENDSEM\venv1\Scripts\python.exe' .\SecureEVoting.py
+
+If using a different Python installation, install the dependency first:
+python -m pip install -r requirements.txt
+
+Only pycryptodome is required. Imports are named Crypto, not crypto.
+
+FIRST RUN
+---------
+You set five passwords:
+1. voter role
+2. server role
+3. tally role
+4. authority 1 (protects the first Paillier key share)
+5. authority 2 (protects the second Paillier key share)
+
+Passwords are typed invisibly. Remember them. There are no default passwords.
+In the lab, you play all five parts. In a real system they are separate people.
+Key generation runs once and can take a little time.
+
+Every later run reads the existing keys and records from election_files,
+which is created next to the Python file, regardless of the working directory.
+Do not delete or replace keys while keeping old ballots.
+
+TRY THIS COMPLETE RUN
+---------------------
+1. Main menu -> Voter. Enter the voter password.
+2. Cast B001, candidate 1, constituency 101.
+3. Cast B002, candidate 1, constituency 102.
+4. Back -> Election Server. Enter the server password.
+5. Verify B001, then B002.
+6. Search constituency 101: result B001.
+7. Search a time range covering both printed timestamps: B001 and B002.
+   Format: YYYY-MM-DD HH:MM:SS. Times are IST. Maximum range is 7 days.
+8. Back -> Tally Authority. Enter the tally password.
+9. Aggregate and close election. Both ballots must already be verified.
+10. Threshold decrypt. Enter authority 1 and authority 2 passwords separately.
+11. Expected counts: candidate 1 = 2, candidate 2 = 0, candidate 3 = 0.
+12. Exit. Run again to inspect/search/tally the same stored election.
+
+For a mixed-candidate example, choose candidate 2 for B002 instead.
+Then counts are 1, 1, 0, while the candidate-ID sum is 3.
+This is why adding candidate IDs alone does NOT give candidate counts.
+
+The demo requires at least two verified ballots for decryption, includes ALL
+submitted ballots, and closes voting when the tally is saved. It does not
+allow selecting arbitrary one-ballot subsets for decryption.
+
+FILES CREATED AUTOMATICALLY
+---------------------------
+election_files/
+  keys/                Persistent RSA keys, public parameters, hashed role
+                       passwords, search/receipt secrets, election dates.
+  authorities/         Two separately password-encrypted Paillier shares.
+  encrypted/           AES-256-CBC encrypted ballot payload, as hex.
+  encrypted_key/       RSA-4096 OAEP encrypted AES key, as hex.
+  iv/                  Fresh CBC IV for each ballot, as hex.
+  hashes/              SHA-512 of exact CandidateID=...;ConstituencyID=... text.
+  signature/           ElGamal (r, s) signature over the SHA-512 value.
+  public_key/          Voter signing public key for each ballot.
+  voter_private_key/   Local voter's signing private key, for the lab only.
+  paillier/            Encrypted numerical ID and encrypted per-candidate 0/1s.
+  metadata/            Server-recorded timestamp.
+  index/               Keyed constituency and minute search tokens.
+  receipts/            Server authentication of all submitted record files.
+  verified/            Successful verification record and time.
+  tally/               Aggregate, two partial decryptions, and final totals.
+
+No plaintext ballot or plaintext AES session key is saved. The AES payload
+also holds Paillier randomness so the server can re-encrypt and check that
+the homomorphic values match the signed ballot. The server does not call a
+Paillier decryption function to verify individual votes.
+
+Tampering exercise: after submitting a ballot, change one hex character in
+its encrypted file. Verification rejects it before RSA/AES decryption.
+Use an isolated election for tampering practice. A damaged submitted ballot
+blocks final tallying; this beginner version has no administrative deletion
+or recovery menu. Restore your original file to continue.
+
+READ THE CODE IN THIS ORDER
+--------------------------
+1. main(), voter(), election_server(), tally_authority(): familiar menus.
+2. cast_vote(): create, encrypt, hash, sign, and save the files.
+3. verify_ballot(): read files and check everything before accepting.
+4. aes_encrypt()/aes_decrypt() and RSA wrapping functions.
+5. sign_hash()/verify_signature().
+6. paillier_encrypt(), build_aggregate(), threshold_decrypt().
+7. search_ballots(), setup(), and the short file helpers.
+
+WHAT WAS ADDED FOR THE ENDSEM QUESTION
+-------------------------------------
+AES-256-CBC uses a random 32-byte key and fresh 16-byte IV.
+RSA-4096 with OAEP wraps that key.
+SHA-512 hashes the exact ballot text; ElGamal signs that hash.
+A separate signing key is generated per submitted ballot in this demo.
+Paillier encrypts the candidate ID AND one indicator per candidate.
+Ciphertext multiplication adds the encrypted numbers modulo n squared.
+The saved private decryption exponent is split between two encrypted files.
+Both authorities compute partial exponentiations; their private exponents
+are never added together by the decryption routine.
+Search compares HMAC tokens without decrypting ballot ciphertexts.
+Role passwords prevent simply choosing a privileged role from the menu.
+All cryptographic values and verification/tally results survive restarts.
+
+TWO-SHARE MATH (OPTIONAL READING)
+--------------------------------
+Paillier uses n = p*q and g = n+1. During setup:
+lambda = lcm(p-1, q-1)
+d = lambda * inverse(lambda, n)
+Thus d is 0 modulo lambda, and 1 modulo n.
+The two shares add to d modulo n*lambda.
+Each authority computes ciphertext raised to its own share, modulo n*n.
+Multiplying those partial results gives ciphertext raised to d.
+The plaintext total is ((combined - 1) // n) modulo n.
+The factors, lambda, and full exponent are not written to disk.
+This is a two-of-two educational split-exponent construction, not a full
+malicious-party-resistant threshold Paillier protocol with share proofs.
+Background on the private-exponent construction:
+https://www.iacr.org/archive/eurocrypt2006/40040529/40040529.pdf
+
+CLASSROOM ASSUMPTIONS AND LIMITS
+-------------------------------
+This matches the midsem single-machine teaching style, not production election
+security. The file owner can read code and bypass menus. RSA private keys,
+voter signing keys, search secrets, and receipt secrets are local files.
+Real deployments need OS permissions and isolated machines for these roles.
+Two authority passwords are processed sequentially in the same Python process;
+this demonstrates partial decryption but is not distributed key custody.
+The local server clock plus an authenticated receipt stands in for a trusted
+timestamp service. It is not an external or independently trusted timestamp.
+ElGamal uses educational 256-bit parameters to keep setup quick. Do not use
+this size for real security. RSA uses 4096 bits and Paillier uses two 1024-bit
+primes. Random ciphertexts will differ from the paper's illustrative numbers.
+The voter password is a shared lab role credential. There is no voter register,
+identity proof, or one-vote-per-citizen enforcement. Ballot IDs cannot repeat.
+The server temporarily sees the AES-decrypted ballot for integrity checks,
+but does not print or save it. This is not end-to-end anonymous voting.
+HMAC indexes reveal repeated searches/matching patterns; metadata includes
+timestamps. They hide vote content but are not a general private range-query
+protocol. Time queries enumerate minute tokens and then filter exact seconds.
+Per-candidate ciphertexts and the receipt are authenticated, and verification
+checks their consistency with the ballot. No zero-knowledge proofs are used.
+Final totals themselves can reveal choices in unanimous/small elections.
+
+STARTING A NEW PRACTICE ELECTION
+------------------------------
+Close the program. Rename election_files to a backup name, for example
+practice_election_1, then run again. A new election_files directory is created.
+Do not rename individual key files or mix files from different elections.
+If first setup was interrupted, back up the partial election_files folder
+and start again with a fresh folder.

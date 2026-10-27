@@ -1,0 +1,48 @@
+ENDSEM PREPARATION PACK - LABS 1 TO 8
+====================================
+
+START WITH THESE THREE FILES
+1. EXAM_GUIDE.txt: exact commands, question-to-code mapping, modification rules.
+2. TWO_DAY_PLAN.txt: what to study first and two timed practice papers.
+3. SOURCE_CORRECTIONS.txt: important errors in the manual/sample assumptions.
+
+RUN ON THIS COMPUTER
+Open a PowerShell terminal in this ENDSEM folder.
+  .\RUN.ps1 voting.py --demo
+  .\RUN.ps1 voting.py
+  .\RUN.ps1 find_answer.py
+  .\RUN.ps1 labs/lab7.py --demo
+  .\RUN.ps1 labs/lab8.py --demo
+
+RUN ON ANOTHER COMPUTER
+  python -m pip install -r requirements.txt
+  python voting.py --demo
+  python find_answer.py
+New programs use cryptography. Old reference copies may need pycryptodome or
+matplotlib; those are listed separately in legacy_reference/requirements.txt.
+Your normal Python currently lacks cryptography/Crypto; RUN.ps1 uses the
+working bundled Python on this computer. Prepare the exam machine in advance.
+
+WHAT IS HERE
+- voting.py: the supplied endsem scenario, menu plus loopback socket demo.
+- workbench.py: reusable roles + encryption + hashing + signatures + HE + search.
+- combinations/: 4,608 self-contained programs, organized by encryption/hash.
+- find_answer.py: choose algorithms without browsing thousands of files.
+- build_combinations.py: regenerate combinations or export one standalone file.
+- standalone/: ready copyable voting, labs 7/8, and selected full-system answers.
+- scenarios/: named presets for education, health, banking, cloud, etc.
+- labs/: corrected short exercises for 1-3, 5-8 and Lab 4 key lifecycle.
+- chain.py: arbitrary ordered combinations such as Vigenere -> AES -> RSA.
+- legacy_reference/: copies of existing Python/text reference material.
+- tests/: reproducible tests and recorded results.
+- source_analysis/: inventory of all 724 existing Python files and PDF extracts.
+
+4,608 means 24 encryption choices x 4 hashes x 4 signatures x 4 HE choices
+(including NONE) x 3 search choices (including NONE). It does NOT mean 4,608
+different business workflows or every imaginable exam problem. ECDSA is a
+bonus option. Paillier private scan is explicitly not a public-server PEKS.
+
+No original lab or FINAL file was modified. Reference copies are NOT newly
+certified correct; use the new tested blocks first. The guide documents limits.
+
+Only use reference material in the exam as permitted by your course rules.

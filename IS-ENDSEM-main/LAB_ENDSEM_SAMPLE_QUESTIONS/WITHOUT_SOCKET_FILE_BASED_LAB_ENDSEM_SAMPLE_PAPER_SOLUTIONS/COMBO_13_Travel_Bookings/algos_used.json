@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_13_Travel_Bookings",
+  "classical": "Autokey",
+  "symmetric": "AES-256",
+  "asymmetric": "RSA",
+  "hash": "SHA256",
+  "signature": "RSA",
+  "homomorphic": "Paillier",
+  "search": "SSE"
+}

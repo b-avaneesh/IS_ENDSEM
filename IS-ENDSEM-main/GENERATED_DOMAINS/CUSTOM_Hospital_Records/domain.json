@@ -1,0 +1,30 @@
+{
+  "title": "hospital records",
+  "record_name": "report",
+  "fields": [
+    {
+      "name": "patient_name",
+      "type": "text",
+      "search": true,
+      "sum": false,
+      "count": false
+    },
+    {
+      "name": "condition",
+      "type": "text",
+      "search": false,
+      "sum": false,
+      "count": false
+    },
+    {
+      "name": "bill",
+      "type": "integer",
+      "search": false,
+      "sum": true,
+      "count": false
+    }
+  ],
+  "use_deadline": false,
+  "close_on_aggregate": false,
+  "min_records": 2
+}

@@ -1,0 +1,124 @@
+FIND THE EXACT ANSWER DURING THE EXAM
+=====================================
+
+FASTEST METHOD
+--------------
+1. Search the question for its strongest keyword or special requirement.
+2. Match it using the list below.
+3. Open the corresponding Q-numbered Python file.
+4. Read the short requirements at the top before copying the solution.
+
+
+FULL THREE-ROLE SYSTEM QUESTIONS
+--------------------------------
+
+Medical report + Patient + assigned Doctor
+-> Q01_MEDISECURE.py
+Uses: AES-128-CBC, SHA-256 and RSA signature.
+
+Bank transaction + Customer + approve/reject
+-> Q02_BANKVAULT.py
+Uses: Triple-DES-CBC, SHA-256 and RSA signature.
+
+Employee contract + HR Officer + Company Head
+-> Q03_EMPLOYEE_SAFE.py
+Uses: DES-CBC, SHA-256 and RSA signature.
+
+University result + Examination Controller + revoke Student
+-> Q04_RESULT_SECURE.py
+Uses: AES-256-CBC, SHA-256 and RSA signature.
+
+Supply-chain order + Buyer chooses Supplier + accept/reject
+-> Q05_SUPPLY_SECURE.py
+Uses: AES-CTR, SHA-256 and RSA signature.
+
+E-book/content + limited-time access + ElGamal signature
+-> Q06_CONTENT_GUARD.py
+Uses: AES-128-CBC, SHA-256 and ElGamal signature.
+
+Cloud file sharing + random AES key protected using RSA
+-> Q07_CLOUD_SAFE.py
+Uses: RSA-AES hybrid encryption, SHA-256 and RSA signature.
+
+Authenticated Diffie-Hellman + RSA-signed public values
+-> Q08_PEER_SECURE.py
+Uses: Diffie-Hellman, AES, SHA-256 and RSA signature.
+
+Hospital/clinic key service + Rabin + four roots
+-> Q09_HOSPITAL_KEY_SERVICE.py
+Uses: Rabin generation, encryption, decryption, renewal and revocation.
+
+Finance/HR/Supply Chain + add departments + secure communication
+-> Q10_ENTERPRISE_SYSTEM.py
+Uses: RSA-protected Diffie-Hellman, AES and SHA-256.
+
+Multipart client/server integrity + MD5/SHA-1/SHA-256
+-> Q11_INTEGRITY_MONITOR.py
+Uses: sockets, three hashes, tampering, timing and collision checking.
+
+CIA triad + assigned Authorized User + revocation
+-> Q12_CIA_STORE.py
+Uses: RSA-AES hybrid encryption, SHA-256 and RSA signature.
+
+
+SHORT ALGORITHM QUESTIONS
+-------------------------
+
+Select DES/AES-128/AES-192/AES-256/Triple DES + timing
+-> Q13_SYMMETRIC_SELECTION_TIMING.py
+
+AES modes ECB/CBC/CFB/OFB/CTR + IV/nonce + graph
+-> Q14_AES_MODES_GRAPH.py
+
+RSA versus ElGamal encryption/decryption performance
+-> Q15_RSA_VS_ELGAMAL.py
+
+RSA hybrid versus ECC hybrid file encryption + SHA-256 comparison
+-> Q16_RSA_ECC_HYBRID_FILES.py
+
+ElGamal versus Schnorr signatures + tampering demonstration
+-> Q17_ELGAMAL_SCHNORR_SIGNATURES.py
+
+RSA signature client/server using sockets
+-> Q18_RSA_SIGNATURE_SOCKET.py
+
+Additive + multiplicative + affine menu and attacks
+-> Q19_CLASSICAL_MENU_1.py
+
+Vigenere + autokey + Playfair + Hill menu
+-> Q20_CLASSICAL_MENU_2.py
+
+
+QUICK KEYWORD INDEX
+-------------------
+Patient / Doctor / medical                    -> Q01
+Customer / bank / approve / reject            -> Q02
+Employee / HR / contract                      -> Q03
+Student / result / controller / revoke        -> Q04
+Buyer / Supplier / order / AES-CTR             -> Q05
+E-book / expiry / access grant / ElGamal      -> Q06
+Cloud / receiver / random AES key / hybrid    -> Q07
+Authenticated DH / shared secret / DH timing  -> Q08
+Rabin / facility keys / four roots            -> Q09
+Departments / RSA + DH + AES                  -> Q10
+Multipart / hashing server / collisions       -> Q11
+CIA triad / assigned document / revoked user  -> Q12
+DES/AES/3DES selection                        -> Q13
+ECB/CBC/CFB/OFB/CTR graph                     -> Q14
+RSA versus ElGamal timing                     -> Q15
+RSA versus ECC files                          -> Q16
+ElGamal and Schnorr signatures                -> Q17
+RSA signature socket                          -> Q18
+Additive/multiplicative/affine attacks         -> Q19
+Vigenere/autokey/Playfair/Hill                -> Q20
+
+
+IMPORTANT DECISION RULES
+------------------------
+- Three roles + upload + verify + audit normally means Q01-Q07 or Q12.
+- Hybrid means a public-key method protects/creates an AES session key.
+- If the question only asks algorithms/timing/graph, use Q13-Q20.
+- If it asks multipart hashing sockets, use Q11, not Q18.
+- If it asks signature sockets, use Q18, not Q11.
+- If the named encryption algorithm differs in a large role question, use the
+  separate 168-permutation pack and select the matching ROLE algorithm file.

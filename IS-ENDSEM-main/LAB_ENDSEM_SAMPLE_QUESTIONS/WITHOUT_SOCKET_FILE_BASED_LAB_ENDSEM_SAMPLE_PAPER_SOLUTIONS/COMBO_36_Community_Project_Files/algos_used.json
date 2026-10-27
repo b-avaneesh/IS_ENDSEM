@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_36_Community_Project_Files",
+  "classical": "Affine",
+  "symmetric": "AES-128",
+  "asymmetric": "DH",
+  "hash": "CUSTOM32",
+  "signature": "Schnorr",
+  "homomorphic": "ElGamal",
+  "search": "SSE"
+}

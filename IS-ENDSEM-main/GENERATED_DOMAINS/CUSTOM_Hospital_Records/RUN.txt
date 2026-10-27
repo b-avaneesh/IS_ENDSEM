@@ -1,0 +1,47 @@
+hospital records
+
+Install: python -m pip install -r requirements.txt
+Run: python solution.py
+
+First run sets entity passwords and BOTH authority passwords. Password input is
+hidden. Submission dates are requested only if you enabled a deadline.
+Select an entity, log in, and run its entire assigned workflow. The record ID
+is requested once. Verification does not display plaintext; view_record does.
+Signature/hash comparisons and timings are printed once per verification action.
+
+FIELDS AND TOTALS
+Fields and entity permissions are documented in domain.json and entities.json;
+the standalone program embeds the configuration. Generate a NEW solution folder
+to change schema or roles. Existing record folders are never overwritten.
+Text fields accept arbitrary nonempty text; search is exact-value, case-insensitive.
+Integer/decimal fields accept nonnegative values up to 10^18 scaled units.
+Decimals use fixed-point integers, never floating-point arithmetic, for totals.
+Numeric sums and category counts are selected during generation. Record count
+is always included. Each choice field has encrypted 0/1 counts per choice.
+Time search uses the original minute-token index and exact timestamp filtering;
+queries can span at most seven days. Search reveals IDs, not record contents.
+
+CRYPTO AND STORAGE
+Selected algorithms: {"encryption": "AES-192", "hash": "SHA-256", "key": "ECDH", "signature": "RSA", "search": "PKSE"}. See algorithms.json.
+Paillier totals, passwords, receipts and two-authority aggregate decryption
+retain the original design. No sockets. RSA signatures use PKCS#1 v1.5 with
+SHA-256 over the selected document digest; Schnorr uses a SHA-256 challenge.
+SSE uses HMAC-SHA256 tokens. PKSE lab mode encrypts keyword hashes with RSA-OAEP
+and scans using the private search key; it is not trapdoor-based PEKS.
+DES, Triple-DES, MD5 and SHA-1 are provided for legacy lab exercises.
+Records are stored under record_files/ in the original separate-file layout.
+Every submitted record must be verified before aggregating. Minimum aggregate
+size: 2. Close submissions on aggregation: False.
+If submissions stay open, adding records makes the previous aggregate stale;
+verify the new records and aggregate again before threshold decryption.
+Only the combined ciphertext is decrypted by the threshold menu. Both authority
+passwords are required. Local role and timestamp trust remain a lab simulation.
+Choosing a minimum aggregate size of one does not conceal that single record's
+numeric values. Public category definitions and repeated aggregate releases can
+also reveal information; this is not a production privacy system.
+
+SCOPE
+Supports configurable record-based lab scenarios (hospital, university, bank,
+warehouse, election, etc.) with encrypted sums and category counts. It does not
+automatically invent field-specific rules such as loan approval, diagnosis,
+eligibility, negative-value accounting, or custom cryptographic algorithms.

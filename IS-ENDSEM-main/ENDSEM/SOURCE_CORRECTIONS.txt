@@ -1,0 +1,106 @@
+SOURCE REVIEW AND CORRECTIONS
+=============================
+
+Review scope
+All 724 original Python files were read and structurally parsed; no syntax
+errors were found. Functions, imports, line counts and content hashes are in
+source_analysis/source_inventory.json. Text was extracted from all four PDFs
+and relevant exercise sections reviewed; the Lab 7/8 exercise pages and midsem
+question were also rendered/inspected.
+The endsem question was read from your attached image. Representative FINAL
+templates, source exercises, finder and tests were examined for integration.
+This is NOT a claim that all 724 old programs were executed or fully audited.
+
+Observed issues in old code
+- FINAL AES-CBC role template uses a fixed IV. New code generates fresh IVs.
+- Several role templates save records but regenerate signing keys in memory.
+  Restarting does not preserve identity. New programs explicitly use session
+  state; exported JSON is evidence, not a resumable system.
+- Existing root requirements list cryptography, while FINAL imports Crypto
+  (pycryptodome). The two packages are not interchangeable.
+- tests/smoke_test.py references custom_hash.lab_hash although that inspected
+  file defines hash_function and prompts at import. Its DH assertion contains
+  an always-true branch. New tests do not rely on that old smoke test.
+
+LAB 7
+1. Paillier uses n=pq, g=n+1, lambda=lcm(p-1,q-1), mu=lambda^-1 mod n.
+   E(m)=g^m*r^n mod n^2; gcd(r,n)=1.
+   E(a+b)=E(a)*E(b) mod n^2. D(c)=L(c^lambda mod n^2)*mu mod n.
+   The manual's RSA modulus, squaring and inferred p=n//2 are not this scheme.
+   Its decrypt also references undefined pub_key. Do not copy that snippet.
+2. Textbook RSA gives E(a*b)=E(a)*E(b) mod n. OAEP does NOT preserve it.
+   Use Homomorphic('RSA') for numeric multiplication, Envelope('RSA') for
+   padded message encryption. They are intentionally different operations.
+3. Standard ElGamal supports multiplication, not the manual's claimed > test.
+   Multiplying encrypted blood pressures does not reveal which exceeds 130.
+   The manual's p=1024 is composite and its keygen loop cannot pass the shown
+   Fermat check. Its decrypt also mixes an integer key with a tuple.
+4. Secure comparison requires another protocol; decrypt-then-compare leaks the
+   reading to the authorized decryptor. It must not be labeled encrypted >.
+5. Numeric arithmetic is modular. Validate ranges. Integer sum/average is
+   meaningful only before wraparound. Compute ordinary average after authorized
+   decryption, or carefully define a fixed-point encoding.
+
+LAB 8
+6. Fresh-IV CBC, OAEP and Paillier are randomized. Encrypt(query) != stored
+   Encrypt(keyword) even for the same word. Direct ciphertext equality fails.
+7. SSE here uses HMAC-SHA256 keyword tokens and AES-encrypted posting lists.
+   Tokens are deterministic, secret-keyed lookup values, not randomized AES.
+   This leaks repeated queries, matching/access patterns and posting sizes.
+8. The Paillier exercise is implemented as encrypted word hashes/IDs and an
+   encrypted query. The PRIVATE KEY holder tests encrypted differences for
+   zero. This is an educational authorized private scan, NOT public-server
+   PEKS or a zero-leakage protocol. Word equality is hash-based.
+9. Lab 8 document contents use AES; Paillier protects indexed keyword hashes
+   and numeric document IDs. It is not advertised as encrypting arbitrary
+   unlimited-length document bytes in a single Paillier integer.
+
+MIDSEM PAPER
+10. A hash of encrypted data and a hash of decrypted data are different.
+    Keep cipher_hash and plain_hash separately. The new system signs the
+    ciphertext representation with RSA and also signs the complete metadata
+    package to bind owner, recipient, hashes and encrypted numeric values.
+11. A signature proves possession of a signing key, not account authentication
+    by itself. The menu has demonstration login credentials and a key registry.
+
+ENDSEM IMAGE
+12. Sum(candidate IDs) is not a vote-count table. The example encrypts the ID
+    AND one-hot counters. For votes 2,1,2: ID sum=5, counts={1:1,2:2,3:0}.
+13. The sample gives the commission the RSA key that unwraps the ballot AES
+    key. Therefore that commission CAN decrypt individual ballot files.
+    The implementation verifies them then retains encrypted records. It does
+    not falsely claim cryptographic ballot secrecy from this commission.
+14. ThresholdPaillier is genuine 3-of-3 partial decryption with a trusted
+    dealer: d=lambda*mu, split d=d1+d2+d3; combine c^di mod n^2, apply L.
+    No key reconstruction is used. Each logical trustee contributes only for
+    the final aggregate through the menu. All trustees live in one process,
+    and there are no malicious-share proofs or distributed key generation.
+    Separate Shamir code is a 2-of-3 KEY-CUSTODY example, not the tally method.
+15. Local signed TSA tokens bind time to the signed encrypted package. This
+    simulates a trusted authority; it is not a network RFC3161 TSA service.
+16. Signatures bind HE ciphertexts to voters but do not prove that each
+    encrypted counter is 0/1 or that it matches the AES ballot. Honest-client
+    assumption is required; production voting would need validity proofs.
+17. Search supports constituency tokens and UTC day tokens. Arbitrary ranges
+    are filtered on timestamp metadata, not a cryptographic range-search scheme.
+18. The final phrase 'trade reports' in the image appears to be leftover text;
+    the solution treats the records as ballots and exports encrypted evidence.
+
+NEW CODE BOUNDARIES
+- Demonstration accounts and in-memory secrets; UI roles are not OS isolation.
+- Classical ciphers, DES, MD5/SHA1, textbook RSA and the instructional group
+  algorithms are coursework examples, not production recommendations.
+- Classical envelope variants encode bytes into a 16-letter alphabet first,
+  preserving binary files. For expected manual ciphertexts use labs/lab1.py,
+  which operates directly on cleaned letters and accepts the stated keys.
+- AES_128/192/256 presets mean ECB, as explicitly coded; AES_CBC/CFB/OFB/CTR
+  use 256-bit keys. Change sizes/modes explicitly when the question differs.
+- Encryption and signature hash selections are linked in generated presets.
+  Mixed requirements (e.g. SHA512 file hash with SHA256 RSA signature) require
+  giving Signer its own hash parameter.
+
+PRIMARY REFERENCES CONSULTED
+https://www.intel.com/content/www/us/en/developer/articles/technical/homomorphic-encryption/iso-compliant-paillier-cryptosystem-library.html
+https://www.nccgroup.com/research/the-paillier-cryptosystem-with-applications-to-threshold-ecdsa/
+https://cryptography.io/en/stable/
+https://www.pycryptodome.org/src/public_key/rsa

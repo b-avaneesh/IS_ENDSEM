@@ -1,0 +1,23 @@
+DEMO accounts: alice/eve=owner, bob=reviewer, carol=auditor; password 123
+Records and keys last for this run. Export saves evidence, not restartable keys.
+
+Username (0 exits): Password: 
+1 Upload text/file  2 List metadata  3 Decrypt  4 Search  5 Aggregate  6 Approve/reject  7 Revoke  8 Export  0 Logout
+Choice: Text, or @file_path: Recipient [bob]: Search keywords: Numeric value [1]: Expiry in seconds (blank=none): Uploaded: 1 
+ {'payload': {'id': '1', 'owner': 'alice', 'recipient': 'bob', 'time': 1792559945.6956983, 'expires': None, 'cipher': {'ct': '2324882a80d906a4c8cc3ebdc53ef1f3', 'iv': 'ab9effc07a0b55e6'}, 'plain_hash': '763ab3244f7755d02e85b08bd43f2132efd7322f4398a7e3f9a39307b9b5ea1d', 'cipher_hash': 'f06ecc7a20f00df9d4d633e7bf528e79af068a18012dadd7be639927aebc1328', 'number': None, 'cipher_signature': '57ff942a64f3a02e4c34ff0dbad2e5bccf26fbafc3db70de66b2155693192ab1f164284373ba89342338d0924fecc83bea68f8fb17f5a0c4b1d44e155484a604f6b15ba23e7fd6f03a5f96807ee8748c3d090b0e7b5da138e6a43a466ae66e4027dbe66f78253d21daf4d85b656233a0aee423572b2f2ea0ff645b5ae5eb3a6c4923cd8311657f1a3dff8849447031ef7df655c1a12df2e3da8e215f0f2c6c4c96b91b8448da2d1741a8824f601ba4a18742057f530befb2e82a7ad1e7755ebfe9091bcfbc199ebcb6ee2e51bd05f4fcb89ae7c9224addcc9dea0b35239144203522779c826ce5c2186916e9b935a23d38f3f184816425ac12e7749a946c72c2', 'signature': '92a882459b9824d841de27d0aa345b6e323326dac2400ea30e826f70d25c1f5dcbffc193967e48349e45cc1acb37de377cfcf55cc6bffac2065c105c7f5d5c8614f135879216e290fab0f58958c42cf4c8ae92cb50074652836e765eb0bce8263f88b30fae780e127e268d38306bf4d859d9f892da91a0f7919af416db35310f9f2df42f3ef1fe1cc14dacc4896df0e70ec44e73120e8828fa8978a9adbf5d1456abc452f708ced38cf5f81813dba91b4e8d9540e4356f41015b5d063d3bd01267f83e6310baa1e3fb8d2e81f82725f943c741c0d542d5b3b7566d5744fcba07ca9389d06dd5aeddf668587769a5756e2e4f92e0a467cbf43b3881cd5f1ceff0'}, 'status': 'PENDING'}
+
+1 Upload text/file  2 List metadata  3 Decrypt  4 Search  5 Aggregate  6 Approve/reject  7 Revoke  8 Export  0 Logout
+Choice: 
+Username (0 exits): Password: 
+1 Upload text/file  2 List metadata  3 Decrypt  4 Search  5 Aggregate  6 Approve/reject  7 Revoke  8 Export  0 Logout
+Choice: Record ID: Plaintext: b'exam record'
+Save decrypted bytes to path (blank=skip): 
+1 Upload text/file  2 List metadata  3 Decrypt  4 Search  5 Aggregate  6 Approve/reject  7 Revoke  8 Export  0 Logout
+Choice: 
+Username (0 exits): Password: 
+1 Upload text/file  2 List metadata  3 Decrypt  4 Search  5 Aggregate  6 Approve/reject  7 Revoke  8 Export  0 Logout
+Choice: Record ID: Rejected: Access denied
+
+1 Upload text/file  2 List metadata  3 Decrypt  4 Search  5 Aggregate  6 Approve/reject  7 Revoke  8 Export  0 Logout
+Choice: 
+Username (0 exits): 

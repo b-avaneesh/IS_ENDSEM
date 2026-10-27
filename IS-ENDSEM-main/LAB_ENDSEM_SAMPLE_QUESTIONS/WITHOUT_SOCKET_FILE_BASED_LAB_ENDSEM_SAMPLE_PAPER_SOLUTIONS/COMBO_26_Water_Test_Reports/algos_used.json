@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_26_Water_Test_Reports",
+  "classical": "Additive",
+  "symmetric": "AES-128",
+  "asymmetric": "ElGamal",
+  "hash": "SHA1",
+  "signature": "RSA",
+  "homomorphic": "RSA",
+  "search": "SSE"
+}

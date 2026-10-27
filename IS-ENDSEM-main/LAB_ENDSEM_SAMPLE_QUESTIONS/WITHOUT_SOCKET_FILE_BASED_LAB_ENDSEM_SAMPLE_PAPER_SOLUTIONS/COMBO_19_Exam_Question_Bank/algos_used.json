@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_19_Exam_Question_Bank",
+  "classical": "Multiplicative",
+  "symmetric": "DES",
+  "asymmetric": "ECDH",
+  "hash": "MD5",
+  "signature": "ElGamal",
+  "homomorphic": "Paillier",
+  "search": "SSE"
+}

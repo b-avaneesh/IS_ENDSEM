@@ -1,0 +1,15 @@
+test_all_encryption_roundtrips (__main__.Tests.test_all_encryption_roundtrips) ... ok
+test_all_generated_configs (__main__.Tests.test_all_generated_configs) ... ok
+test_all_signature_hash_pairs (__main__.Tests.test_all_signature_hash_pairs) ... ok
+test_combined_system_each_algorithm (__main__.Tests.test_combined_system_each_algorithm) ... ok
+test_homomorphic (__main__.Tests.test_homomorphic) ... ok
+test_manual_classical_and_key_lifecycle (__main__.Tests.test_manual_classical_and_key_lifecycle) ... ok
+test_permissions_expiry_tampering (__main__.Tests.test_permissions_expiry_tampering) ... ok
+test_search (__main__.Tests.test_search) ... ok
+test_threshold (__main__.Tests.test_threshold) ... ok
+test_voting (__main__.Tests.test_voting) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 117.717s
+
+OK

@@ -1,0 +1,61 @@
+START HERE — ENDSEM PRACTICE ANSWERS
+
+01_EXACT_SAMPLE_ANSWERS/
+  Grant_Expense_Portal_Answer.py  -> Grant ID, description, amount question.
+  Secure_Voting_Sample_Answer.py  -> Earlier secure-voting sample question.
+  Both are ready-to-run single Python files. Install PyCryptodome first:
+      python -m pip install pycryptodome
+
+02_PICK_A_VARIANT/
+  Choose the question type, then a story ZIP. Extract ONLY that story ZIP.
+  Grant_Style/01_grant.zip for grant/expense type questions.
+  Voting_Style/01_voting.zip for voter/server/tally type questions.
+  Other story names are in their ZIP filenames. New direct use cases include
+  locker rentals, scholarship, library fine, insurance, tuition, maintenance,
+  parking, service bill, cafeteria, classroom poll, water, course feedback,
+  sensors, volunteer hours, traffic, and study hours.
+  Inside the story ZIP: 01_CORE/cipher/hash/signature.py
+      Example grant: 01_CORE/aes192_cbc/md5/rsa_v15.py
+      Example voting: 01_CORE/aes256_cbc/sha512/elgamal.py
+  Each .py is standalone. 02_ALTERNATIVES/ has extra index/storage (grant)
+  or transport/homomorphic/threshold/search (voting) choices.
+  03_PRODUCT_RSA/ and 04_PRODUCT_ELGAMAL/ multiply encrypted values; both
+  produce a modular product. 05_SCALAR_PAILLIER/ raises the encrypted
+  combined SUM to a public multiplier of 2; it decrypts the scaled sum.
+  Those operation folders repeat every shipped story/cipher/hash/signature
+  combination; extra/ has the relevant storage or transport variations.
+
+EDIT A CODE FOR YOUR PAPER
+  Search for QUICK EDIT MAP at the top of your chosen .py. Comments beside
+  Zones 1, 2, 4, and 5 point to wording, accounts, limits, and menus.
+  Change story labels and example inputs there. Pick a matching cipher/hash/
+  signature filename when the algorithm changes. For extra stored fields or
+  different data types, also update the Zone 5 record and verification logic.
+  Save your edited .py under a new name so it uses a fresh state folder.
+
+03_LAB_MANUAL_CODES/
+  Open lab_exercises/ for runnable topic codes; short_primitives/ for small demos.
+  For Lab 7, run lab_exercises/Lab7_RSA_ElGamal_Product.py or
+  lab_exercises/Lab7_Paillier_Scalar.py directly. Both are menu-driven,
+  standalone demonstrations; they do not store records across restarts.
+  Voting_Style story ZIPs also have complete persistent product answers under
+  02_ALTERNATIVES/rsa4096/elgamal_product_additive_hmac.py and
+  02_ALTERNATIVES/rsa4096/rsa_product_additive_hmac.py.
+  There is no need to open these for a complete grant or voting sample answer.
+
+04_OPTIONAL_GENERATORS_AND_TESTS.zip
+  Builders, templates, coverage, manifests, and test code for creating further
+  combinations or inspecting how the pack was verified. Most exam practice
+  needs only folders 01 and 02. Extract this optional ZIP and run build_all.py
+  inside ENDSEM_MANUAL_PACK if you want to regenerate all source variants.
+
+COUNTS: 45,718 original standalone answers plus 42,960 newly generated
+use-case codes = 88,678 total, across 16 Grant Style and 17 Voting Style
+stories. The new direct code story ZIPs are numbered 09-16 (Grant) and
+10-17 (Voting). Every story has its own CORE, ALTERNATIVES, PRODUCT_RSA,
+PRODUCT_ELGAMAL, and SCALAR_PAILLIER folders. The optional generator archive
+regenerates the original stories; additional story codes are supplied ready
+to run. These are zipped by story to keep navigation manageable.
+The exact grant sample tested G001=500 and G002=700, with decrypted total 1200.
+Legacy algorithms are syllabus practice. The tool/source archive documents
+limits for CDD, FHE, GnuPG, Snort, and role isolation.

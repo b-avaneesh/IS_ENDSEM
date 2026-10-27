@@ -1,0 +1,54 @@
+CRYPTO LAB SOLUTION GENERATOR
+
+Run:
+  python generate_solution.py
+
+The generator itself needs only Python's standard library.
+Generated solutions require pycryptodome (requirements.txt is created).
+You may copy generate_solution.py anywhere; it embeds all its templates.
+
+Enter a project name, then an algorithm name for each category:
+
+Classical cipher: Vigenere, Additive, Multiplicative, Affine, Autokey,
+                 Playfair, Hill, Transposition
+Encryption:      AES-128, AES-192, AES-256, DES, Triple-DES
+Hashing:         SHA256, SHA512, SHA1, MD5, CUSTOM32
+Key protection:  RSA, ElGamal, ECDH, DH
+Signature:       RSA, ElGamal, Schnorr
+Homomorphic:     Paillier (addition), RSA or ElGamal (multiplication)
+Search:          SSE (press Enter to select it)
+
+Capitalization, spaces and hyphens do not matter.
+AES means AES-128; 3DES/DES3 means Triple-DES; ECC means ECDH.
+These choices can be mixed independently, beyond the original 36 combos.
+
+EXAMPLE INPUTS
+  Project name:       My Hospital Lab
+  Classical cipher:   Vigenere
+  Encryption:         AES256
+  Hashing:            SHA-512
+  Key protection:     RSA
+  Signature:          Schnorr
+  Homomorphic:        Paillier
+  Search:             SSE
+  Output folder:      press Enter
+
+OUTPUT
+  GENERATED_SOLUTIONS/CUSTOM_My_Hospital_Lab/
+    solution.py       complete standalone Student/Faculty/HoD program
+    requirements.txt  dependency
+    algos_used.json   your selected algorithms
+    RUN.txt           walkthrough and storage explanation
+    .gitignore        excludes generated data and private keys
+
+Existing output folders are never overwritten. Choose a new name/folder
+for another combination so its persistent keys stay separate.
+
+Open the new folder and run:
+  python -m pip install -r requirements.txt
+  python solution.py
+
+The hash choice controls the ciphertext integrity file. Signatures and
+SSE HMAC tokens use SHA256 internally. Classical encryption is a separate
+menu demonstration. RSA key protection uses OAEP; DH/ECDH are key agreement
+with AES-EAX key wrapping. All generated programs use local files and SSE.

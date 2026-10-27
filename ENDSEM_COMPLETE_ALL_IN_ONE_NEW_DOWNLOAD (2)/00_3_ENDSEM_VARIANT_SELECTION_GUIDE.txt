@@ -1,0 +1,89 @@
+ENDSEM VARIANT SELECTION — QUICK GUIDE
+======================================
+
+1. PICK THE QUESTION TYPE FIRST
+
+GRANT_STYLE: One entry has an ID + a free-text description + a number.
+Example: Grant ID, Grant Description, Grant Amount. Typical jobs: save old
+records, search by ID, decrypt/show the description in hex, and add encrypted
+amounts without decrypting each amount. Look under 02_PICK_A_VARIANT/Grant_Style.
+
+VOTING_STYLE: One entry has a numeric choice/value + a group ID.
+Example: CandidateID + ConstituencyID. Typical jobs: check a submission time
+window, search by group/time, combine encrypted values, and release a tally
+with authority shares. Look under 02_PICK_A_VARIANT/Voting_Style.
+
+Choose by INPUT FIELDS and REQUIRED ACTIONS, not just the story's title.
+If the paper has extra fields or a different operation, edit the selected
+answer's data flow; changing only names will not implement a new requirement.
+
+2. PICK THE CIPHER FAMILY AND KEY SIZE
+
+If the paper explicitly says AES-128, AES-192, AES-256, DES or 3DES, match it
+exactly in the folder name: aes128, aes192, aes256, des or 3des.
+AES-128/192/256 use 16/24/32-byte keys; the number is KEY SIZE, not mode.
+DES and 3DES are older lab choices; pick them only if the paper names them.
+If the paper merely says "AES", use its other examples/instructions to choose
+the key size. Do not assume AES-256 is required merely because it is larger.
+
+3. PICK THE MODE — THE PART AFTER THE UNDERSCORE
+
+Name  What it means / when to select it              IV and padding
+----  ---------------------------------------------   -------------------------
+cbc   Cipher Block Chaining. Pick if paper says CBC.  Fresh IV; PKCS7 padding.
+ecb   Electronic Codebook. Only if paper says ECB.    No IV; PKCS7 padding.
+cfb   Cipher Feedback. Pick if paper says CFB.        Fresh IV; no padding.
+ofb   Output Feedback. Pick if paper says OFB.        Fresh IV; no padding.
+ctr   Counter mode. Pick if paper says CTR.           Unique counter; no padding.
+
+All five modes work with the offered AES/DES/3DES folders in this pack. ECB
+reveals repeated-block patterns, so it is a syllabus exercise rather than a
+good default. Reusing an IV/counter with the same key can break confidentiality,
+especially in OFB/CTR. The answer files use fixed values in DEMO mode for
+repeatable lab output and fresh randomness in REAL mode.
+
+If the question says "AES-192-CBC", open aes192_cbc. If it says "DES-CFB",
+open des_cfb. "AES-256" alone specifies key size, NOT CBC/ECB/etc.; check the
+paper for a mode. If none is stated, clearly say which mode you implemented.
+
+4. FOLLOW THE ZIP PATH
+
+02_PICK_A_VARIANT / Grant_Style or Voting_Style / closest story.zip /
+01_CORE / cipher_and_mode / hash / signature.py
+
+Examples:
+  Grant-like + AES-192-CBC + MD5 + RSA signature:
+    Grant_Style/01_grant.zip/01_CORE/aes192_cbc/md5/rsa_v15.py
+
+  Voting-like + AES-256-CBC + SHA-512 + ElGamal signature:
+    Voting_Style/01_voting.zip/01_CORE/aes256_cbc/sha512/elgamal.py
+
+The hash folder (md5, sha256, sha512, etc.) and signature filename are
+SEPARATE decisions. RSA-PSS and RSA PKCS#1 v1.5 are signature choices; they
+are not AES modes. In Voting Style, RSA-4096 key wrapping is a separate job
+from the signature algorithm.
+
+5. WHAT THE TWO SUPPLIED SAMPLE PAPERS SAY
+
+Grant expense portal: ID + description + amount; AES-192 for the description,
+Paillier for the amount, MD5 record hash, RSA digital signature, persistent
+records, reviewer search/hex output, and finance total only. The paper does
+not name an AES mode or RSA signature padding. The provided answer chooses
+AES-192-CBC and RSA PKCS#1 v1.5 as implementation choices. Start at
+01_EXACT_SAMPLE_ANSWERS/Grant_Expense_Portal_Answer.py for that sample.
+
+Secure voting sample: CandidateID + ConstituencyID; SHA-512, AES-256-CBC,
+RSA-4096 protection for the AES key, ElGamal signature, Paillier encrypted
+numeric value, time/index checks, aggregate and threshold release. Start at
+01_EXACT_SAMPLE_ANSWERS/Secure_Voting_Sample_Answer.py for that sample.
+
+For a new exam variant, open the closest standalone .py file and read its
+QUICK EDIT MAP near the top. Save your edited copy under a new .py filename
+so its saved-state folder is fresh. If the paper asks for GCM/authenticated
+encryption or a feature absent from both families, these folders alone are
+not a complete answer; the code needs that feature implemented.
+
+Reference for the mode names: NIST SP 800-38A
+https://csrc.nist.gov/pubs/sp/800/38/a/final
+AES key sizes: NIST FIPS 197
+https://csrc.nist.gov/pubs/fips/197/final

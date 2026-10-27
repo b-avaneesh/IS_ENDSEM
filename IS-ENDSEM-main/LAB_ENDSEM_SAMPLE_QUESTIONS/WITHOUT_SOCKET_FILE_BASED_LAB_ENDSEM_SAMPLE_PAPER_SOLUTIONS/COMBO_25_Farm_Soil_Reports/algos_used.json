@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_25_Farm_Soil_Reports",
+  "classical": "Vigenere",
+  "symmetric": "Triple-DES",
+  "asymmetric": "RSA",
+  "hash": "SHA256",
+  "signature": "RSA",
+  "homomorphic": "Paillier",
+  "search": "SSE"
+}

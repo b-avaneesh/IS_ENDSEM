@@ -1,0 +1,14 @@
+{
+  "Storekeeper": [
+    "submit_record"
+  ],
+  "Inspector": [
+    "verify_record",
+    "view_record",
+    "search_records"
+  ],
+  "Warehouse manager": [
+    "aggregate_records",
+    "threshold_decrypt"
+  ]
+}

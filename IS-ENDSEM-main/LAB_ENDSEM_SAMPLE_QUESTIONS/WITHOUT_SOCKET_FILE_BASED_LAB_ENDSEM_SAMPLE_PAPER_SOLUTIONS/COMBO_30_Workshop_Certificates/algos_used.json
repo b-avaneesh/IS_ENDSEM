@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_30_Workshop_Certificates",
+  "classical": "Playfair",
+  "symmetric": "Triple-DES",
+  "asymmetric": "ElGamal",
+  "hash": "SHA1",
+  "signature": "ElGamal",
+  "homomorphic": "ElGamal",
+  "search": "SSE"
+}

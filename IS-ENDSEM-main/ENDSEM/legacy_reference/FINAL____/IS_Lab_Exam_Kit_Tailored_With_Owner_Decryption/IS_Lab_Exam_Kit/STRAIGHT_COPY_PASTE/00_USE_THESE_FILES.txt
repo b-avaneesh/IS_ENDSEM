@@ -1,0 +1,90 @@
+STRAIGHT COPY-PASTE FILES
+=========================
+
+EXAM RULE: copy the COMPLETE matching file. Do not copy functions from a
+different file. Change only input values inside the final main block.
+
+LAB MANUAL QUESTION -> OPEN THIS FILE
+-------------------------------------
+LAB 1
+  Q1(a) Additive                 L1_ADDITIVE.py
+  Q1(b) Multiplicative           L1_MULTIPLICATIVE.py
+  Q1(c) Affine                   L1_AFFINE.py
+  Q2(a) Vigenere                 L1_VIGENERE.py
+  Q2(b) Autokey                  L1_AUTOKEY.py
+  Q3 Playfair                    L1_PLAYFAIR.py
+  Q4 Hill                        L1_HILL.py
+  Transposition                  L1_TRANSPOSITION.py
+
+LAB 2
+  Q1 DES                         L2_DES_ECB.py
+  Q2 AES-128                     L2_AES_128.py
+  Q3 DES versus AES              L2_COMPARE_DES_AES.py
+  Q4 Triple DES                  L2_TRIPLE_DES.py
+  Q5 AES-192                     L2_AES_192.py
+  Additional AES-256             L2_AES_256.py
+  Additional DES-CBC             L2_DES_CBC.py
+  Additional AES-CTR             L2_AES_CTR.py
+  Compare five AES modes         L2_AES_ALL_MODES.py
+
+LAB 3
+  Q1 RSA                         L3_RSA.py
+  Q2 ECC/ECIES                   L3_ECC_HYBRID.py
+  Q3 ElGamal                     L3_ELGAMAL.py
+  Q4 Hybrid file encryption      L3_RSA_HYBRID_FILE.py
+  Q5 Diffie-Hellman + AES        L3_DIFFIE_HELLMAN_AES.py
+
+LAB 4
+  Q1 RSA + DH secure system      L4_SECURE_RSA_DH_AES.py
+  Q2 Rabin hospital service      L4_RABIN.py
+  Additional ElGamal DRM         L4_ELGAMAL_DRM.py
+  Additional weak-RSA attack     L4_WEAK_RSA_ATTACK.py
+
+LAB 5
+  Q1 Hash functions              L5_HASHING.py
+  Q2 Socket integrity            L5_SOCKET_HASH.py
+  Q3 Performance/collisions      L5_HASH_PERFORMANCE.py
+
+LAB 6
+  ElGamal signature              L6_ELGAMAL_SIGNATURE.py
+  Schnorr signature              L6_SCHNORR_SIGNATURE.py
+  RSA signature                  L6_RSA_SIGNATURE.py
+  Socket signature               L6_SOCKET_SIGNATURE.py
+  Confidentiality/integrity      L6_CIA_RSA_AES.py
+
+LARGE ROLE-BASED EXAM QUESTION
+  Open EASY_EXAM_TEMPLATE.py from the main folder.
+  Change only EDIT BOX 1 (logins/printed role names) and EDIT BOX 2
+  (DES/AES name and key). The internal variable/function names stay unchanged.
+
+HOSPITAL + AES EXAMPLE
+  Do NOT paste AES functions from another file. In EASY_EXAM_TEMPLATE.py set:
+
+      CIPHER_NAME = "AES"
+      CIPHER_KEY = b"0123456789ABCDEF"
+
+  The existing encrypt_data() and decrypt_data() then use AES automatically.
+
+WHAT MAY NEED EDITING IN A SMALL ALGORITHM FILE
+  If the question gives fixed plaintext/key values, replace the input() lines
+  in the final main block with those values. Otherwise change nothing.
+  IV or nonce is changed only in files that ask for it.
+
+Do not combine two files unless the question explicitly asks for two
+algorithms. Every encryption file deliberately uses the same names:
+
+    encrypt_data(data, key, ...)
+    decrypt_data(encrypted_data, key, ...)
+
+Every signature file uses:
+
+    generate_keys()
+    sign_data(data, private_key)
+    verify_signature(data, signature, public_key)
+
+Every hashing file uses:
+
+    hash_data(data, algorithm)
+    verify_hash(data, expected_hash, algorithm)
+
+PyCryptodome files require: pip install pycryptodome

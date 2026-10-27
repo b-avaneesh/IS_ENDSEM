@@ -1,0 +1,30 @@
+DISASTER RELIEF RECORDS - FILE-BASED SOLUTION
+
+Run in this folder:
+  python -m pip install -r requirements.txt
+  python solution.py
+
+The layout follows the supplied sample: helpers, Student, Faculty, HoD,
+main menu, program start. Student/Faculty/HoD are the sample's role names.
+Student adds/views documents and has option 4 for the classical cipher.
+Faculty verifies/decrypts and searches; HoD verifies without decrypting.
+Try document report1.txt, text "fever treatment followup", numbers 7 and 3.
+Search for fever. Paillier gives 10; RSA/ElGamal give 21.
+
+Algorithms: {'folder': 'COMBO_31_Disaster_Relief_Records', 'classical': 'Hill', 'symmetric': 'AES-128', 'asymmetric': 'ECDH', 'hash': 'MD5', 'signature': 'ElGamal', 'homomorphic': 'Paillier', 'search': 'SSE'}
+
+All search uses HMAC-SHA256 SSE tokens and symmetrically encrypted IDs.
+Search matches one whitespace-delimited word, ignoring case, as in the sample.
+Files are stored beside solution.py; keys and documents survive restart.
+Folders: encrypted, hashes, signature, public_key, add, metadata, keys.
+index.json stores the encrypted inverted index. No network is used.
+The add folder retains the sample name, including for multiplication.
+
+Paillier accepts 0..322 and adds modulo 323. RSA accepts 0..142 and
+multiplies modulo 143. ElGamal accepts 1..466 and multiplies modulo 467.
+Classical ciphers are separate demonstrations; original documents retain
+formatting. Playfair merges I/J and retains fillers; Hill/transposition
+may retain padding. Signature hashing and SSE use SHA256; the index's
+assigned hash is used for the separate ciphertext integrity file.
+Local private keys, tiny textbook groups and legacy algorithms are lab
+examples. Menus illustrate roles, without login/access enforcement.

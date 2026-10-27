@@ -1,0 +1,7 @@
+{
+  "encryption": "AES-192",
+  "hash": "SHA-256",
+  "key": "ECDH",
+  "signature": "RSA",
+  "search": "PKSE"
+}

@@ -1,0 +1,479 @@
+INFORMATION SECURITY MIDSEM
+BASIC CIPHERS — I/O & CHARACTER-SPACE REFERENCE
+
+Covered so far:
+1. Additive
+2. Multiplicative
+3. Affine
+4. Vigenere
+5. Autokey
+6. Playfair
+
+Hill Cipher is NOT included yet.
+
+============================================================
+1. ADDITIVE CIPHER
+============================================================
+
+BASE / ORIGINAL
+File: additive.py
+Input: plaintext + integer key
+Output: ciphertext + decrypted plaintext
+Character space: 26 letters (A-Z / a-z mapping)
+Mapping: A=0 ... Z=25
+Spaces: alphabet-focused in base version
+Uppercase: basic version is alphabet-focused
+Lowercase: YES
+Digits: NO in standard 26-character version
+Special characters: NO in standard 26-character version
+Key: integer, used modulo 26
+
+Formula:
+C = (P + K) mod 26
+P = (C - K) mod 26
+
+02_PRESERVE_SPACES
+Input: plaintext with spaces + integer key
+Output: ciphertext/decrypted plaintext
+Character space: 26 letters
+Spaces: YES, preserved
+Letters: encrypted
+Digits: NO
+Special characters: generally preserved/unchanged
+
+03_PRESERVE_CASE
+Input: mixed-case plaintext + integer key
+Output: mixed-case ciphertext/decrypted plaintext
+Character space: A-Z and a-z
+Spaces: preserved
+Uppercase: YES
+Lowercase: YES
+Digits: NO
+Special characters: preserved/unchanged
+
+04_UPPER_LOWER_DIGITS
+Input: A-Z, a-z, 0-9 + integer key
+Output: ciphertext/decrypted plaintext
+Character space: 62 characters
+Alphabet: A-Z + a-z + 0-9
+Modulus: 62
+Spaces: preserved
+Uppercase: YES
+Lowercase: YES
+Digits: YES, encrypted
+Special characters: preserved
+
+CUSTOM CHARACTER SET
+Input: custom alphabet + plaintext + integer key
+Output: ciphertext/decrypted plaintext
+Character space: n = length of alphabet
+Modulus: n
+
+
+============================================================
+2. MULTIPLICATIVE CIPHER
+============================================================
+
+BASE / ORIGINAL
+File: multiplicative.py
+Input: plaintext + multiplicative key
+Output: ciphertext + decrypted plaintext
+Character space: 26 letters
+Mapping: A=0 ... Z=25
+Spaces: not part of standard 26-character alphabet
+Uppercase: alphabet-focused
+Lowercase: YES
+Digits: NO
+Special characters: NO
+Key: integer K
+
+IMPORTANT:
+gcd(K,26) must be 1.
+
+Valid keys modulo 26:
+1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25
+
+Formula:
+C = P*K mod 26
+P = C*K^(-1) mod 26
+
+02_PRESERVE_SPACES
+Input: plaintext with spaces + key
+Output: ciphertext/decrypted plaintext
+Spaces: YES, preserved
+Letters: encrypted
+Digits: NO in standard version
+Special characters: usually preserved/ignored
+
+03_PRESERVE_CASE
+Input: mixed-case plaintext + key
+Output: mixed-case ciphertext/decrypted plaintext
+Uppercase: YES
+Lowercase: YES
+Spaces: preserved
+Digits: NO
+
+04_KEY_VALIDATION
+Input: plaintext + integer key
+Output: ciphertext/decrypted plaintext OR invalid-key error
+Restriction: gcd(key,26)=1
+Example invalid key: 2
+
+05_UPPER_LOWER_DIGITS
+Input: A-Z, a-z, 0-9 + key
+Output: ciphertext/decrypted plaintext
+Character space: 62
+Alphabet: A-Z + a-z + 0-9
+Modulus: 62
+Spaces: preserved
+Uppercase: YES
+Lowercase: YES
+Digits: YES
+Special characters: preserved
+
+06_CUSTOM_CHARACTER_SET
+Input: custom alphabet + plaintext + key
+Output: ciphertext/decrypted plaintext
+Character space: n = length of alphabet
+Restriction: gcd(key,n)=1
+
+07_BRUTE_FORCE
+Input: ciphertext
+Output: candidate plaintexts for possible multiplicative keys
+Character space: standard 26 letters
+Only keys coprime to 26 are valid reversible keys.
+
+08_FILE_INPUT_OUTPUT
+Input: input.txt + key
+Output: encrypted.txt + decrypted.txt
+
+
+============================================================
+3. AFFINE CIPHER
+============================================================
+
+BASE / ORIGINAL
+File: affine.py
+Input: plaintext + k1 + k2
+Output: ciphertext + decrypted plaintext
+Character space: 26 letters
+Spaces: not part of standard mathematical alphabet
+Uppercase: alphabet-focused
+Lowercase: YES
+Digits: NO
+Special characters: NO
+
+Formula:
+C = (P*k1 + k2) mod 26
+P = (C-k2)*k1^(-1) mod 26
+
+IMPORTANT:
+gcd(k1,26)=1
+k2 does NOT need to be coprime to 26.
+
+02_PRESERVE_SPACES
+Input: plaintext with spaces + k1 + k2
+Output: ciphertext/decrypted plaintext
+Spaces: YES, preserved
+
+03_PRESERVE_CASE
+Input: mixed-case plaintext + k1 + k2
+Output: mixed-case ciphertext/decrypted plaintext
+Uppercase: YES
+Lowercase: YES
+Digits: NO
+Spaces: preserved
+
+04_KEY_VALIDATION
+Input: plaintext + k1 + k2
+Output: ciphertext/decrypted plaintext OR invalid-key error
+Restriction: gcd(k1,26)=1
+k2: unrestricted
+
+05_UPPER_LOWER_DIGITS
+Input: A-Z, a-z, 0-9 + k1 + k2
+Output: ciphertext/decrypted plaintext
+Character space: 62
+Alphabet: A-Z + a-z + 0-9
+Modulus: 62
+Restriction: gcd(k1,62)=1
+Spaces: preserved
+Uppercase: YES
+Lowercase: YES
+Digits: YES
+Special characters: preserved
+
+06_CUSTOM_CHARACTER_SET
+Input: custom alphabet + plaintext + k1 + k2
+Output: ciphertext/decrypted plaintext
+Character space: n
+Restriction: gcd(k1,n)=1
+
+07_BRUTE_FORCE
+Input: ciphertext
+Output: candidate plaintexts for possible affine keys
+k1: must be coprime to 26
+k2: can range over the modulus
+
+08_FILE_INPUT_OUTPUT
+Input: input.txt + k1 + k2
+Output: encrypted.txt + decrypted.txt
+
+
+============================================================
+4. VIGENERE CIPHER
+============================================================
+
+BASE / ORIGINAL
+File: vigenere.py
+Input: plaintext + alphabetic key
+Output: ciphertext + decrypted plaintext
+Character space: 26 letters
+Spaces: basic version is alphabet-focused
+Uppercase: depends on base implementation
+Lowercase: YES
+Digits: NO
+Special characters: NO
+
+Formula:
+C_i = (P_i + K_i) mod 26
+P_i = (C_i - K_i) mod 26
+
+Key behavior:
+KEYKEYKEY... (repeating key)
+
+02_PRESERVE_SPACES
+Input: plaintext with spaces + key
+Output: ciphertext/decrypted plaintext
+Spaces: YES, preserved
+IMPORTANT: spaces do NOT consume a key character.
+
+03_PRESERVE_CASE
+Input: mixed-case plaintext + key
+Output: mixed-case ciphertext/decrypted plaintext
+Uppercase: YES, preserved
+Lowercase: YES, preserved
+Spaces: preserved
+Digits: NO
+
+04_UPPER_LOWER_DIGITS
+Input: A-Z, a-z, 0-9 + key
+Output: ciphertext/decrypted plaintext
+Character space: 62
+Alphabet: A-Z + a-z + 0-9
+Modulus: 62
+Spaces: preserved
+Uppercase: YES
+Lowercase: YES
+Digits: YES
+Special characters: preserved
+
+05_CUSTOM_ALPHABET
+Input: custom alphabet + plaintext + key
+Output: ciphertext/decrypted plaintext
+Character space: n
+Key characters: should belong to same alphabet
+Formula:
+C_i = (P_i + K_i) mod n
+
+06_FILE_INPUT_OUTPUT
+Input: input.txt + key
+Output: encrypted.txt + decrypted.txt
+Spaces: preserved in file-I/O version
+
+NOTE:
+Autokey is a separate cipher, NOT a Vigenere modification.
+
+
+============================================================
+5. AUTOKEY CIPHER
+============================================================
+
+BASE / ORIGINAL
+File: autokey.py
+Input: plaintext + initial key
+Output: ciphertext + decrypted plaintext
+Character space: 26 letters
+Mapping: A=0 ... Z=25
+Spaces: alphabet-focused in base version
+Uppercase: converted to lowercase in basic implementation
+Lowercase: YES
+Digits: NO
+Special characters: NO
+
+Core idea:
+Initial key is followed by plaintext characters.
+
+Example:
+Initial key = LEMON
+Plaintext = ATTACK
+Key stream begins = LEMONATTACK...
+
+Formula:
+C_i = (P_i + K_i) mod 26
+P_i = (C_i - K_i) mod 26
+
+02_PRESERVE_SPACES
+Input: plaintext with spaces + initial key
+Output: ciphertext/decrypted plaintext
+Spaces: YES, preserved
+IMPORTANT: spaces do NOT consume a key character.
+Key stream: initial key + plaintext letters.
+
+03_PRESERVE_CASE
+Input: mixed-case plaintext + initial key
+Output: mixed-case ciphertext/decrypted plaintext
+Uppercase: YES, preserved
+Lowercase: YES, preserved
+Spaces: preserved
+Digits: NO
+Special characters: preserved/ignored depending on implementation
+
+04_UPPER_LOWER_DIGITS
+Input: A-Z, a-z, 0-9 + initial alphabetic key
+Output: ciphertext/decrypted plaintext
+Character space: 62
+Alphabet: A-Z + a-z + 0-9
+Modulus: 62
+Spaces: preserved
+Uppercase: YES
+Lowercase: YES
+Digits: YES
+Special characters: preserved
+
+05_CUSTOM_ALPHABET
+Input: custom alphabet + plaintext + initial key
+Output: ciphertext/decrypted plaintext
+Character space: n
+Key characters: must belong to custom alphabet
+Core idea: initial key + plaintext characters
+
+06_FILE_INPUT_OUTPUT
+Input: input.txt + initial key
+Output: encrypted.txt + decrypted.txt
+Spaces: preserved
+Case: preserved
+
+
+============================================================
+6. PLAYFAIR CIPHER
+============================================================
+
+BASE / ORIGINAL
+File: playfair.py
+Input: key + plaintext
+Output: 5x5 matrix + prepared plaintext + ciphertext + decrypted text
+Character space: 25 characters
+Alphabet: ABCDEFGHIKLMNOPQRSTUVWXYZ
+I/J: J is converted to I
+Matrix: 5x5
+Block size: 2-character digraph
+Spaces: NOT preserved in base version
+Uppercase: YES
+Lowercase: converted to uppercase
+Digits: NO
+Special characters: NO
+Repeated letters: insert X between repeated letters in a pair
+Odd-length plaintext: append X
+
+Encryption rules:
+1. Same row -> move RIGHT
+2. Same column -> move DOWN
+3. Rectangle -> swap columns
+
+Decryption:
+1. Same row -> move LEFT
+2. Same column -> move UP
+3. Rectangle -> swap columns
+
+02_PRESERVE_SPACES
+Input: key + plaintext containing spaces
+Output: ciphertext with spaces between encrypted words
+Character space: 25 letters, I/J combined
+Spaces: YES, preserved between words
+Uppercase: converted to uppercase
+Lowercase: converted to uppercase
+Digits: NO
+Special characters: NO
+Block size: 2
+Padding: X
+
+IMPORTANT:
+This version encrypts each word separately to retain word boundaries.
+
+03_CUSTOM_I_J_HANDLING
+Input: key + character to omit
+Output: 5x5 Playfair matrix
+Character space: user-selected 25-character alphabet
+Uppercase: YES
+Lowercase: converted to uppercase
+Digits: NO unless included in chosen alphabet
+Spaces: not part of matrix alphabet
+NOTE:
+This version demonstrates configurable matrix construction rather than full encryption/decryption.
+
+04_CUSTOM_ALPHABET
+Input: key + 25-character alphabet
+Output: 5x5 Playfair matrix
+Character space: user-defined 25 characters
+Uppercase: expected/converted to uppercase
+Lowercase: converted to uppercase
+Digits: possible only if included in alphabet
+Spaces: should not be included
+Special characters: possible only if included
+NOTE:
+This version demonstrates custom matrix generation rather than complete encryption/decryption.
+
+05_FILE_INPUT_OUTPUT
+Input: input.txt + key
+Output: encrypted.txt + console ciphertext
+Character space: 25 letters
+I/J: J -> I
+Uppercase: YES
+Lowercase: converted to uppercase
+Digits: NO
+Spaces: removed/ignored for encryption
+Special characters: removed/ignored
+Block size: 2
+Padding: X
+
+
+============================================================
+QUICK MASTER TABLE
+============================================================
+
+CIPHER           STANDARD CHARACTER SPACE     PROCESSING UNIT
+--------------------------------------------------------------
+Additive         26                           1 character
+Multiplicative   26                           1 character
+Affine           26                           1 character
+Vigenere         26                           1 character
+Autokey          26                           1 character
+Playfair         25 (I/J combined)            2-character pair
+
+KEY RESTRICTIONS
+--------------------------------------------------------------
+Additive         Integer key, modulo 26
+Multiplicative   gcd(key,26)=1
+Affine           gcd(k1,26)=1; k2 unrestricted
+Vigenere         Alphabetic key
+Autokey          Initial key
+Playfair         String key used to construct matrix
+
+IMPORTANT EXAM MODIFICATIONS
+--------------------------------------------------------------
+1. Preserve spaces
+2. Preserve uppercase/lowercase
+3. Encrypt digits with a 62-character alphabet
+4. Custom alphabet
+5. File input/output
+6. Key validation
+7. Brute force/attack where meaningful
+
+REMEMBER:
+- If digits must be encrypted, explicitly define a larger character
+  alphabet and use its length as the modulus.
+- Multiplicative/Affine multiplicative parts must be invertible
+  modulo the chosen character-space size.
+- Playfair works on digraphs and uses matrix-position rules.
+- Hill Cipher will be added later.

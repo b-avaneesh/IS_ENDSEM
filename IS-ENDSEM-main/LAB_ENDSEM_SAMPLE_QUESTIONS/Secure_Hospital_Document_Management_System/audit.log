@@ -1,0 +1,18 @@
+{"time": "2026-10-22T14:07:31", "username": "doctor", "role": "doctor", "action": "login", "result": "SUCCESS", "detail": ""}
+{"time": "2026-10-22T14:09:36", "username": "doctor", "role": "doctor", "action": "upload", "result": "SUCCESS", "detail": "R101"}
+{"time": "2026-10-22T14:10:55", "username": "doctor", "role": "doctor", "action": "get", "result": "SUCCESS", "detail": "R101"}
+{"time": "2026-10-22T14:11:23", "username": "doctor", "role": "doctor", "action": "search", "result": "SUCCESS", "detail": "mentally"}
+{"time": "2026-10-22T14:11:37", "username": "doctor", "role": "doctor", "action": "search", "result": "SUCCESS", "detail": "lol"}
+{"time": "2026-10-22T14:11:50", "username": "doctor", "role": "doctor", "action": "audit", "result": "DENIED", "detail": "permission denied"}
+{"time": "2026-10-22T14:12:25", "username": "doctor", "role": "doctor", "action": "vigenere", "result": "SUCCESS", "detail": "Vigenere encryption"}
+{"time": "2026-10-22T14:12:47", "username": "doctor", "role": "doctor", "action": "paillier_add", "result": "SUCCESS", "detail": "20+30"}
+{"time": "2026-10-22T14:13:42", "username": "admin", "role": "admin", "action": "login", "result": "SUCCESS", "detail": ""}
+{"time": "2026-10-22T14:13:52", "username": "admin", "role": "admin", "action": "get", "result": "SUCCESS", "detail": "R101"}
+{"time": "2026-10-22T14:14:01", "username": "admin", "role": "admin", "action": "search", "result": "SUCCESS", "detail": "ill"}
+{"time": "2026-10-22T14:16:44", "username": "admin", "role": "admin", "action": "verify", "result": "DENIED", "detail": "permission denied"}
+{"time": "2026-10-22T14:17:18", "username": "auditor", "role": "unknown", "action": "login", "result": "FAILED", "detail": ""}
+{"time": "2026-10-22T14:17:32", "username": "auditor", "role": "auditor", "action": "login", "result": "SUCCESS", "detail": ""}
+{"time": "2026-10-22T14:17:41", "username": "auditor", "role": "auditor", "action": "upload", "result": "DENIED", "detail": "permission denied"}
+{"time": "2026-10-22T14:17:56", "username": "auditor", "role": "auditor", "action": "get", "result": "DENIED", "detail": "permission denied"}
+{"time": "2026-10-22T14:18:19", "username": "auditor", "role": "auditor", "action": "search", "result": "DENIED", "detail": "permission denied"}
+{"time": "2026-10-22T14:18:52", "username": "auditor", "role": "auditor", "action": "verify", "result": "SUCCESS", "detail": "R101"}

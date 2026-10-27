@@ -1,0 +1,9 @@
+CONFIG: {'encryption': 'ECC_HYBRID', 'hash_name': 'SHA512', 'signature': 'ECDSA', 'he': 'NONE', 'search': 'SSE', 'scenario': 'records'}
+Encrypted package: {'ct': 'b845bdf7ed74d7b6736129f954c7c7b6336a7d57fcbe774bc06560412223c11f', 'iv': '6d5980f8b9bc7939987d2cdfbd64421c', 'ephemeral': '04ab8be1bc600e4f05201130634bc0c15cbe345f78ca9e1255dfe35e76f8d461a93284483a5d8a68d5380a2fedc039582c4614da931623ee9fff2ac90fc62a6a16'}
+Hashes/signature: [{'id': '1', 'owner': 'alice', 'recipient': 'bob', 'time': 1792559935.062592, 'plain_hash': '348e6f2a6e1ae451b7f103d05fa9118ecfd66c29a726807f57d11e64b40219ff5f531654fb3a1ed06444bdf4b455bdf15104f508a8ce44e3f600fb4791ad045e', 'cipher_hash': 'bf8e06b142e3a4debb13554cef7bf8069ab3f120bdb718b5e689aacbdb272e9d333c2f6470e7cf75e4f068a707b2775696629c631e905e612e9cc396d3eac08a', 'status': 'PENDING', 'valid': True}, {'id': '2', 'owner': 'eve', 'recipient': 'bob', 'time': 1792559935.0719335, 'plain_hash': '1be8bab55bfc42d5ef6bf686bf67f1d592994ed31f25e5112638eb11acd2f445d27858a10ffe03253e9f7289c8954aa6ca81dfc9c6713918419e2e2871a6cde4', 'cipher_hash': 'e614eff42fab4a4017a7b3076316275b6dc1405d7dceae110a1f2c86d097d5559eddd450897a9fc57e6a4dc50f202a2446f7494158452affd19dc8aa91f8c696', 'status': 'PENDING', 'valid': True}]
+Decrypted: Academic record: score 85
+Encrypted search education: ['1', '2']
+Decision: APPROVED
+PASS: auditor denied plaintext
+Tamper verification: False
+PASS: revoked upload denied

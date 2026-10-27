@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_15_Employee_Training",
+  "classical": "Hill",
+  "symmetric": "Triple-DES",
+  "asymmetric": "ECDH",
+  "hash": "MD5",
+  "signature": "RSA",
+  "homomorphic": "ElGamal",
+  "search": "SSE"
+}

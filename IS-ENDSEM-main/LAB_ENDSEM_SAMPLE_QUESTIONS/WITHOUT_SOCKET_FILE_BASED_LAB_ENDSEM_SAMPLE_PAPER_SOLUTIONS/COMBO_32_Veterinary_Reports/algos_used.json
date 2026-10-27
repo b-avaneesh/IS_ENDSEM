@@ -1,0 +1,10 @@
+{
+  "folder": "COMBO_32_Veterinary_Reports",
+  "classical": "Transposition",
+  "symmetric": "AES-192",
+  "asymmetric": "DH",
+  "hash": "CUSTOM32",
+  "signature": "ElGamal",
+  "homomorphic": "RSA",
+  "search": "SSE"
+}

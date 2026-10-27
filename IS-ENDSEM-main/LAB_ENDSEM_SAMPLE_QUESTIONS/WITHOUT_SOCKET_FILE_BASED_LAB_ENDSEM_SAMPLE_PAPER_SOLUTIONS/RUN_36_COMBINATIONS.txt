@@ -1,0 +1,7 @@
+36 standalone file-based solutions
+
+Open any COMBO folder and run python solution.py.
+Install pycryptodome using its requirements.txt if needed.
+Each folder follows the supplied Student/Faculty/HoD sample layout.
+All 36 use SSE. Read each RUN.txt for algorithms and a test walkthrough.
+Original root files and the source combinations index were preserved.

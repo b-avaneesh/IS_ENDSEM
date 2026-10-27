@@ -1,0 +1,362 @@
+[
+  {
+    "folder": "COMBO_01_Hospital_Reports",
+    "classical": "Vigenere",
+    "symmetric": "AES-128",
+    "asymmetric": "RSA",
+    "hash": "SHA256",
+    "signature": "RSA",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_02_University_Results",
+    "classical": "Additive",
+    "symmetric": "AES-192",
+    "asymmetric": "ElGamal",
+    "hash": "SHA1",
+    "signature": "RSA",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_03_Bank_Loan_Files",
+    "classical": "Multiplicative",
+    "symmetric": "AES-256",
+    "asymmetric": "ECDH",
+    "hash": "MD5",
+    "signature": "RSA",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_04_Library_Archives",
+    "classical": "Affine",
+    "symmetric": "DES",
+    "asymmetric": "DH",
+    "hash": "CUSTOM32",
+    "signature": "RSA",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_05_Pharmacy_Prescriptions",
+    "classical": "Autokey",
+    "symmetric": "Triple-DES",
+    "asymmetric": "RSA",
+    "hash": "SHA256",
+    "signature": "ElGamal",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_06_Insurance_Claims",
+    "classical": "Playfair",
+    "symmetric": "AES-128",
+    "asymmetric": "ElGamal",
+    "hash": "SHA1",
+    "signature": "ElGamal",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_07_Research_Notebooks",
+    "classical": "Hill",
+    "symmetric": "AES-192",
+    "asymmetric": "ECDH",
+    "hash": "MD5",
+    "signature": "ElGamal",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_08_Payroll_Records",
+    "classical": "Transposition",
+    "symmetric": "AES-256",
+    "asymmetric": "DH",
+    "hash": "CUSTOM32",
+    "signature": "ElGamal",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_09_Legal_Case_Files",
+    "classical": "Vigenere",
+    "symmetric": "DES",
+    "asymmetric": "RSA",
+    "hash": "SHA256",
+    "signature": "Schnorr",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_10_Warehouse_Inventory",
+    "classical": "Additive",
+    "symmetric": "Triple-DES",
+    "asymmetric": "ElGamal",
+    "hash": "SHA1",
+    "signature": "Schnorr",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_11_School_Admissions",
+    "classical": "Multiplicative",
+    "symmetric": "AES-128",
+    "asymmetric": "ECDH",
+    "hash": "MD5",
+    "signature": "Schnorr",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_12_Clinic_Lab_Results",
+    "classical": "Affine",
+    "symmetric": "AES-192",
+    "asymmetric": "DH",
+    "hash": "CUSTOM32",
+    "signature": "Schnorr",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_13_Travel_Bookings",
+    "classical": "Autokey",
+    "symmetric": "AES-256",
+    "asymmetric": "RSA",
+    "hash": "SHA256",
+    "signature": "RSA",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_14_Supplier_Invoices",
+    "classical": "Playfair",
+    "symmetric": "DES",
+    "asymmetric": "ElGamal",
+    "hash": "SHA1",
+    "signature": "RSA",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_15_Employee_Training",
+    "classical": "Hill",
+    "symmetric": "Triple-DES",
+    "asymmetric": "ECDH",
+    "hash": "MD5",
+    "signature": "RSA",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_16_Property_Documents",
+    "classical": "Transposition",
+    "symmetric": "AES-128",
+    "asymmetric": "DH",
+    "hash": "CUSTOM32",
+    "signature": "RSA",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_17_Scholarship_Applications",
+    "classical": "Vigenere",
+    "symmetric": "AES-192",
+    "asymmetric": "RSA",
+    "hash": "SHA256",
+    "signature": "ElGamal",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_18_Donation_Receipts",
+    "classical": "Additive",
+    "symmetric": "AES-256",
+    "asymmetric": "ElGamal",
+    "hash": "SHA1",
+    "signature": "ElGamal",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_19_Exam_Question_Bank",
+    "classical": "Multiplicative",
+    "symmetric": "DES",
+    "asymmetric": "ECDH",
+    "hash": "MD5",
+    "signature": "ElGamal",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_20_Transport_Permits",
+    "classical": "Affine",
+    "symmetric": "Triple-DES",
+    "asymmetric": "DH",
+    "hash": "CUSTOM32",
+    "signature": "ElGamal",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_21_Food_Quality_Reports",
+    "classical": "Autokey",
+    "symmetric": "AES-128",
+    "asymmetric": "RSA",
+    "hash": "SHA256",
+    "signature": "Schnorr",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_22_Energy_Meter_Records",
+    "classical": "Playfair",
+    "symmetric": "AES-192",
+    "asymmetric": "ElGamal",
+    "hash": "SHA1",
+    "signature": "Schnorr",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_23_Sports_Registrations",
+    "classical": "Hill",
+    "symmetric": "AES-256",
+    "asymmetric": "ECDH",
+    "hash": "MD5",
+    "signature": "Schnorr",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_24_Hotel_Guest_Requests",
+    "classical": "Transposition",
+    "symmetric": "DES",
+    "asymmetric": "DH",
+    "hash": "CUSTOM32",
+    "signature": "Schnorr",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_25_Farm_Soil_Reports",
+    "classical": "Vigenere",
+    "symmetric": "Triple-DES",
+    "asymmetric": "RSA",
+    "hash": "SHA256",
+    "signature": "RSA",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_26_Water_Test_Reports",
+    "classical": "Additive",
+    "symmetric": "AES-128",
+    "asymmetric": "ElGamal",
+    "hash": "SHA1",
+    "signature": "RSA",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_27_Equipment_Maintenance",
+    "classical": "Multiplicative",
+    "symmetric": "AES-192",
+    "asymmetric": "ECDH",
+    "hash": "MD5",
+    "signature": "RSA",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_28_Museum_Catalogue",
+    "classical": "Affine",
+    "symmetric": "AES-256",
+    "asymmetric": "DH",
+    "hash": "CUSTOM32",
+    "signature": "RSA",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_29_Courier_Manifests",
+    "classical": "Autokey",
+    "symmetric": "DES",
+    "asymmetric": "RSA",
+    "hash": "SHA256",
+    "signature": "ElGamal",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_30_Workshop_Certificates",
+    "classical": "Playfair",
+    "symmetric": "Triple-DES",
+    "asymmetric": "ElGamal",
+    "hash": "SHA1",
+    "signature": "ElGamal",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_31_Disaster_Relief_Records",
+    "classical": "Hill",
+    "symmetric": "AES-128",
+    "asymmetric": "ECDH",
+    "hash": "MD5",
+    "signature": "ElGamal",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_32_Veterinary_Reports",
+    "classical": "Transposition",
+    "symmetric": "AES-192",
+    "asymmetric": "DH",
+    "hash": "CUSTOM32",
+    "signature": "ElGamal",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_33_Housing_Society_Records",
+    "classical": "Vigenere",
+    "symmetric": "AES-256",
+    "asymmetric": "RSA",
+    "hash": "SHA256",
+    "signature": "Schnorr",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_34_Internship_Evaluations",
+    "classical": "Additive",
+    "symmetric": "DES",
+    "asymmetric": "ElGamal",
+    "hash": "SHA1",
+    "signature": "Schnorr",
+    "homomorphic": "Paillier",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_35_Laboratory_Asset_Records",
+    "classical": "Multiplicative",
+    "symmetric": "Triple-DES",
+    "asymmetric": "ECDH",
+    "hash": "MD5",
+    "signature": "Schnorr",
+    "homomorphic": "RSA",
+    "search": "SSE"
+  },
+  {
+    "folder": "COMBO_36_Community_Project_Files",
+    "classical": "Affine",
+    "symmetric": "AES-128",
+    "asymmetric": "DH",
+    "hash": "CUSTOM32",
+    "signature": "Schnorr",
+    "homomorphic": "ElGamal",
+    "search": "SSE"
+  }
+]

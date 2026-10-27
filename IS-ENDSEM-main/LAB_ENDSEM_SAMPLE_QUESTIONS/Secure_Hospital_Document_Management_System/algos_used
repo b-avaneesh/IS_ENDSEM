@@ -1,0 +1,51 @@
+
+"""
+SECURE HOSPITAL DOCUMENT MANAGEMENT SYSTEM
+
+ALGORITHMS / CONCEPTS USED
+--------------------------
+
+1. Classical Cryptography (Lab 1)
+   - Vigenere Cipher
+
+2. Symmetric Key Cryptography (Lab 2)
+   - AES-128 Encryption/Decryption (CBC mode)
+   - PKCS#7 Padding
+
+3. Asymmetric Key Cryptography (Lab 3)
+   - RSA-2048 Key Pair Generation
+   - RSA-OAEP (AES Key Encryption/Key Wrapping)
+
+4. Hashing (Lab 5)
+   - SHA-256
+
+5. Digital Signatures (Lab 6)
+   - RSA Digital Signature
+   - RSA-PSS Signature Scheme
+   - SHA-256 for Signature Hashing
+
+6. Homomorphic Encryption (Lab 7)
+   - Paillier Encryption
+   - Homomorphic Addition of Encrypted Values
+
+7. Searchable Encryption (Lab 8)
+   - HMAC-SHA-256 Search Tokens
+   - Encrypted Document/Keyword Index
+   - Keyword-Based Document Search
+
+8. Access Control
+   - Role-Based Access Control (RBAC)
+   - User-Role Assignment
+   - Role-Permission Mapping
+   - Server-Side Authorization Checks
+
+9. Network Communication
+   - TCP Socket Programming
+   - JSON-Based Message Exchange
+   - Client-Server Architecture
+
+10. Security Logging
+    - Audit Logs
+    - Login and Access-Request Logging
+    - Success/Failure Event Recording
+"""
